@@ -24,12 +24,22 @@ public class playerMove : Photon.MonoBehaviour {
     public Color enemy_text_color;
     public GameObject bullet_prefab;
 
+    private bool stupid_stuff_to_delete = false;
+
     private void Awake()
     {
         if (!dev_testing && view.isMine)
         {
             player_camera.SetActive(true);
             player_name.text = PhotonNetwork.playerName;
+        }
+        
+        //little comment just to test
+        // RIDICULOUS 
+
+        if (stupid_stuff_to_delete)
+        {
+            // never going here so
         }
 
         if (!dev_testing && !view.isMine)
