@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{D3ED6BA9-0065-33C8-0569-9B72146525E4}</ProjectGuid>
+    <ProjectGuid>{4E20570D-C0F7-F2A4-FE2D-0FD9695A4C46}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor-firstpass</AssemblyName>
@@ -66,11 +66,11 @@
     <Compile Include="Assets\Plugins\UnityChannel\XiaomiSupport\Editor\AppStoreSettingsEditor.cs" />
     <Compile Include="Assets\Plugins\UnityChannel\XiaomiSupport\Editor\XiaomiPackageNameExtension.cs" />
     <Compile Include="Assets\Plugins\UnityPurchasing\Editor\IAPButtonEditor.cs" />
-    <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.StandardEvents">
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -316,43 +316,43 @@
       <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Photon Unity Networking/Editor/PhotonNetwork/Newtonsoft.Json.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Photon Unity Networking/Editor/PhotonNetwork/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/Photon3Unity3D.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="ChannelPurchase">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityChannel/ChannelPurchase.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityChannel/ChannelPurchase.dll</HintPath>
     </Reference>
     <Reference Include="UnityStore">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityChannel/UnityStore.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityChannel/UnityStore.dll</HintPath>
     </Reference>
     <Reference Include="Editor">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
     </Reference>
     <Reference Include="Purchasing.Common">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/Bin/Purchasing.Common.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/Bin/Purchasing.Common.dll</HintPath>
     </Reference>
     <Reference Include="Stores">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/Bin/Stores.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/Bin/Stores.dll</HintPath>
     </Reference>
     <Reference Include="Apple">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
     </Reference>
     <Reference Include="FacebookStore">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/Bin/Facebook/FacebookStore.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/Bin/Facebook/FacebookStore.dll</HintPath>
     </Reference>
     <Reference Include="Security">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/Bin/Security/live/Security.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/Bin/Security/live/Security.dll</HintPath>
     </Reference>
     <Reference Include="Tizen">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/Bin/Tizen/Tizen.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/Bin/Tizen/Tizen.dll</HintPath>
     </Reference>
     <Reference Include="winrt">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/UnityPurchasing/winrt/winrt.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/UnityPurchasing/winrt/winrt.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>/Users/aivarastumas/Documents/Photon_test/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>/Users/aivarastumas/Documents/2D_Platformer/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>/Users/aivarastumas/Library/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.7/Editor/UnityEditor.Advertisements.dll</HintPath>
@@ -405,7 +405,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{22BE8DBF-809A-119B-7D5C-B26B391CE7D4}</Project>
+      <Project>{779267DC-722B-ECA0-9533-DCD21CD4BF04}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>
