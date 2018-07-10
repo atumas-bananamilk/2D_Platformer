@@ -428,9 +428,11 @@
     <Compile Include="Assets\playerHealthBar.cs" />
     <Compile Include="Assets\playerMove.cs" />
     <Compile Include="Assets\RespawnScript.cs" />
+    <Compile Include="Assets\Scripts\MonoBehaviours\Inventory\Inventory.cs" />
     <Compile Include="Assets\Scripts\photonButtons.cs" />
     <Compile Include="Assets\Scripts\photonConnect.cs" />
     <Compile Include="Assets\Scripts\photonHandler.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\Inventory\Item.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Photon Unity Networking\Demos\DemoBoxes\Resources\eurof_tt.txt" />

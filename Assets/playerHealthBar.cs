@@ -27,7 +27,7 @@ public class playerHealthBar : Photon.MonoBehaviour {
             RespawnScript.Instance.local_player = this.gameObject;
         }
 	}
-
+    
     void setCorrectCanvas(){
         if (photonView.isMine){
             player_move.player_name.GetComponent<RectTransform>().anchoredPosition = (local_player_name_pos);
