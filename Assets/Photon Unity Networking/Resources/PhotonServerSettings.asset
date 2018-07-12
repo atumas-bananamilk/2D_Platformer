@@ -14,12 +14,12 @@ MonoBehaviour:
   AppID: cb90491c-6138-403e-8f48-c433ce5b6532
   VoiceAppID: 
   ChatAppID: 
-  HostType: 1
+  HostType: 2
   PreferredRegion: 0
   EnabledRegions: -1
-  Protocol: 0
-  ServerAddress: 
-  ServerPort: 5055
+  Protocol: 1
+  ServerAddress: platformer-db.cqjsgk2uwbr2.us-east-2.rds.amazonaws.com
+  ServerPort: 3306
   VoiceServerPort: 5055
   JoinLobby: 0
   EnableLobbyStatistics: 0

@@ -74,9 +74,6 @@ public class playerMove : Photon.MonoBehaviour {
 
             if (Input.GetKeyDown(KeyCode.Space) && is_grounded)
             {
-                //Debug.Log("PING: " + Network.GetAveragePing(Network.player));
-                Debug.Log("IP: " + MasterServer.ipAddress);
-
                 jump();
             }
             if (Input.GetKeyDown(KeyCode.D))
