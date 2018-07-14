@@ -266,6 +266,12 @@
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>Assets/Plugins/MySQL/MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>Assets/Plugins/MySQL/System.Data.dll</HintPath>
+    </Reference>
     <Reference Include="ChannelPurchase">
       <HintPath>Assets/Plugins/UnityChannel/ChannelPurchase.dll</HintPath>
     </Reference>

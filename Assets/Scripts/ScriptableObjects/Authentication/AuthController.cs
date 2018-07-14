@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿
+using System;
+using System.Data;
 using System.Security.Cryptography;
+using System.Text;
+using MySql.Data.MySqlClient;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,13 +23,18 @@ public class AuthController : MonoBehaviour {
 
     }
 
+    //public void LoginUser()
+    //{
+    //    PhotonNetwork.AuthValues = new AuthenticationValues();
+    //    PhotonNetwork.AuthValues.AuthType = CustomAuthenticationType.Custom;
+    //    PhotonNetwork.AuthValues.AddAuthParameter("username", _username);
+    //    PhotonNetwork.AuthValues.AddAuthParameter("password", _password);
+    //    PhotonNetwork.ConnectUsingSettings("0.1");
+    //}
+
     public void LoginUser()
     {
-        PhotonNetwork.AuthValues = new AuthenticationValues();
-        PhotonNetwork.AuthValues.AuthType = CustomAuthenticationType.Custom;
-        PhotonNetwork.AuthValues.AddAuthParameter("username", _username);
-        PhotonNetwork.AuthValues.AddAuthParameter("password", _password);
-        PhotonNetwork.ConnectUsingSettings("0.1");
+
     }
 
     void OnJoinedLobby()
@@ -60,4 +67,5 @@ public class AuthController : MonoBehaviour {
 
         return Convert.ToBase64String(hashBytes);
     }
+    
 }
