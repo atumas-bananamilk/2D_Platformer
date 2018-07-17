@@ -814,6 +814,7 @@ GameObject:
   - component: {fileID: 346751459}
   - component: {fileID: 346751461}
   - component: {fileID: 346751460}
+  - component: {fileID: 346751462}
   m_Layer: 5
   m_Name: game_title
   m_TagString: Untagged
@@ -836,8 +837,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.1375732, y: 171.263}
-  m_SizeDelta: {x: 223.77, y: 45.53}
+  m_AnchoredPosition: {x: 0, y: 171.25993}
+  m_SizeDelta: {x: 278.2, y: 45.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &346751460
 MonoBehaviour:
@@ -851,7 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -871,13 +872,27 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Best Game Ever
+  m_Text: 2D Platformer
 --- !u!222 &346751461
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 346751458}
+--- !u!114 &346751462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 346751458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,8 +1072,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -121, y: -85.28499}
-  m_SizeDelta: {x: 223.77, y: 45.53}
+  m_AnchoredPosition: {x: -164, y: -81.1}
+  m_SizeDelta: {x: 160, y: 37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &678605513
 MonoBehaviour:
@@ -1092,7 +1107,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Error text
 --- !u!222 &678605514
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1508,8 +1523,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.1375885, y: -223}
-  m_SizeDelta: {x: 223.77, y: 45.53}
+  m_AnchoredPosition: {x: 0, y: 132}
+  m_SizeDelta: {x: 223.8, y: 32.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1131028135
 MonoBehaviour:
@@ -1546,7 +1561,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 28
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -1735,7 +1750,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.2, y: 1.2}
+  m_AnchoredPosition: {x: 1.2000122, y: 1.2000122}
   m_SizeDelta: {x: -38.5, y: -41.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1329092759
@@ -2011,8 +2026,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -144.5086}
-  m_SizeDelta: {x: 223.77, y: 45.53}
+  m_AnchoredPosition: {x: -164.01, y: -122.35}
+  m_SizeDelta: {x: 160.01, y: 45.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1619684075
 MonoBehaviour:

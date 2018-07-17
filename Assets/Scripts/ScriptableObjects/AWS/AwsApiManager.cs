@@ -12,51 +12,36 @@ public class AwsApiManager : MonoBehaviour
     private const string login_endpoint = "/login.php";
     private const string register_endpoint = "/register.php";
 
-    /*
-     * Starts Coroutine for Login Request
-     */
-    public void Login(IDictionary<string, string> keyValuePairs)
+    public void TryLogin(IDictionary<string, string> keyValuePairs)
     {
-        StartCoroutine(PostRequest(base_url + login_endpoint, keyValuePairs));
+        StartCoroutine(POST(base_url + login_endpoint, keyValuePairs, 200));
     }
 
-    /*
-     * Starts Coroutine for Register Request
-     */
     public void Register(IDictionary<string, string> keyValuePairs)
     {
-        StartCoroutine(PostRequest(base_url + register_endpoint, keyValuePairs));
+        StartCoroutine(POST(base_url + register_endpoint, keyValuePairs, 201));
     }
 
-    public void Get(IDictionary<string, string>  keyValuePairs)
-    {
-        //TODO: THIS IS A TEST Change values after
-        keyValuePairs.Add("email", "test@test.com");
-        keyValuePairs.Add("password", "testPW");
-        GetRequest(base_url, keyValuePairs);
-    }
+    //public void Get(IDictionary<string, string>  keyValuePairs)
+    //{
+    //    //TODO: THIS IS A TEST Change values after
+    //    keyValuePairs.Add("email", "test@test.com");
+    //    keyValuePairs.Add("password", "testPW");
+    //    GET(base_url, keyValuePairs);
+    //}
 
-    /*
-     * Creates Get Request to send to AWS EC2 Instance as a Coroutine
-     */
-    IEnumerator GetRequest(string url, IDictionary<string, string> keyValuePairs)
+    IEnumerator GET(string url, IDictionary<string, string> keyValuePairs, int response_code)
     {
         UnityWebRequest uwr = UnityWebRequest.Get(url + GenerateGetData(keyValuePairs));
         yield return uwr.SendWebRequest();
-        GetResponse(ref uwr);
+        Response(ref uwr, response_code);
     }
 
-    /*
-     * Creates Post Request to send to AWS EC2 Instance as a Coroutine
-     */
-    IEnumerator PostRequest(string url, IDictionary<string, string> keyValuePairs)
+    IEnumerator POST(string url, IDictionary<string, string> keyValuePairs, int response_code)
     {
-        WWWForm postData = new WWWForm();
-        GeneratePostData(keyValuePairs, ref postData);
-
-        UnityWebRequest uwr = UnityWebRequest.Post(url, postData);
+        UnityWebRequest uwr = UnityWebRequest.Post(url, GeneratePostData(keyValuePairs));
         yield return uwr.SendWebRequest();
-        GetResponse(ref uwr);
+        Response(ref uwr, response_code);
     }
 
     /*
@@ -77,29 +62,44 @@ public class AwsApiManager : MonoBehaviour
     /*
      * Generates Data for Post Request through Dictionary values
      */
-    private void GeneratePostData(IDictionary<string, string> keyValuePairs, ref WWWForm postData)
+    private WWWForm GeneratePostData(IDictionary<string, string> keyValuePairs)
     {
+        WWWForm postData = new WWWForm();
         foreach (KeyValuePair<string, string> entry in keyValuePairs)
         {
             postData.AddField(entry.Key, entry.Value);
-        }   
+        }
+        return postData;
     }
 
     /*
      * Checks for errors in the request sent to the server, mirror errors from PHP Script in EC2
      * to do some correct Error Handling
      */
-    void GetResponse(ref UnityWebRequest www)
+    void Response(ref UnityWebRequest www, int response_code)
     {
-        if (www.isNetworkError
-            || www.isHttpError)
+        APIResponse response = JsonUtility.FromJson<APIResponse>(www.downloadHandler.text);
+        if (www.responseCode == response_code)
         {
-            Debug.Log(www.error);
+            gameObject.GetComponent<AuthController>().SetError(false);
+            gameObject.GetComponent<AuthController>().AuthenticateUser();
         }
-        else
-        {   // code 200
-            Debug.Log(www.downloadHandler.text);
+        else if (www.isNetworkError || www.isHttpError)
+        {
+            gameObject.GetComponent<AuthController>().SetError(true, response.reason);
         }
+        else{
+            gameObject.GetComponent<AuthController>().SetError(true, "Unknown server response.");
+        }
+    }
+
+    [Serializable]
+    public class APIResponse
+    {
+        public int status;
+        public string status_message;
+        public string reason;
+        public object data;
     }
 
 }

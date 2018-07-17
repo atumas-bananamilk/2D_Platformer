@@ -31,9 +31,6 @@ public class AuthController : MonoBehaviour {
     //Display error messages here
     public Text Error_Text;
 
-    /*
-     * Registers User
-     */
     public void RegisterUser()
     {
         /* TODO: Check for errors (build error manager class)
@@ -50,13 +47,9 @@ public class AuthController : MonoBehaviour {
             { "password", EncryptPassword(_loginPasswordInput) }
         };
 
-        //Call to AwsApiManager POST
-        gameObject.GetComponent<AwsApiManager>().Login(keyValuePairs);
+        gameObject.GetComponent<AwsApiManager>().Register(keyValuePairs);
     }
 
-    /*
-     * Logins User
-     */
     public void LoginUser()
     {
         //Add values from Input to Dictionary
@@ -65,14 +58,12 @@ public class AuthController : MonoBehaviour {
             { "email", _loginEmailInput },
             { "password", _loginPasswordInput }
         };
-        Debug.Log("Email: " + _loginEmailInput + ", Password: " + _loginPasswordInput);
 
-        //Calls to AwsApiManager POST
-        gameObject.GetComponent<AwsApiManager>().Login(keyValuePairs);
+        gameObject.GetComponent<AwsApiManager>().TryLogin(keyValuePairs);
+    }
 
-        // if response is 200 - continue
-
-
+    public void AuthenticateUser(){
+        Debug.Log("AUTHENTICATED");
     }
 
     void OnJoinedLobby()
@@ -80,10 +71,14 @@ public class AuthController : MonoBehaviour {
         Debug.Log("Joined Lobby");
     }
 
-    void OnCustomAuthenticationFailed(string debugMessage)
+    void OnCustomAuthenticationFailed(string msg)
     {
-        Error_Text.text = debugMessage;
-        Error_Text.gameObject.SetActive(true);
+        SetError(true, msg);
+    }
+
+    public void SetError(bool enabled, string msg = ""){
+        Error_Text.text = msg;
+        Error_Text.enabled = enabled;
     }
 
     /*
