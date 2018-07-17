@@ -49,14 +49,13 @@ public class AwsApiManager : MonoBehaviour
     /*
      * Creates Post Request to send to AWS EC2 Instance as a Coroutine
      */
-    IEnumerator PostRequest(string endpoint, IDictionary<string, string> keyValuePairs)
+    IEnumerator PostRequest(string url, IDictionary<string, string> keyValuePairs)
     {
         WWWForm postData = new WWWForm();
         GeneratePostData(keyValuePairs, ref postData);
 
-        UnityWebRequest uwr = UnityWebRequest.Post(endpoint, postData);
+        UnityWebRequest uwr = UnityWebRequest.Post(url, postData);
         yield return uwr.SendWebRequest();
-
         GetResponse(ref uwr);
     }
 

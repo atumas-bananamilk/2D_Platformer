@@ -19,14 +19,14 @@ public class AuthController : MonoBehaviour {
     public InputField registerEmailInput;
 
     //private login variables
-    private string _loginEmailInput{ get { return loginEmailInput.text.ToString(); } }
-    private string _loginPasswordInput { get { return loginPWInput.text.ToString(); } } //USE EncryptPassword(loginPWInput.text.toString()); instead when the DB is updated with the encrypted value and after error handling
+    private string _loginEmailInput{ get { return loginEmailInput.text; } }
+    private string _loginPasswordInput { get { return loginPWInput.text; } } //USE EncryptPassword(loginPWInput.text.toString()); instead when the DB is updated with the encrypted value and after error handling
 
     //private register variables
-    private string _registerUserInput { get { return registerUserInput.text.ToString(); } }
-    private string _registerPWInput { get { return registerPWInput.text.ToString();  } } //USE EncryptPassword(registerPWInput.text.toString()); instead when the DB is updated with the encrypted value and after error handling and compare
-    private string _registerPWConfInput { get { return registerPWConfInput.text.ToString();  } } //USE EncryptPassword(registerPWConfInput.text.toString()); instead when the DB is updated with the encrypted value and after error handling and compare
-    private string _registerEmailInput { get { return registerEmailInput.text.ToString();  } }
+    private string _registerUserInput { get { return registerUserInput.text; } }
+    private string _registerPWInput { get { return registerPWInput.text;  } } //USE EncryptPassword(registerPWInput.text.toString()); instead when the DB is updated with the encrypted value and after error handling and compare
+    private string _registerPWConfInput { get { return registerPWConfInput.text;  } } //USE EncryptPassword(registerPWConfInput.text.toString()); instead when the DB is updated with the encrypted value and after error handling and compare
+    private string _registerEmailInput { get { return registerEmailInput.text;  } }
 
     //Display error messages here
     public Text Error_Text;
@@ -65,9 +65,14 @@ public class AuthController : MonoBehaviour {
             { "email", _loginEmailInput },
             { "password", _loginPasswordInput }
         };
-        Debug.Log("Email & Password" + _loginEmailInput + " " + _loginPasswordInput);
+        Debug.Log("Email: " + _loginEmailInput + ", Password: " + _loginPasswordInput);
+
         //Calls to AwsApiManager POST
         gameObject.GetComponent<AwsApiManager>().Login(keyValuePairs);
+
+        // if response is 200 - continue
+
+
     }
 
     void OnJoinedLobby()
