@@ -59,9 +59,6 @@ public class AwsApiManager : MonoBehaviour
         return stringBuilder.ToString();
     }
 
-    /*
-     * Generates Data for Post Request through Dictionary values
-     */
     private WWWForm GeneratePostData(IDictionary<string, string> keyValuePairs)
     {
         WWWForm postData = new WWWForm();
@@ -72,10 +69,6 @@ public class AwsApiManager : MonoBehaviour
         return postData;
     }
 
-    /*
-     * Checks for errors in the request sent to the server, mirror errors from PHP Script in EC2
-     * to do some correct Error Handling
-     */
     void Response(ref UnityWebRequest www, int response_code)
     {
         APIResponse response = JsonUtility.FromJson<APIResponse>(www.downloadHandler.text);
@@ -101,5 +94,6 @@ public class AwsApiManager : MonoBehaviour
         public string reason;
         public object data;
     }
+
 
 }
