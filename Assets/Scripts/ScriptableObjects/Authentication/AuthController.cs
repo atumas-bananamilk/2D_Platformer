@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using UnityEngine.SceneManagement;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,31 +40,12 @@ public class AuthController : MonoBehaviour {
          * e.g. check for fields requirements 
          * e.g. create requirements for password and email and username
          */
-
-        //Add values from Input to Dictionary
-        IDictionary<string, string> keyValuePairs = new Dictionary<string, string>
-        {
-            { "email", _loginEmailInput },
-            { "password", EncryptPassword(_loginPasswordInput) }
-        };
-
-        gameObject.GetComponent<AwsApiManager>().Register(keyValuePairs);
     }
 
     public void LoginUser()
     {
-        //Add values from Input to Dictionary
-        IDictionary<string, string> keyValuePairs = new Dictionary<string, string>
-        {
-            { "email", _loginEmailInput },
-            { "password", _loginPasswordInput }
-        };
-
-        gameObject.GetComponent<AwsApiManager>().TryLogin(keyValuePairs);
     }
 
-    public void AuthenticateUser(){
-        Debug.Log("AUTHENTICATED");
     }
 
     void OnJoinedLobby()
