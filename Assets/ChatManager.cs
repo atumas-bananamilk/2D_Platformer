@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ChatManager : MonoBehaviour {
     [SerializeField] private GameObject player_info_text;
     [SerializeField] private GameObject player_grid;
-    public InputField chat_input;
+    //public InputField chat_input;
 
     void Awake()
     {
