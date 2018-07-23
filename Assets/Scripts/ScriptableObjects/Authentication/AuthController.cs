@@ -40,12 +40,23 @@ public class AuthController : MonoBehaviour {
          * e.g. check for fields requirements 
          * e.g. create requirements for password and email and username
          */
+        IDictionary<string, string> pairs = new Dictionary<string, string>();
+        pairs.Add("email", _loginEmailInput);
+        pairs.Add("password", EncryptPassword(_loginPasswordInput));
+        gameObject.GetComponent<AwsApiManager>().Register(pairs);
     }
 
     public void LoginUser()
     {
+        IDictionary<string, string> pairs = new Dictionary<string, string>();
+        pairs.Add("email", _loginEmailInput);
+        pairs.Add("password", _loginPasswordInput);
+        gameObject.GetComponent<AwsApiManager>().TryLogin(pairs);
     }
 
+    public void AuthenticateUser(string token){
+        LocalStorageManager.StoreAccessToken(token);
+        SceneManager.LoadScene("Lobby");
     }
 
     void OnJoinedLobby()
