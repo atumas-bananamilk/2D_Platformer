@@ -65,12 +65,12 @@ public class playerHealthBar : Photon.MonoBehaviour {
         {
             RespawnScript.Instance.StartTimer();
             player_move.disable_move = true;
-            this.GetComponent<PhotonView>().RPC("deadRespawn", PhotonTargets.AllBuffered);
+            this.GetComponent<PhotonView>().RPC("killPlayer", PhotonTargets.AllBuffered);
         }
     }
 
     [PunRPC]
-    public void deadRespawn()
+    public void killPlayer()
     {
         this.GetComponent<SpriteRenderer>().enabled = false;
         this.GetComponent<Rigidbody2D>().simulated = false;
