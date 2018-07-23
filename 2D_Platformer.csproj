@@ -272,6 +272,30 @@
     <Reference Include="UnityStore">
       <HintPath>Assets/Plugins/UnityChannel/UnityStore.dll</HintPath>
     </Reference>
+    <Reference Include="Editor">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Purchasing.Common">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Purchasing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Stores">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Stores.dll</HintPath>
+    </Reference>
+    <Reference Include="Apple">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
+    </Reference>
+    <Reference Include="FacebookStore">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Facebook/FacebookStore.dll</HintPath>
+    </Reference>
+    <Reference Include="Security">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Security/live/Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Tizen">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Tizen/Tizen.dll</HintPath>
+    </Reference>
+    <Reference Include="winrt">
+      <HintPath>Assets/Plugins/UnityPurchasing/winrt/winrt.dll</HintPath>
+    </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
@@ -308,6 +332,8 @@
     <Compile Include="Assets\ChatManager.cs" />
     <Compile Include="Assets\DestroyTime.cs" />
     <Compile Include="Assets\GameManager.cs" />
+    <Compile Include="Assets\IAPManager.cs" />
+    <Compile Include="Assets\LobbyManager.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\Demo2DJumpAndRun.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\JumpAndRunMovement.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
@@ -453,14 +479,15 @@
     <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
     <Compile Include="Assets\photonUsernameRegister.cs" />
     <Compile Include="Assets\playerHealthBar.cs" />
+    <Compile Include="Assets\PlayerIAP.cs" />
     <Compile Include="Assets\playerMove.cs" />
     <Compile Include="Assets\RespawnScript.cs" />
     <Compile Include="Assets\Scripts\GameManager\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameManager\Menu\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\LocalStorageManager.cs" />
     <Compile Include="Assets\Scripts\MonoBehaviours\CharacterStats\CharacterStats.cs" />
     <Compile Include="Assets\Scripts\MonoBehaviours\CharacterStats\ItemPickUp.cs" />
     <Compile Include="Assets\Scripts\MonoBehaviours\Inventory\CharacterInventory.cs" />
-    <Compile Include="Assets\Scripts\photonButtons.cs" />
     <Compile Include="Assets\Scripts\photonConnect.cs" />
     <Compile Include="Assets\Scripts\photonHandler.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Authentication\AuthController.cs" />
@@ -478,6 +505,7 @@
     <None Include="Assets\Photon Unity Networking\link.xml" />
     <None Include="Assets\Photon Unity Networking\readme.txt" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
+    <None Include="Assets\Plugins\UnityPurchasing\script\link.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

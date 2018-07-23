@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AuthController : MonoBehaviour {
+public class AuthController : Singleton<AuthController> {
 
     //Login Input Fields
     public InputField loginEmailInput;
@@ -43,7 +43,7 @@ public class AuthController : MonoBehaviour {
         IDictionary<string, string> pairs = new Dictionary<string, string>();
         pairs.Add("email", _loginEmailInput);
         pairs.Add("password", EncryptPassword(_loginPasswordInput));
-        gameObject.GetComponent<AwsApiManager>().Register(pairs);
+        AwsApiManager.Instance.Register(pairs);
     }
 
     public void LoginUser()
@@ -51,7 +51,7 @@ public class AuthController : MonoBehaviour {
         IDictionary<string, string> pairs = new Dictionary<string, string>();
         pairs.Add("email", _loginEmailInput);
         pairs.Add("password", _loginPasswordInput);
-        gameObject.GetComponent<AwsApiManager>().TryLogin(pairs);
+        AwsApiManager.Instance.TryLogin(pairs);
     }
 
     public void AuthenticateUser(string token){
