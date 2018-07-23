@@ -266,12 +266,6 @@
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>Assets/Plugins/MySQL/MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data">
-      <HintPath>Assets/Plugins/MySQL/System.Data.dll</HintPath>
-    </Reference>
     <Reference Include="ChannelPurchase">
       <HintPath>Assets/Plugins/UnityChannel/ChannelPurchase.dll</HintPath>
     </Reference>
@@ -461,13 +455,19 @@
     <Compile Include="Assets\playerHealthBar.cs" />
     <Compile Include="Assets\playerMove.cs" />
     <Compile Include="Assets\RespawnScript.cs" />
-    <Compile Include="Assets\Scripts\MonoBehaviours\Inventory\Inventory.cs" />
+    <Compile Include="Assets\Scripts\GameManager\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GameManager\Menu\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\MonoBehaviours\CharacterStats\CharacterStats.cs" />
+    <Compile Include="Assets\Scripts\MonoBehaviours\CharacterStats\ItemPickUp.cs" />
+    <Compile Include="Assets\Scripts\MonoBehaviours\Inventory\CharacterInventory.cs" />
     <Compile Include="Assets\Scripts\photonButtons.cs" />
     <Compile Include="Assets\Scripts\photonConnect.cs" />
     <Compile Include="Assets\Scripts\photonHandler.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Authentication\AuthController.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\AWS\AwsApiManager.cs" />
-    <Compile Include="Assets\Scripts\ScriptableObjects\Inventory\Item.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\CharacterStats\CharacterStats_SO.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\CharacterStats\ItemPickUps_SO.cs" />
+    <Compile Include="Assets\Scripts\Utils\Singleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Photon Unity Networking\Demos\DemoBoxes\Resources\eurof_tt.txt" />
