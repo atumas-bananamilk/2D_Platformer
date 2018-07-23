@@ -11,6 +11,9 @@ public class photonHandler : MonoBehaviour {
     public photonButtons photon_buttons;
     public GameObject main_player;
 
+    public InputField join_server_input;
+    public InputField create_server_input;
+
 	private void Awake()
 	{
         DontDestroyOnLoad(this.transform);
@@ -29,7 +32,7 @@ public class photonHandler : MonoBehaviour {
     public void createNewRoom(){
         if (photon_buttons.createRoom.text.Length > 0)
         {
-            PhotonNetwork.CreateRoom(photon_buttons.createRoom.text, new RoomOptions() { MaxPlayers = 4 }, null);
+            PhotonNetwork.CreateRoom(create_server_input.text, new RoomOptions() { MaxPlayers = 4 }, null);
         }
     }
 
@@ -37,7 +40,7 @@ public class photonHandler : MonoBehaviour {
         //PhotonNetwork.JoinRoom(joinRoom.text);
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 4;
-        PhotonNetwork.JoinOrCreateRoom(photon_buttons.joinRoom.text, options, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(join_server_input.text, options, TypedLobby.Default);
     }
     private void OnJoinedRoom()
     {
