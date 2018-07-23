@@ -272,6 +272,30 @@
     <Reference Include="UnityStore">
       <HintPath>Assets/Plugins/UnityChannel/UnityStore.dll</HintPath>
     </Reference>
+    <Reference Include="Editor">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Purchasing.Common">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Purchasing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Stores">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Stores.dll</HintPath>
+    </Reference>
+    <Reference Include="Apple">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Apple/Apple.dll</HintPath>
+    </Reference>
+    <Reference Include="FacebookStore">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Facebook/FacebookStore.dll</HintPath>
+    </Reference>
+    <Reference Include="Security">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Security/live/Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Tizen">
+      <HintPath>Assets/Plugins/UnityPurchasing/Bin/Tizen/Tizen.dll</HintPath>
+    </Reference>
+    <Reference Include="winrt">
+      <HintPath>Assets/Plugins/UnityPurchasing/winrt/winrt.dll</HintPath>
+    </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
@@ -340,6 +364,7 @@
     <None Include="Assets\Photon Unity Networking\link.xml" />
     <None Include="Assets\Photon Unity Networking\readme.txt" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
+    <None Include="Assets\Plugins\UnityPurchasing\script\link.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

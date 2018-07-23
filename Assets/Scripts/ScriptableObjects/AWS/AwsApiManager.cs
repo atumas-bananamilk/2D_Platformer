@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
 
-public class AwsApiManager : MonoBehaviour
+public class AwsApiManager : Singleton<AwsApiManager>
 {
     private const string base_url = "http://35.180.41.35";
     private const string login_endpoint = "/login.php";
@@ -83,8 +83,8 @@ public class AwsApiManager : MonoBehaviour
             {
                 case CALLBACK.TRYLOGIN:{
                     string access_token = response.data[0];
-                    gameObject.GetComponent<AuthController>().SetError(false);
-                    gameObject.GetComponent<AuthController>().AuthenticateUser(access_token);
+                    AuthController.Instance.SetError(false);
+                    AuthController.Instance.AuthenticateUser(access_token);
                     break;
                 }
                 case CALLBACK.SETDEFAULTSTATS:{
@@ -92,18 +92,18 @@ public class AwsApiManager : MonoBehaviour
                     break;
                 }
                 case CALLBACK.GETUSERSTATS:{
-                    gameObject.GetComponent<LobbyManager>().welcome_message.text = "Welcome back, " + response.data[0] + "!";
-                    gameObject.GetComponent<LobbyManager>().gold_amount_text.text = response.data[1] + " gold";
-                    gameObject.GetComponent<LobbyManager>().SP_amount_text.text = response.data[2] + " SP";
+                    LobbyManager.Instance.welcome_message.text = "Welcome back, " + response.data[0] + "!";
+                    LobbyManager.Instance.gold_amount_text.text = response.data[1] + " gold";
+                    LobbyManager.Instance.SP_amount_text.text = response.data[2] + " SP";
                     PhotonNetwork.playerName = response.data[0];
                     break;
                 }
                 default: { break; }
             }
         }
-        else if (www.isNetworkError){ gameObject.GetComponent<AuthController>().SetError(true, "No internet connection."); }
-        else if (www.isHttpError){ gameObject.GetComponent<AuthController>().SetError(true, response.reason); }
-        else{ gameObject.GetComponent<AuthController>().SetError(true, "Unknown server response."); }
+        else if (www.isNetworkError){ AuthController.Instance.SetError(true, "No internet connection."); }
+        else if (www.isHttpError){ AuthController.Instance.SetError(true, response.reason); }
+        else{ AuthController.Instance.SetError(true, "Unknown server response."); }
     }
 
     [Serializable]
