@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class photonButtons : MonoBehaviour {
-    public InputField createRoom, joinRoom;
+    public InputField createRoom;
+    public InputField joinRoom;
     public photonHandler handler;
 
 	public void onClickCreateRoom()
