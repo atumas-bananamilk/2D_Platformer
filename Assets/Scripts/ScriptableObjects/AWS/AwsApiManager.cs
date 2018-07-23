@@ -95,6 +95,7 @@ public class AwsApiManager : MonoBehaviour
                     gameObject.GetComponent<LobbyManager>().welcome_message.text = "Welcome back, " + response.data[0] + "!";
                     gameObject.GetComponent<LobbyManager>().gold_amount_text.text = response.data[1] + " gold";
                     gameObject.GetComponent<LobbyManager>().SP_amount_text.text = response.data[2] + " SP";
+                    PhotonNetwork.playerName = response.data[0];
                     break;
                 }
                 default: { break; }

@@ -8,7 +8,7 @@ public class photonHandler : MonoBehaviour {
     //[SerializeField] private GameObject player_info_text;
     //[SerializeField] private GameObject player_grid;
 
-    public photonButtons photon_buttons;
+    //public photonButtons photon_buttons;
     public GameObject main_player;
 
     public InputField join_server_input;
@@ -30,7 +30,7 @@ public class photonHandler : MonoBehaviour {
     }
 
     public void createNewRoom(){
-        if (photon_buttons.createRoom.text.Length > 0)
+        if (create_server_input.text.Length > 0)
         {
             PhotonNetwork.CreateRoom(create_server_input.text, new RoomOptions() { MaxPlayers = 4 }, null);
         }
