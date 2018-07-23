@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114939712140631830}
   - component: {fileID: 114697206766679484}
   m_Layer: 0
+  m_Name: buy_300_SP_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,6 +58,23 @@ GameObject:
   - component: {fileID: 114432875429136018}
   m_Layer: 0
   m_Name: fill_amount
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1147740064568754
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224695294078903294}
+  - component: {fileID: 222323503785113304}
+  - component: {fileID: 114714525339926706}
+  m_Layer: 0
+  m_Name: gold_amount_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,6 +115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1320234927750758
 GameObject:
   m_ObjectHideFlags: 1
@@ -179,12 +198,14 @@ GameObject:
   - component: {fileID: 114835352806166338}
   - component: {fileID: 114703126482984142}
   - component: {fileID: 114319303157300740}
+  - component: {fileID: 114387796065547152}
   m_Layer: 0
   m_Name: main_player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1787707556821306
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +253,7 @@ GameObject:
   - component: {fileID: 222661183647807270}
   - component: {fileID: 114581841785075650}
   m_Layer: 0
+  m_Name: SP_amount_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,6 +470,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114387796065547152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1640063479367680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4fe52a8ffb14b22b264dbf587b0ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114432875429136018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -487,7 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9964251, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.6922989, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -496,15 +529,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
+  m_Text: 0 SP
 --- !u!114 &114655358937980178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -517,6 +553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.9964251, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -618,6 +655,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114939712140631830}
   m_OnClick:
     m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114387796065547152}
+        m_MethodName: Buy_SP
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 300
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114703126482984142
@@ -674,6 +723,39 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114714525339926706
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1147740064568754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.9964251, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0 coins
 --- !u!114 &114799312716629414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -706,6 +788,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
+  m_Text: Buy 300 coins
 --- !u!114 &114835352806166338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -875,6 +958,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1476453856876326}
+--- !u!222 &222323503785113304
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1147740064568754}
 --- !u!222 &222492052719108054
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -1087,6 +1176,7 @@ RectTransform:
   m_Children:
   - {fileID: 224684641389674232}
   - {fileID: 224772040537859916}
+  - {fileID: 224695294078903294}
   - {fileID: 224715086548366032}
   m_Father: {fileID: 4241350061423158}
   m_RootOrder: 2
@@ -1115,10 +1205,12 @@ RectTransform:
   m_AnchoredPosition: {x: 118, y: -41}
   m_SizeDelta: {x: 171.9, y: 26.5}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224695294078903294
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1147740064568754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1126,6 +1218,28 @@ RectTransform:
   m_Father: {fileID: 224543837626531482}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 70.48001, y: -100.2}
+  m_SizeDelta: {x: 76.859985, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224715086548366032
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1965658848244884}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224543837626531482}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 147.34, y: -100.2}
+  m_SizeDelta: {x: 76.859985, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224728085777464392
 RectTransform:
@@ -1160,4 +1274,8 @@ RectTransform:
   m_Father: {fileID: 224543837626531482}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 112.05, y: -71.859}
+  m_SizeDelta: {x: 208.1, y: 35.669983}
   m_Pivot: {x: 0.5, y: 0.5}
