@@ -1545,7 +1545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45304fa12912740179aa6ae54062166a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photon_buttons: {fileID: 0}
   main_player: {fileID: 1640063479367680, guid: c960698deac284c93bb845be4c25f08c,
     type: 2}
   join_server_input: {fileID: 1812292927}
@@ -3364,7 +3363,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2145619919}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 983947380}
+        m_MethodName: joinOrCreateRoom
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: main_world
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2145619919

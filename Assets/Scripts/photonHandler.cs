@@ -36,12 +36,21 @@ public class photonHandler : MonoBehaviour {
         }
     }
 
-    public void joinOrCreateRoom(){
+    public void joinOrCreateRoom()
+    {
         //PhotonNetwork.JoinRoom(joinRoom.text);
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 4;
         PhotonNetwork.JoinOrCreateRoom(join_server_input.text, options, TypedLobby.Default);
     }
+
+    public void joinOrCreateRoom(string server_name)
+    {
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 4;
+        PhotonNetwork.JoinOrCreateRoom(server_name, options, TypedLobby.Default);
+    }
+
     private void OnJoinedRoom()
     {
         moveScene();

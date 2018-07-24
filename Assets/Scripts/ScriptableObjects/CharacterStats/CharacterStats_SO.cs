@@ -288,7 +288,7 @@ public class CharacterStats_SO : ScriptableObject
     public void SaveCharacterData()
     {
         saveDataOnClose = true;
-        EditorUtility.SetDirty(this);
+        //EditorUtility.SetDirty(this);
     }
     #endregion
 
