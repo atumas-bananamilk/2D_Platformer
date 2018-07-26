@@ -12,7 +12,9 @@ public class playerMove : Photon.MonoBehaviour {
     [Space]
     [Header("General Floats/Ints")]
     public float move_speed = 100;
-    public float jump_force = 800;
+    public float jump_force = 1000;
+    public int jump_count = 2;
+    private int jumps_done = 2;
 
     [Space]
     public PhotonView view;
@@ -24,22 +26,12 @@ public class playerMove : Photon.MonoBehaviour {
     public Color enemy_text_color;
     public GameObject bullet_prefab;
 
-    private bool stupid_stuff_to_delete = false;
-
     private void Awake()
     {
         if (!dev_testing && view.isMine)
         {
             player_camera.SetActive(true);
             player_name.text = PhotonNetwork.playerName;
-        }
-        
-        //little comment just to test
-        // RIDICULOUS 
-
-        if (stupid_stuff_to_delete)
-        {
-            // never going here so
         }
 
         if (!dev_testing && !view.isMine)
@@ -72,7 +64,8 @@ public class playerMove : Photon.MonoBehaviour {
             var move = new Vector3(Input.GetAxis("Horizontal"), 0);
             transform.position += move * move_speed * Time.deltaTime;
 
-            if (Input.GetKeyDown(KeyCode.Space) && is_grounded)
+            //if (Input.GetKeyDown(KeyCode.Space) && is_grounded)
+            if (Input.GetKeyDown(KeyCode.Space) && jumps_done < jump_count)
             {
                 jump();
             }
@@ -114,13 +107,15 @@ public class playerMove : Photon.MonoBehaviour {
             if (c.gameObject.tag == "Ground")
             {
                 //c.gameObject.SendMessage("ApplyDamage", 10);
-                is_grounded = true;
+                //is_grounded = true;
+                jumps_done = 0;
             }
         }
         else{
             if (c.gameObject.tag == "Ground")
             {
-                is_grounded = true;
+                //is_grounded = true;
+                jumps_done = 0;
             }
         }
     }
@@ -131,20 +126,25 @@ public class playerMove : Photon.MonoBehaviour {
         {
             if (c.gameObject.tag == "Ground")
             {
-                is_grounded = false;
+                //is_grounded = false;
+                jumps_done = 0;
             }
         }
         else
         {
             if (c.gameObject.tag == "Ground")
             {
-                is_grounded = false;
+                //is_grounded = false;
+                jumps_done = 0;
             }
         }
     }
 
-	private void jump(){
-        body.AddForce(Vector2.up * jump_force);
+    private void jump(){
+        jumps_done++;
+        if (jumps_done < jump_count){
+            body.AddForce(Vector2.up * jump_force);
+        }
     }
 
     /// <summary>
