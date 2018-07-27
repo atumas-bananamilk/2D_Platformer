@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainGameManager : MonoBehaviour {
+public class MainGameManager : Photon.MonoBehaviour {
     [SerializeField] private GameObject player_info_text;
     [SerializeField] private GameObject player_grid;
 
@@ -14,6 +14,10 @@ public class MainGameManager : MonoBehaviour {
     public Sprite ground_6;
     public Sprite ground_7;
     public Sprite ground_11;
+
+    public PhotonView view;
+
+    [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
 
     public void Start()
     {
@@ -26,8 +30,6 @@ public class MainGameManager : MonoBehaviour {
         float x = block_prefab.transform.position.x - map[0].Count / 2;
         float y = block_prefab.transform.position.y;
 
-        Debug.Log("COUNT: "+map[0].Count + ", X BEFORE: "+block_prefab.transform.position.x + ", X AFTER: "+x);
-
         foreach (List<string> row in map)
         {
             foreach (string cell in row)
@@ -38,7 +40,12 @@ public class MainGameManager : MonoBehaviour {
                     Int32.TryParse(cell, out cell_id);
 
                     Vector2 v = new Vector2(x, y);
-                    GameObject block = PhotonNetwork.Instantiate(block_prefab.name, v, Quaternion.identity, 0);
+                    //GameObject block = PhotonNetwork.Instantiate(block_prefab.name, v, Quaternion.identity, 0);
+                    GameObject block = Instantiate(block_prefab, v, Quaternion.identity);
+                    block_list.Add(block);
+
+                    //block.transform.SetParent(map_obj.transform, false);
+                    //block.transform.localScale = new Vector2(0.08f, 1);
 
                     SetBlockImage(cell_id, ref block);
                 }
@@ -47,6 +54,14 @@ public class MainGameManager : MonoBehaviour {
             x = block_prefab.transform.position.x;
             y--;
         }
+    }
+
+    [PunRPC]
+    public void DestroyBlock(){
+        Debug.Log("BLOCK LIST SIZE BEFORE: " + this.GetComponent<MainGameManager>().block_list.Count);
+        Destroy(block_list[0]);
+        block_list.RemoveAt(0);
+        Debug.Log("BLOCK LIST SIZE AFTER: " + this.GetComponent<MainGameManager>().block_list.Count);
     }
 
     private void SetBlockImage(int cell_id, ref GameObject block){

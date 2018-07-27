@@ -805,6 +805,7 @@ MonoBehaviour:
   disable_move: 0
   move_speed: 10
   jump_force: 800
+  jump_count: 2
   view: {fileID: 114703126482984142}
   player_camera: {fileID: 1164306827301372}
   sprite: {fileID: 212388678033629100}
@@ -812,6 +813,10 @@ MonoBehaviour:
   player_name: {fileID: 114655358937980178}
   enemy_text_color: {r: 1, g: 0, b: 0, a: 1}
   bullet_prefab: {fileID: 1783273056275948, guid: 53b11a7c4e438402bb6f563e0fc16851,
+    type: 2}
+  main_game_manager: {fileID: 1320756359337674, guid: 1127955d466014b6f878f5d77885d713,
+    type: 2}
+  main_game_manager_view: {fileID: 114096716150665866, guid: 1127955d466014b6f878f5d77885d713,
     type: 2}
 --- !u!114 &114844256804824566
 MonoBehaviour:

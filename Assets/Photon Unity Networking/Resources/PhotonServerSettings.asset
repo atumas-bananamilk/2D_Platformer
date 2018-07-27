@@ -51,4 +51,6 @@ MonoBehaviour:
   - respawnPlayer
   - diePlayer
   - killPlayer
+  - dig
+  - DestroyBlock
   DisableAutoOpenWizard: 1

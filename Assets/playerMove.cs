@@ -26,6 +26,9 @@ public class playerMove : Photon.MonoBehaviour {
     public Color enemy_text_color;
     public GameObject bullet_prefab;
 
+    //public GameObject main_game_manager;
+    public PhotonView main_game_manager_view;
+
     private void Awake()
     {
         if (!dev_testing && view.isMine)
@@ -79,6 +82,11 @@ public class playerMove : Photon.MonoBehaviour {
                 sprite.flipX = true;
                 view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
             }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                //view.RPC("dig", PhotonTargets.AllBuffered);
+                main_game_manager_view.RPC("DestroyBlock", PhotonTargets.AllBuffered);
+            }
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -104,7 +112,7 @@ public class playerMove : Photon.MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D c)
     {
         if (!dev_testing && view.isMine){
-            if (c.gameObject.tag == "Ground")
+            if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
             {
                 //c.gameObject.SendMessage("ApplyDamage", 10);
                 //is_grounded = true;
@@ -112,7 +120,7 @@ public class playerMove : Photon.MonoBehaviour {
             }
         }
         else{
-            if (c.gameObject.tag == "Ground")
+            if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
             {
                 //is_grounded = true;
                 jumps_done = 0;
@@ -162,6 +170,12 @@ public class playerMove : Photon.MonoBehaviour {
     {
         sprite.flipX = false;
     }
+
+    //[PunRPC]
+    //private void dig()
+    //{
+    //    this.GetComponent<MainGameManager>().DestroyBlock();
+    //}
 
     private void smoothNetMovement(){
         transform.position = Vector3.Lerp(transform.position, self_position, Time.deltaTime * 8);
