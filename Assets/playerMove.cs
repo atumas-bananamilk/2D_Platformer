@@ -26,8 +26,7 @@ public class playerMove : Photon.MonoBehaviour {
     public Color enemy_text_color;
     public GameObject bullet_prefab;
 
-    //public GameObject main_game_manager;
-    public PhotonView main_game_manager_view;
+    public GameObject main_game_manager;
 
     private void Awake()
     {
@@ -84,8 +83,8 @@ public class playerMove : Photon.MonoBehaviour {
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                //view.RPC("dig", PhotonTargets.AllBuffered);
-                main_game_manager_view.RPC("DestroyBlock", PhotonTargets.AllBuffered);
+                view.RPC("dig", PhotonTargets.AllBuffered);
+                //main_game_manager_view.RPC("DestroyBlock", PhotonTargets.AllBuffered);
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
@@ -171,11 +170,13 @@ public class playerMove : Photon.MonoBehaviour {
         sprite.flipX = false;
     }
 
-    //[PunRPC]
-    //private void dig()
-    //{
-    //    this.GetComponent<MainGameManager>().DestroyBlock();
-    //}
+    [PunRPC]
+    private void dig()
+    {
+        Debug.Log("BLOCK LIST SIZE BEFORE: " + this.GetComponent<MainGameManager>().block_list.Count);
+        this.GetComponent<MainGameManager>().DestroyBlock();
+        Debug.Log("BLOCK LIST SIZE AFTER: " + this.GetComponent<MainGameManager>().block_list.Count);
+    }
 
     private void smoothNetMovement(){
         transform.position = Vector3.Lerp(transform.position, self_position, Time.deltaTime * 8);

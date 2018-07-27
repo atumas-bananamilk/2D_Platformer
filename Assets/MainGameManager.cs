@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainGameManager : Photon.MonoBehaviour {
+public class MainGameManager : MonoBehaviour {
     [SerializeField] private GameObject player_info_text;
     [SerializeField] private GameObject player_grid;
 
@@ -14,8 +14,6 @@ public class MainGameManager : Photon.MonoBehaviour {
     public Sprite ground_6;
     public Sprite ground_7;
     public Sprite ground_11;
-
-    public PhotonView view;
 
     [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
 
@@ -56,12 +54,9 @@ public class MainGameManager : Photon.MonoBehaviour {
         }
     }
 
-    [PunRPC]
     public void DestroyBlock(){
-        Debug.Log("BLOCK LIST SIZE BEFORE: " + this.GetComponent<MainGameManager>().block_list.Count);
         Destroy(block_list[0]);
         block_list.RemoveAt(0);
-        Debug.Log("BLOCK LIST SIZE AFTER: " + this.GetComponent<MainGameManager>().block_list.Count);
     }
 
     private void SetBlockImage(int cell_id, ref GameObject block){

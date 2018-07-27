@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4028951439798964}
   - component: {fileID: 114933785034045104}
-  - component: {fileID: 114096716150665866}
   m_Layer: 0
   m_Name: MainGameManager
   m_TagString: Untagged
@@ -41,32 +40,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114096716150665866
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1320756359337674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  OwnerShipWasTransfered: 0
-  prefixBackup: -1
-  synchronization: 3
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 114933785034045104}
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
-  currentMasterID: -1
-  isRuntimeInstantiated: 0
 --- !u!114 &114933785034045104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -87,5 +60,4 @@ MonoBehaviour:
   ground_6: {fileID: 21300000, guid: d5f49b1ed2a444feca3c203d66c43dd7, type: 3}
   ground_7: {fileID: 21300000, guid: bd115728ece284a3c949682eda48ac3c, type: 3}
   ground_11: {fileID: 21300000, guid: ee3811a559e574a7d98014313e740a1b, type: 3}
-  view: {fileID: 0}
   block_list: []
