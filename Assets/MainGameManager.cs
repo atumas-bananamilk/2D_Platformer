@@ -38,7 +38,6 @@ public class MainGameManager : MonoBehaviour {
                     Int32.TryParse(cell, out cell_id);
 
                     Vector2 v = new Vector2(x, y);
-                    //GameObject block = PhotonNetwork.Instantiate(block_prefab.name, v, Quaternion.identity, 0);
                     GameObject block = Instantiate(block_prefab, v, Quaternion.identity);
                     block_list.Add(block);
 
