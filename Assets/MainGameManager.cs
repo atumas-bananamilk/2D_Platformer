@@ -15,7 +15,7 @@ public class MainGameManager : MonoBehaviour {
     public Sprite ground_7;
     public Sprite ground_11;
 
-    [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
+    //[HideInInspector] public List<GameObject> block_list = new List<GameObject>();
 
     public void Start()
     {
@@ -37,9 +37,9 @@ public class MainGameManager : MonoBehaviour {
                     int cell_id = 0;
                     Int32.TryParse(cell, out cell_id);
 
-                    Vector2 v = new Vector2(x, y);
-                    GameObject block = Instantiate(block_prefab, v, Quaternion.identity);
-                    block_list.Add(block);
+                    GameObject block = Instantiate(block_prefab, new Vector2(x, y), Quaternion.identity);
+                    //block_list.Add(block);
+                    gameObject.GetComponent<playerMove>().block_list.Add(block);
 
                     //block.transform.SetParent(map_obj.transform, false);
                     //block.transform.localScale = new Vector2(0.08f, 1);
@@ -54,8 +54,8 @@ public class MainGameManager : MonoBehaviour {
     }
 
     public void DestroyBlock(){
-        Destroy(block_list[0]);
-        block_list.RemoveAt(0);
+        //Destroy(block_list[0]);
+        //block_list.RemoveAt(0);
     }
 
     private void SetBlockImage(int cell_id, ref GameObject block){

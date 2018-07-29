@@ -60,7 +60,6 @@ public class playerHealthBar : Photon.MonoBehaviour {
 
     private void checkHealthAmount()
     {
-        // checking if dead
         if (local_player_healthbar.fillAmount <= 0.1f)
         {
             RespawnScript.Instance.StartTimer();
