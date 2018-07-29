@@ -319,15 +319,15 @@ public class playerMove : Photon.MonoBehaviour {
     }
 
     private void smoothNetMovement(){
-        transform.position = Vector3.Lerp(transform.position, self_position, Time.deltaTime * 8);
+        //transform.position = Vector3.Lerp(transform.position, self_position, Time.deltaTime * 8);
     }
 
     private void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){
         if (stream.isWriting){
-            stream.SendNext(transform.position);
+            //stream.SendNext(transform.position);
         }
         else{
-            self_position = (Vector3)stream.ReceiveNext();
+            //self_position = (Vector3)stream.ReceiveNext();
         }
     }
 }
