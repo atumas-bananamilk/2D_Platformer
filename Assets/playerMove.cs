@@ -26,6 +26,7 @@ public class playerMove : Photon.MonoBehaviour {
     public Text player_name;
     public Color enemy_text_color;
     public GameObject bullet_prefab;
+    [SerializeField] Text ping_text;
 
 
 
@@ -164,6 +165,8 @@ public class playerMove : Photon.MonoBehaviour {
 
 	private void Update()
 	{
+        //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
+
         if (!dev_testing){
             // otherwise would control every player
             if (photonView.isMine)
