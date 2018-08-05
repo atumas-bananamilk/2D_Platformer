@@ -34,9 +34,6 @@ public class playerMove : Photon.MonoBehaviour {
         ACTION_DIG_BLOCK = 1,
         ACTION_PUT_BLOCK = 2
     }
-    public static readonly string NO_ACTION = "NO_ACTION";
-    public static readonly string ACTION_DIG_BLOCK = "ACTION_DIG_BLOCK";
-    public static readonly string ACTION_PUT_BLOCK = "ACTION_PUT_BLOCK";
 
 	private void Awake()
     {
@@ -119,13 +116,16 @@ public class playerMove : Photon.MonoBehaviour {
     {
         switch ((PHOTON_EVENTS) evt_code){
             case PHOTON_EVENTS.ACTION_DIG_BLOCK:{
-                gameObject.GetComponent<MapManager>().UpdateMapLocally(Input.mousePosition, true, ACTION_DIG_BLOCK, player_camera.GetComponent<Camera>());
-                break;
-            }
+                    gameObject.GetComponent<MapManager>().TryDestroyBlock(
+                        Input.mousePosition, 
+                        "ACTION_DIG_BLOCK", 
+                        player_camera.GetComponent<Camera>());
+                    break;
+                }
             case PHOTON_EVENTS.ACTION_PUT_BLOCK:{
-                gameObject.GetComponent<MapManager>().UpdateMapLocally(Input.mousePosition, true, ACTION_PUT_BLOCK, player_camera.GetComponent<Camera>());
-                break;
-            }
+
+                    break;
+                }
             default: { break; }
         }
     }

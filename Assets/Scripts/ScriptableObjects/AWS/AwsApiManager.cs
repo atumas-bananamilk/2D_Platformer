@@ -134,11 +134,11 @@ public class AwsApiManager : MonoBehaviour
                     foreach (string change in response.data){
                         Debug.Log("CHANGE: "+change);
                         string[] c_str = change.Split(':');
-                        gameObject.GetComponent<MapManager>().map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
+                        //gameObject.GetComponent<MapManager>().map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
                         //MapManager.Instance.map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
                     }
-                    //MapManager.Instance.UpdateMapChanges();
-                        gameObject.GetComponent<MapManager>().UpdateMapChanges();
+                        //gameObject.GetComponent<MapManager>().UpdateMapChanges();
+                        //MapManager.Instance.UpdateMapChanges();
                     break;
                 }
                 default: { break; }

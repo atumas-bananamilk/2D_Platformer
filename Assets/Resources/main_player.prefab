@@ -428,8 +428,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a8bb8dbec8714aca94bae2340a33544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CSV_file_default: {fileID: 4900000, guid: 5a686b61509474659b034b795d179cfc, type: 3}
-  CSV_file_1: {fileID: 4900000, guid: 193737450ad674dfb82fe1ac3f16d6f0, type: 3}
+  player_info_text: {fileID: 0}
+  player_grid: {fileID: 0}
+  CSV_file: {fileID: 4900000, guid: 193737450ad674dfb82fe1ac3f16d6f0, type: 3}
   block_prefab: {fileID: 1201257649064294, guid: 199134b0e030f481faecc124b02b5d13,
     type: 2}
   ground_5: {fileID: 21300000, guid: d21d42b3e9df44497b6a6226f3c8dd37, type: 3}

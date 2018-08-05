@@ -4,67 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapChange
-{
-    public string Action { get; set; }
-    public int X { get; set; }
-    public int Y { get; set; }
-
-    public MapChange(string action, int x, int y){
-        this.Action = action;
-        this.X = x;
-        this.Y = y;
-    }
-}
-
-//public class MapManager : Singleton<MapManager> {
 public class MapManager : MonoBehaviour {
-    //public static MapManager Instance;
-
     public const float BLOCK_SIZE = 32;
 
-    //[SerializeField] private GameObject player_info_text;
-    //[SerializeField] private GameObject player_grid;
+    [SerializeField] private GameObject player_info_text;
+    [SerializeField] private GameObject player_grid;
 
-    public TextAsset CSV_file_default;
-    public TextAsset CSV_file_1;
+    public TextAsset CSV_file;
     public GameObject block_prefab;
     public Sprite ground_5;
     public Sprite ground_6;
     public Sprite ground_7;
     public Sprite ground_11;
 
-    [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
-    [HideInInspector] public List<MapChange> map_changes = new List<MapChange>();
     private IDictionary<int, Sprite> block_images = new Dictionary<int, Sprite>();
+    [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
     private List<List<string>> map;
-
-
-
-    //private void Awake()
-    //{
-    //    Instance = this;
-    //}
 
     public void Start()
     {
         MapBlockImages();
-        if (PhotonNetwork.room.Name.Equals("main_world")){
-            // 101 x 100
-            map = ReadMap(CSV_file_1);
-        }
-        //else if (PhotonNetwork.room.Name.Equals(PhotonNetwork.playerName)){
-        else{
-            // read default map
-            map = ReadMap(CSV_file_1);
-            // do changes
-            Debug.Log("NAME: "+PhotonNetwork.room.Name);
-            gameObject.GetComponent<AwsApiManager>().GetMapChanges(PhotonNetwork.room.Name);
-            //AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name);
-        }
-        //else{
-        //    map = ReadMap(CSV_file_default);
-        //}
+        // 101 x 100
+        map = ReadMap();
         PlaceBlocks();
     }
 
@@ -104,63 +65,38 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    public void UpdateMapChanges(){
-        foreach (MapChange change in map_changes)
-        {
-            UpdateMapLocally(new Vector3(change.X, change.Y, 0),
-                             false, 
-                             change.Action, 
-                             gameObject.GetComponent<playerMove>().player_camera.GetComponent<Camera>());
-        }
+    public void TryDestroyBlock(Vector3 click_position, string action, Camera camera){
+
+        int x = (int) Math.Round(camera.ScreenToWorldPoint(click_position).x);
+        int y = (int) Math.Round(camera.ScreenToWorldPoint(click_position).y);
+        Vector3 v = new Vector3(x, y, 0);
+
+        //foreach (GameObject block in block_list)
+        //{
+            //if (block.transform.position == v){
+                //Destroy(block);
+                //block_list.Remove(block);
+                Destroy(block_list[0]);
+                block_list.RemoveAt(0);
+                UpdateMapOnServer(ref action, x.ToString(), y.ToString());
+                //break;
+            //}
+        //}
     }
 
-    public void UpdateMapLocally(Vector3 click_position, bool updating_from_player, string action, Camera camera){
-        Vector3 v;
-
-        if (updating_from_player){
-            int x = (int)Math.Round(camera.ScreenToWorldPoint(click_position).x);
-            int y = (int)Math.Round(camera.ScreenToWorldPoint(click_position).y);
-            v = new Vector3(x, y, 0);
-        }
-        else{
-            v = click_position;
-        }
-
-
-        foreach (GameObject block in block_list)
-        {
-            if (block.transform.position == v){
-                if (action.Equals(playerMove.ACTION_DIG_BLOCK)){
-                    Destroy(block);
-                    block_list.Remove(block);
-                    Debug.Log("DELETING LOCALLY, SIZE: " + block_list.Count + ", TO DELETE: " +block.transform.position.x+", "+block.transform.position.y);
-                }
-                else if (action.Equals(playerMove.ACTION_PUT_BLOCK)){
-                    
-                }
-
-                if (updating_from_player){
-                    UpdateMapRemotely(ref action, v.x.ToString(), v.y.ToString());
-                }
-                break;
-            }
-        }
-    }
-
-    private void UpdateMapRemotely(ref string action, string x, string y){
+    private void UpdateMapOnServer(ref string action, string x, string y){
         IDictionary<string, string> pairs = new Dictionary<string, string>();
         pairs.Add("action", action);
         pairs.Add("X", x);
         pairs.Add("Y", y);
-        //AwsApiManager.Instance.UpdateMap(pairs);
-        gameObject.GetComponent<AwsApiManager>().UpdateMap(pairs);
+        AwsApiManager.Instance.UpdateMap(pairs);
     }
 
     private void SetBlockImage(int cell_id, ref GameObject block){
         block.GetComponent<SpriteRenderer>().sprite = block_images.ContainsKey(cell_id) ? block_images[cell_id] : ground_11;
     }
 
-    private List<List<string>> ReadMap(TextAsset CSV_file){
+    private List<List<string>> ReadMap(){
         List<List<string>> list = new List<List<string>>();
         string[] records = CSV_file.text.Split('\n');
         foreach (string record in records)
