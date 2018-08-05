@@ -8,53 +8,44 @@ public class photonHandler : MonoBehaviour {
     //[SerializeField] private GameObject player_info_text;
     //[SerializeField] private GameObject player_grid;
 
-    //public photonButtons photon_buttons;
     public GameObject main_player;
-
-    public InputField join_server_input;
-    public InputField create_server_input;
 
 	private void Awake()
 	{
         DontDestroyOnLoad(this.transform);
-
-        // default - 20
-        PhotonNetwork.sendRate = 30;
-        // default - 10
-        PhotonNetwork.sendRateOnSerialize = 20;
+        PhotonNetwork.sendRate = 30; // default - 20
+        PhotonNetwork.sendRateOnSerialize = 20; // default - 10
         SceneManager.sceneLoaded += OnSceneFinishedLoading;
 	}
 
-	public void moveScene(){
-        PhotonNetwork.LoadLevel("MainGame");
-    }
-
-    public void createNewRoom(){
-        if (create_server_input.text.Length > 0)
+    public void createNewRoom(string world_name){
+        if (world_name.Length > 0)
         {
-            PhotonNetwork.CreateRoom(create_server_input.text, new RoomOptions() { MaxPlayers = 4 }, null);
+            RoomOptions options = new RoomOptions();
+            options.MaxPlayers = 4;
+            PhotonNetwork.CreateRoom(world_name, options, null);
         }
     }
 
-    public void joinOrCreateRoom()
+    public void joinOrCreateRoom(string world_name)
     {
-        //PhotonNetwork.JoinRoom(joinRoom.text);
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 4;
-        PhotonNetwork.JoinOrCreateRoom(join_server_input.text, options, TypedLobby.Default);
-    }
-
-    public void joinOrCreateRoom(string server_name)
-    {
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 4;
-        PhotonNetwork.JoinOrCreateRoom(server_name, options, TypedLobby.Default);
+        if (world_name.Length > 0)
+        {
+            RoomOptions options = new RoomOptions();
+            options.MaxPlayers = 4;
+            PhotonNetwork.JoinOrCreateRoom(world_name, options, TypedLobby.Default);
+        }
     }
 
     private void OnJoinedRoom()
     {
         moveScene();
         Debug.Log("CONNECTED TO THE ROOM: " + PhotonNetwork.room.Name);
+    }
+
+    public void moveScene()
+    {
+        PhotonNetwork.LoadLevel("MainGame");
     }
 
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode){

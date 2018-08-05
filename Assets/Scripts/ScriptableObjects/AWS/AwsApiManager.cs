@@ -6,23 +6,35 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
 
-public class AwsApiManager : Singleton<AwsApiManager>
+//public class AwsApiManager : Singleton<AwsApiManager>
+public class AwsApiManager : MonoBehaviour
 {
+    public static AwsApiManager Instance;
+
     private const string base_url = "http://35.180.41.35";
     private const string login_endpoint = "/login.php";
     private const string register_endpoint = "/register.php";
     private const string stats_endpoint = "/stats.php";
+    private const string map_endpoint = "/map.php";
+    private const string mapchanges_endpoint = "/mapchanges.php";
 
     private enum CALLBACK{
         TRYLOGIN,
         REGISTER,
         SETDEFAULTSTATS,
-        GETUSERSTATS
+        GETUSERSTATS,
+        UPDATE_MAP,
+        GET_MAP_CHANGES
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
 	public void TryLogin(IDictionary<string, string> pairs)
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         StartCoroutine(POST(base_url + login_endpoint, pairs, 200, CALLBACK.TRYLOGIN));
     }
@@ -40,6 +52,21 @@ public class AwsApiManager : Singleton<AwsApiManager>
     {
         IDictionary<string, string> pairs = new Dictionary<string, string>();
         StartCoroutine(GET(base_url + stats_endpoint, pairs, 200, CALLBACK.GETUSERSTATS));
+    }
+    public void UpdateMap(IDictionary<string, string> pairs)
+    {
+        StartCoroutine(POST(base_url + map_endpoint, pairs, 200, CALLBACK.UPDATE_MAP));
+    }
+    //public void GetMap(string map_name)
+    //{
+    //    IDictionary<string, string> pairs = new Dictionary<string, string>();
+    //    StartCoroutine(POST(base_url + map_endpoint, pairs, 200, CALLBACK.UPDATE_MAP));
+    //}
+    public void GetMapChanges(string world_name)
+    {
+        IDictionary<string, string> pairs = new Dictionary<string, string>();
+        pairs.Add("world_name", world_name);
+        StartCoroutine(POST(base_url + mapchanges_endpoint, pairs, 200, CALLBACK.GET_MAP_CHANGES));
     }
 
     IEnumerator GET(string url, IDictionary<string, string> keyValuePairs, int response_code, CALLBACK callback)
@@ -74,11 +101,10 @@ public class AwsApiManager : Singleton<AwsApiManager>
     private void Response(ref UnityWebRequest www, int response_code, CALLBACK callback)
     {
         string response_json = www.downloadHandler.text;
-        Debug.Log("RESPONSE: " + response_json);
+        //Debug.Log("RESPONSE: " + response_json);
         APIResponse response = JsonUtility.FromJson<APIResponse>(response_json);
 
         if (www.responseCode == response_code){
-            Debug.Log("REQUEST SUCCEEDED");
             switch (callback)
             {
                 case CALLBACK.TRYLOGIN:{
@@ -96,6 +122,23 @@ public class AwsApiManager : Singleton<AwsApiManager>
                     LobbyManager.Instance.gold_amount_text.text = response.data[1] + " gold";
                     LobbyManager.Instance.SP_amount_text.text = response.data[2] + " SP";
                     PhotonNetwork.playerName = response.data[0];
+                    break;
+                }
+                case CALLBACK.UPDATE_MAP:{
+                    //Debug.Log("MAP UPDATED");
+                    break;
+                }
+                case CALLBACK.GET_MAP_CHANGES:{
+                        Debug.Log("RECEIVED MAP CHANGES");
+
+                    foreach (string change in response.data){
+                        Debug.Log("CHANGE: "+change);
+                        string[] c_str = change.Split(':');
+                        gameObject.GetComponent<MapManager>().map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
+                        //MapManager.Instance.map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
+                    }
+                    //MapManager.Instance.UpdateMapChanges();
+                        gameObject.GetComponent<MapManager>().UpdateMapChanges();
                     break;
                 }
                 default: { break; }

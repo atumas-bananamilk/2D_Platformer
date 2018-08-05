@@ -28,125 +28,15 @@ public class playerMove : Photon.MonoBehaviour {
     public GameObject bullet_prefab;
     [SerializeField] Text ping_text;
 
-
-
-
-    public TextAsset CSV_file;
-    public GameObject block_prefab;
-    public Sprite ground_5;
-    public Sprite ground_6;
-    public Sprite ground_7;
-    public Sprite ground_11;
-
-
-
-    [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
-
-
-
-    public void Start()
+    private enum PHOTON_EVENTS : byte
     {
-        // 101 x 100
-        List<List<string>> map = ReadMap();
-        PlaceBlocks(ref map);
+        NO_ACTION = 0,
+        ACTION_DIG_BLOCK = 1,
+        ACTION_PUT_BLOCK = 2
     }
-
-    [PunRPC]
-    public void DestroyBlock()
-    {
-        if (view.isMine)
-        {
-            Debug.Log("MINE: " + block_list.Count);
-            //player_name.text = "DESTROYED";
-        }
-        else
-        {
-            Debug.Log("OTHER: " + block_list.Count);
-        }
-
-        Destroy(block_list[0]);
-        block_list.RemoveAt(0);
-    }
-
-    private void PlaceBlocks(ref List<List<string>> map)
-    {
-        float x = block_prefab.transform.position.x - map[0].Count / 2;
-        float y = block_prefab.transform.position.y;
-
-        foreach (List<string> row in map)
-        {
-            foreach (string cell in row)
-            {
-                if (!cell.Equals("-1"))
-                {
-                    int cell_id = 0;
-                    Int32.TryParse(cell, out cell_id);
-
-                    GameObject block = Instantiate(block_prefab, new Vector2(x, y), Quaternion.identity);
-                    block_list.Add(block);
-
-                    //block.transform.SetParent(map_obj.transform, false);
-                    //block.transform.localScale = new Vector2(0.08f, 1);
-
-                    SetBlockImage(cell_id, ref block);
-                }
-                x++;
-            }
-            x = block_prefab.transform.position.x;
-            y--;
-        }
-    }
-
-    private void SetBlockImage(int cell_id, ref GameObject block)
-    {
-        switch (cell_id)
-        {
-            case 5:
-                {
-                    block.GetComponent<SpriteRenderer>().sprite = ground_5;
-                    break;
-                }
-            case 6:
-                {
-                    block.GetComponent<SpriteRenderer>().sprite = ground_6;
-                    break;
-                }
-            case 7:
-                {
-                    block.GetComponent<SpriteRenderer>().sprite = ground_7;
-                    break;
-                }
-            case 11:
-                {
-                    block.GetComponent<SpriteRenderer>().sprite = ground_11;
-                    break;
-                }
-            default:
-                {
-                    block.GetComponent<SpriteRenderer>().sprite = ground_11;
-                    break;
-                }
-        }
-    }
-
-
-    private List<List<string>> ReadMap()
-    {
-        List<List<string>> list = new List<List<string>>();
-        string[] records = CSV_file.text.Split('\n');
-        foreach (string record in records)
-        {
-            string[] fields = record.Split(',');
-            List<string> ll = new List<string>();
-            foreach (string field in fields)
-            {
-                ll.Add(field);
-            }
-            list.Add(ll);
-        }
-        return list;
-    }
-
+    public static readonly string NO_ACTION = "NO_ACTION";
+    public static readonly string ACTION_DIG_BLOCK = "ACTION_DIG_BLOCK";
+    public static readonly string ACTION_PUT_BLOCK = "ACTION_PUT_BLOCK";
 
 	private void Awake()
     {
@@ -188,7 +78,6 @@ public class playerMove : Photon.MonoBehaviour {
             var move = new Vector3(Input.GetAxis("Horizontal"), 0);
             transform.position += move * move_speed * Time.deltaTime;
 
-            //if (Input.GetKeyDown(KeyCode.Space) && is_grounded)
             if (Input.GetKeyDown(KeyCode.Space) && jumps_done < jump_limit)
             {
                 jump();
@@ -203,12 +92,12 @@ public class playerMove : Photon.MonoBehaviour {
                 sprite.flipX = true;
                 view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            //if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetMouseButtonDown(0))
             {
-                //view.RPC("DestroyBlock", PhotonTargets.AllBuffered);
                 RaiseEventOptions options = new RaiseEventOptions();
                 options.Receivers = ReceiverGroup.All;
-                PhotonNetwork.RaiseEvent(0, null, true, options);
+                PhotonNetwork.RaiseEvent((byte) PHOTON_EVENTS.ACTION_DIG_BLOCK, null, true, options);
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
@@ -218,7 +107,6 @@ public class playerMove : Photon.MonoBehaviour {
         }
     }
 
-    // setup our OnEvent as callback:
     void OnEnable()
     {
         PhotonNetwork.OnEventCall += this.OnEvent;
@@ -227,21 +115,18 @@ public class playerMove : Photon.MonoBehaviour {
     {
         PhotonNetwork.OnEventCall -= this.OnEvent;
     }
-    // handle custom events:
-    void OnEvent(byte eventcode, object content, int senderid)
+    void OnEvent(byte evt_code, object content, int senderid)
     {
-        if (eventcode == 0)
-        {
-            //PhotonPlayer sender = PhotonPlayer.Find(senderid);  // who sent this?
-            //byte[] selected = content as byte[];
-            //for (int i = 0; i < selected.Length; i++)
-            //{
-            //    byte unitId = selected[i];
-
-            //}
-
-            Destroy(block_list[0]);
-            block_list.RemoveAt(0);
+        switch ((PHOTON_EVENTS) evt_code){
+            case PHOTON_EVENTS.ACTION_DIG_BLOCK:{
+                gameObject.GetComponent<MapManager>().UpdateMapLocally(Input.mousePosition, true, ACTION_DIG_BLOCK, player_camera.GetComponent<Camera>());
+                break;
+            }
+            case PHOTON_EVENTS.ACTION_PUT_BLOCK:{
+                gameObject.GetComponent<MapManager>().UpdateMapLocally(Input.mousePosition, true, ACTION_PUT_BLOCK, player_camera.GetComponent<Camera>());
+                break;
+            }
+            default: { break; }
         }
     }
 
@@ -259,32 +144,30 @@ public class playerMove : Photon.MonoBehaviour {
         }
     }
 
+    private void jump()
+    {
+        jumps_done++;
+        if (jumps_done < jump_limit)
+        {
+            body.AddForce(Vector2.up * jump_force);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D c)
     {
-        if (!dev_testing && view.isMine){
-            if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
-            {
-                //c.gameObject.SendMessage("ApplyDamage", 10);
-                //is_grounded = true;
-                jumps_done = 0;
-            }
-        }
-        else{
-            if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
-            {
-                //is_grounded = true;
-                jumps_done = 0;
-            }
-        }
+        reset_jumps(ref c);
     }
 
     private void OnCollisionExit2D(Collision2D c)
     {
+        reset_jumps(ref c);
+    }
+
+    private void reset_jumps(ref Collision2D c){
         if (!dev_testing && view.isMine)
         {
             if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
             {
-                //is_grounded = false;
                 jumps_done = 0;
             }
         }
@@ -292,22 +175,20 @@ public class playerMove : Photon.MonoBehaviour {
         {
             if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
             {
-                //is_grounded = false;
                 jumps_done = 0;
             }
-        }
-    }
-
-    private void jump(){
-        jumps_done++;
-        if (jumps_done < jump_limit){
-            body.AddForce(Vector2.up * jump_force);
         }
     }
 
     /// <summary>
     /// NET CODE
     /// </summary>
+
+    //[PunRPC]
+    //public void DestroyBlock()
+    //{
+    //    gameObject.GetComponent<MainGameManager>().DestroyBlock();
+    //}
 
     [PunRPC]
     private void onSpriteFlipTrue()

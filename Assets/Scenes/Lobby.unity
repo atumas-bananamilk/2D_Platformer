@@ -629,7 +629,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create Server
+  m_Text: Create World
 --- !u!222 &367102536
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1186,8 +1186,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 983947380}
-        m_MethodName: createNewRoom
+      - m_Target: {fileID: 983947379}
+        m_MethodName: CreateWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1489,6 +1489,7 @@ GameObject:
   - component: {fileID: 983947378}
   - component: {fileID: 983947380}
   - component: {fileID: 983947381}
+  - component: {fileID: 983947379}
   m_Layer: 0
   m_Name: _Scripts
   m_TagString: Untagged
@@ -1534,6 +1535,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 295eb7171963df147aa8c22c919e5eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &983947379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 983947375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b71eaeda6e24928a988948d7f0a326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  join_server_input: {fileID: 1812292927}
+  create_server_input: {fileID: 899013098}
 --- !u!114 &983947380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1547,8 +1561,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   main_player: {fileID: 1640063479367680, guid: c960698deac284c93bb845be4c25f08c,
     type: 2}
-  join_server_input: {fileID: 1812292927}
-  create_server_input: {fileID: 899013098}
 --- !u!114 &983947381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1637,8 +1649,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 983947380}
-        m_MethodName: joinOrCreateRoom
+      - m_Target: {fileID: 983947379}
+        m_MethodName: JoinWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2932,7 +2944,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join Server
+  m_Text: Join World
 --- !u!222 &1954640292
 CanvasRenderer:
   m_ObjectHideFlags: 0
