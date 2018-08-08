@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class playerMove : Photon.MonoBehaviour {
+public class playerMove : Photon.MonoBehaviour
+{
     [Header("General Booleans")]
     public bool dev_testing = false;
     public bool is_grounded = false;
@@ -35,7 +36,7 @@ public class playerMove : Photon.MonoBehaviour {
         ACTION_PUT_BLOCK = 2
     }
 
-	private void Awake()
+    private void Awake()
     {
         if (!dev_testing && view.isMine)
         {
@@ -50,11 +51,12 @@ public class playerMove : Photon.MonoBehaviour {
         }
     }
 
-	private void Update()
-	{
+    private void Update()
+    {
         //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
 
-        if (!dev_testing){
+        if (!dev_testing)
+        {
             // otherwise would control every player
             if (photonView.isMine)
             {
@@ -65,13 +67,16 @@ public class playerMove : Photon.MonoBehaviour {
                 smoothNetMovement();
             }
         }
-        else{
+        else
+        {
             checkInput();
         }
     }
 
-    private void checkInput(){
-        if (!disable_move){
+    private void checkInput()
+    {
+        if (!disable_move)
+        {
             var move = new Vector3(Input.GetAxis("Horizontal"), 0);
             transform.position += move * move_speed * Time.deltaTime;
 
@@ -92,9 +97,14 @@ public class playerMove : Photon.MonoBehaviour {
             //if (Input.GetKeyDown(KeyCode.S))
             if (Input.GetMouseButtonDown(0))
             {
+
+                Vector3 v = new Vector3((int)Math.Round(player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x),
+                                        (int)Math.Round(player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).y),
+                                        0);
+
                 RaiseEventOptions options = new RaiseEventOptions();
                 options.Receivers = ReceiverGroup.All;
-                PhotonNetwork.RaiseEvent((byte) PHOTON_EVENTS.ACTION_DIG_BLOCK, null, true, options);
+                PhotonNetwork.RaiseEvent((byte)PHOTON_EVENTS.ACTION_DIG_BLOCK, v, true, options);
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
@@ -114,15 +124,16 @@ public class playerMove : Photon.MonoBehaviour {
     }
     void OnEvent(byte evt_code, object content, int senderid)
     {
-        switch ((PHOTON_EVENTS) evt_code){
-            case PHOTON_EVENTS.ACTION_DIG_BLOCK:{
-                    gameObject.GetComponent<MapManager>().TryDestroyBlock(
-                        Input.mousePosition, 
-                        "ACTION_DIG_BLOCK", 
-                        player_camera.GetComponent<Camera>());
+        switch ((PHOTON_EVENTS)evt_code)
+        {
+            case PHOTON_EVENTS.ACTION_DIG_BLOCK:
+                {
+                    Vector3 v = (Vector3)content;
+                    gameObject.GetComponent<MapManager>().TryDestroyBlock(v, "ACTION_DIG_BLOCK", player_camera.GetComponent<Camera>());
                     break;
                 }
-            case PHOTON_EVENTS.ACTION_PUT_BLOCK:{
+            case PHOTON_EVENTS.ACTION_PUT_BLOCK:
+                {
 
                     break;
                 }
@@ -130,15 +141,19 @@ public class playerMove : Photon.MonoBehaviour {
         }
     }
 
-    void shoot(){
-        if (!dev_testing){
+    void shoot()
+    {
+        if (!dev_testing)
+        {
             Vector2 v = new Vector2(this.transform.position.x, this.transform.position.y);
             GameObject obj = PhotonNetwork.Instantiate(bullet_prefab.name, v, Quaternion.identity, 0);
 
-            if (!sprite.flipX){
+            if (!sprite.flipX)
+            {
                 // already going right by default
             }
-            else{
+            else
+            {
                 obj.GetComponent<PhotonView>().RPC("changeDirectionLeft", PhotonTargets.AllBuffered);
             }
         }
@@ -163,7 +178,8 @@ public class playerMove : Photon.MonoBehaviour {
         reset_jumps(ref c);
     }
 
-    private void reset_jumps(ref Collision2D c){
+    private void reset_jumps(ref Collision2D c)
+    {
         if (!dev_testing && view.isMine)
         {
             if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
@@ -202,15 +218,19 @@ public class playerMove : Photon.MonoBehaviour {
         sprite.flipX = false;
     }
 
-    private void smoothNetMovement(){
+    private void smoothNetMovement()
+    {
         //transform.position = Vector3.Lerp(transform.position, self_position, Time.deltaTime * 8);
     }
 
-    private void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){
-        if (stream.isWriting){
+    private void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
             //stream.SendNext(transform.position);
         }
-        else{
+        else
+        {
             //self_position = (Vector3)stream.ReceiveNext();
         }
     }
