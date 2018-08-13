@@ -18,8 +18,8 @@ MonoBehaviour:
   PreferredRegion: 0
   EnabledRegions: -1
   Protocol: 1
-  ServerAddress: 127.0.1.1
-  ServerPort: 3306
+  ServerAddress: 35.180.41.35
+  ServerPort: 80
   VoiceServerPort: 5055
   JoinLobby: 0
   EnableLobbyStatistics: 0
@@ -54,4 +54,6 @@ MonoBehaviour:
   - dig
   - DestroyBlock
   - PlaceBlocks
+  - Aaaa
+  - Bbbb
   DisableAutoOpenWizard: 1

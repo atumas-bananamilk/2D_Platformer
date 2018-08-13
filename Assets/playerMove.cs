@@ -35,6 +35,9 @@ public class playerMove : Photon.MonoBehaviour
         ACTION_DIG_BLOCK = 1,
         ACTION_PUT_BLOCK = 2
     }
+    public static readonly string NO_ACTION = "NO_ACTION";
+    public static readonly string ACTION_DIG_BLOCK = "ACTION_DIG_BLOCK";
+    public static readonly string ACTION_PUT_BLOCK = "ACTION_PUT_BLOCK";
 
     private void Awake()
     {
@@ -94,14 +97,13 @@ public class playerMove : Photon.MonoBehaviour
                 sprite.flipX = true;
                 view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
             }
-            //if (Input.GetKeyDown(KeyCode.S))
+
             if (Input.GetMouseButtonDown(0))
             {
+                Vector3 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+                Vector3 v = new Vector3((int)Math.Round(pos.x), (int)Math.Round(pos.y), 0);
 
-                Vector3 v = new Vector3((int)Math.Round(player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x),
-                                        (int)Math.Round(player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).y),
-                                        0);
-
+                // destroy remotely
                 RaiseEventOptions options = new RaiseEventOptions();
                 options.Receivers = ReceiverGroup.All;
                 PhotonNetwork.RaiseEvent((byte)PHOTON_EVENTS.ACTION_DIG_BLOCK, v, true, options);
@@ -129,7 +131,7 @@ public class playerMove : Photon.MonoBehaviour
             case PHOTON_EVENTS.ACTION_DIG_BLOCK:
                 {
                     Vector3 v = (Vector3)content;
-                    gameObject.GetComponent<MapManager>().TryDestroyBlock(v, "ACTION_DIG_BLOCK", player_camera.GetComponent<Camera>());
+                    gameObject.GetComponent<MapManager>().UpdateMapLocally(v, true, ACTION_DIG_BLOCK);
                     break;
                 }
             case PHOTON_EVENTS.ACTION_PUT_BLOCK:

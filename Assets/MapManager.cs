@@ -17,7 +17,7 @@ public class MapChange
     }
 }
 
-public class MapManager : Photon.MonoBehaviour
+public class MapManager : MonoBehaviour
 {
     public const float BLOCK_SIZE = 32;
 
@@ -31,8 +31,6 @@ public class MapManager : Photon.MonoBehaviour
     public Sprite ground_7;
     public Sprite ground_11;
 
-    private int aa = 3;
-
     private IDictionary<int, Sprite> block_images = new Dictionary<int, Sprite>();
     [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
     private List<List<string>> map;
@@ -42,19 +40,26 @@ public class MapManager : Photon.MonoBehaviour
     {
         MapBlockImages();
 
+        // maps - stored locally
         if (PhotonNetwork.room.Name.Equals("main_world"))
         {
             // 101 x 100
             map = ReadMap(CSV_file);
         }
+        // map changes - stored remotely
+        //else if (PhotonNetwork.room.Name.Equals(PhotonNetwork.playerName)){
+
+        //}
         else
         {
             map = ReadMap(CSV_file);
-            AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name);
-            //gameObject.GetComponent<AwsApiManager>().GetMapChanges(PhotonNetwork.room.Name);
+            AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name, gameObject);
         }
 
-        PlaceBlocks();
+        if (gameObject.GetComponent<playerMove>().view.isMine){
+            PlaceBlocks();
+        }
+
     }
 
     private void MapBlockImages()
@@ -79,9 +84,8 @@ public class MapManager : Photon.MonoBehaviour
                     int cell_id = 0;
                     Int32.TryParse(cell, out cell_id);
 
-                    GameObject block = Instantiate(block_prefab, new Vector2(x, y), Quaternion.identity) as GameObject;
-                    //block_list.Add(block);
-
+                    GameObject block = null;
+                    block = Instantiate(block_prefab, new Vector2(x, y), Quaternion.identity) as GameObject;
                     //block.transform.SetParent(map_obj.transform, false);
                     //block.transform.localScale = new Vector2(0.08f, 1);
 
@@ -94,59 +98,54 @@ public class MapManager : Photon.MonoBehaviour
         }
     }
 
-    public void TryDestroyBlock(Vector3 block_position, string action, Camera camera)
+    //public void TryDestroyBlock(Vector3 block_position, string action)
+    //{
+    //    GameObject[] blocks = GameObject.FindGameObjectsWithTag("Ground");
+    //    Destroy(blocks[0]);
+    //}
+
+    public void UpdateMapChanges()
     {
-        public GameObject[] blocks;
-        //blocks = GameObject.FindGameObjectsWithTag("Ground");
-
-        //Debug.Log("HERE: "+click_position);
-        //int x = (int) Math.Round(camera.ScreenToWorldPoint(click_position).x);
-        //int y = (int) Math.Round(camera.ScreenToWorldPoint(click_position).y);
-        //Vector3 v = new Vector3(x, y, 0);
-        //Debug.Log("NICE: " + v);
-        Debug.Log("LIST SIZE BEFORE: " + block_list.Count);
-
-        //foreach (GameObject block in block_list)
-        //{
-        //if (block.transform.position == v){
-        //Destroy(block);
-        //block_list.Remove(block);
-        Debug.Log("AA: " + aa);
-        if (aa > 0)
+        foreach (MapChange change in map_changes)
         {
-            Destroy(block_list[0]);
-            block_list.RemoveAt(0);
-            aa--;
+            UpdateMapLocally(new Vector3(change.X, change.Y, 0), false, change.Action);
         }
-        else
-        {
-            foreach (GameObject rr in block_list)
-            {
-                Destroy(rr);
-            }
-            while (block_list.Count > 0)
-            {
-                block_list.RemoveAt(0);
-            }
-
-        }
-
-
-
-        //UpdateMapOnServer(ref action, block_position.x.ToString(), block_position.y.ToString());
-        //break;
-        //}
-        //}
-        Debug.Log("LIST SIZE AFTER: " + block_list.Count);
     }
 
-    private void UpdateMapOnServer(ref string action, string x, string y)
+    public void UpdateMapLocally(Vector3 unit_pos, bool updating_from_player, string action)
+    {
+        GameObject[] blocks = GameObject.FindGameObjectsWithTag("Ground");
+        foreach (GameObject block in blocks)
+        {
+            if (block.transform.position == unit_pos)
+            {
+                // local update
+                if (action.Equals(playerMove.ACTION_DIG_BLOCK))
+                {
+                    Destroy(block);
+                }
+                else if (action.Equals(playerMove.ACTION_PUT_BLOCK))
+                {
+
+                }
+
+                // remote update
+                if (updating_from_player && PhotonNetwork.room.Name.Equals(PhotonNetwork.playerName))
+                {
+                    UpdateMapRemotely(ref action, unit_pos.x.ToString(), unit_pos.y.ToString());
+                }
+                break;
+            }
+        }
+    }
+
+    private void UpdateMapRemotely(ref string action, string x, string y)
     {
         IDictionary<string, string> pairs = new Dictionary<string, string>();
         pairs.Add("action", action);
         pairs.Add("X", x);
         pairs.Add("Y", y);
-        AwsApiManager.Instance.UpdateMap(pairs);
+        AwsApiManager.Instance.UpdateMap(pairs, gameObject);
     }
 
     private void SetBlockImage(int cell_id, ref GameObject block)

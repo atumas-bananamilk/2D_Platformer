@@ -12,6 +12,8 @@ public class photonConnect : MonoBehaviour {
     }
 
     private void OnConnectedToMaster(){
+        //PhotonNetwork.autoCleanUpPlayerObjects = false;
+
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         Debug.Log("CONNECTED TO MASTER");
     }
@@ -22,7 +24,6 @@ public class photonConnect : MonoBehaviour {
 
     private void OnDisconnectedFromPhoton(){
         Debug.Log("DISCONNECTED");
-
         PhotonNetwork.ConnectUsingSettings(versionName);
         Debug.Log("TRYING TO RECONNECT...");
     }

@@ -27,6 +27,8 @@ public class AwsApiManager : MonoBehaviour
         GET_MAP_CHANGES
     }
 
+    private GameObject reference_obj = null;
+
     private void Awake()
     {
         Instance = this;
@@ -53,17 +55,14 @@ public class AwsApiManager : MonoBehaviour
         IDictionary<string, string> pairs = new Dictionary<string, string>();
         StartCoroutine(GET(base_url + stats_endpoint, pairs, 200, CALLBACK.GETUSERSTATS));
     }
-    public void UpdateMap(IDictionary<string, string> pairs)
+    public void UpdateMap(IDictionary<string, string> pairs, GameObject obj)
     {
+        reference_obj = obj;
         StartCoroutine(POST(base_url + map_endpoint, pairs, 200, CALLBACK.UPDATE_MAP));
     }
-    //public void GetMap(string map_name)
-    //{
-    //    IDictionary<string, string> pairs = new Dictionary<string, string>();
-    //    StartCoroutine(POST(base_url + map_endpoint, pairs, 200, CALLBACK.UPDATE_MAP));
-    //}
-    public void GetMapChanges(string world_name)
+    public void GetMapChanges(string world_name, GameObject obj)
     {
+        reference_obj = obj;
         IDictionary<string, string> pairs = new Dictionary<string, string>();
         pairs.Add("world_name", world_name);
         StartCoroutine(POST(base_url + mapchanges_endpoint, pairs, 200, CALLBACK.GET_MAP_CHANGES));
@@ -129,16 +128,11 @@ public class AwsApiManager : MonoBehaviour
                     break;
                 }
                 case CALLBACK.GET_MAP_CHANGES:{
-                        Debug.Log("RECEIVED MAP CHANGES");
-
                     foreach (string change in response.data){
-                        Debug.Log("CHANGE: "+change);
                         string[] c_str = change.Split(':');
-                        //gameObject.GetComponent<MapManager>().map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
-                        //MapManager.Instance.map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
+                        reference_obj.GetComponent<MapManager>().map_changes.Add(new MapChange(c_str[0], Int32.Parse(c_str[1]), Int32.Parse(c_str[2])));
                     }
-                        //gameObject.GetComponent<MapManager>().UpdateMapChanges();
-                        //MapManager.Instance.UpdateMapChanges();
+                    reference_obj.GetComponent<MapManager>().UpdateMapChanges();
                     break;
                 }
                 default: { break; }
