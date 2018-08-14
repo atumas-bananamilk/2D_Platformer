@@ -825,7 +825,7 @@ MonoBehaviour:
   chat_input: {fileID: 114189191761201256}
   chat_button: {fileID: 114697206766679484}
   chat_send_button: {fileID: 114248963947991702}
-  player_chat_text: {fileID: 114655358937980178}
+  local_player_chat_text: {fileID: 114655358937980178}
 --- !u!114 &114307549490134606
 MonoBehaviour:
   m_ObjectHideFlags: 1
