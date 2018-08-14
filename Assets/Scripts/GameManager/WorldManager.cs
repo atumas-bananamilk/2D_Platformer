@@ -1,25 +1,48 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WorldManager : MonoBehaviour {
     public InputField join_server_input;
-    public InputField create_server_input;
+    public Text error_create_world;
+    public Button create_server_button;
+    public Button my_server_button;
 
-    public void CreateWorld(){
-        // check if room with my username already exists on server
-        //AwsApiManager
-        // if not
-        //  create map (on server) from default, set this user as owner, fetch map from server
-        // if yes
-        //  fetch map from server
-        //  load it on MapManager
+	private void Start()
+	{
+        AwsApiManager.Instance.CheckWorldExists(AnalyseResponse_1);
+	}
 
-
-
-        gameObject.GetComponent<photonHandler>().createNewRoom(create_server_input.text);
+	public void TryCreateWorld(){
+        AwsApiManager.Instance.TryCreateWorld(AnalyseResponse_2);
     }
+
+    public void AnalyseResponse_1(object response){
+        string msg = (string)response;
+        bool has_no_text = msg.Length <= 0;
+        SwitchButtons(msg, has_no_text);
+    }
+
+    public void AnalyseResponse_2(object response){
+        string msg = (string) response;
+        bool has_text = msg.Length > 0;
+        SwitchButtons(msg, has_text);
+    }
+
+    private void SwitchButtons(string msg, bool on){
+        error_create_world.text = msg;
+        error_create_world.gameObject.SetActive(on);
+        create_server_button.gameObject.SetActive(on);
+        my_server_button.gameObject.SetActive(!on);
+        //my_server_button.GetComponentInChildren<Text>().text = "My world (" + PhotonNetwork.playerName + ")";
+    }
+
+    public void GoToMyWorld(){
+        gameObject.GetComponent<photonHandler>().joinOrCreateRoom(PhotonNetwork.playerName);
+    }
+
     public void JoinWorld()
     {
         gameObject.GetComponent<photonHandler>().joinOrCreateRoom(join_server_input.text);

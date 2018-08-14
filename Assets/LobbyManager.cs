@@ -14,7 +14,7 @@ public class LobbyManager : Singleton<LobbyManager> {
 	}
 
     public void SetStats(){
-        AwsApiManager.Instance.SetDefaultStats(100);
+        AwsApiManager.Instance.UpdateUserStats(100);
     }
 
     public void Logout(){
