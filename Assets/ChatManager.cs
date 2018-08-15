@@ -10,15 +10,22 @@ public class ChatManager : MonoBehaviour {
     public Button chat_send_button;
     public Text local_player_chat_text;
 
-	// Use this for initialization
     public void OpenChatWindow(){
         chat.SetActive(true);
     }
 
     public void SendChatMessage(){
-        if (gameObject.GetComponent<playerMove>().view.isMine)
-        {
-            local_player_chat_text.text = chat_input.text;
-        }
+        // locally
+        local_player_chat_text.text = chat_input.text;
+
+        object[] list = { 
+            gameObject.GetComponent<PhotonView>().viewID, 
+            chat_input.text
+        };
+
+        // remotely
+        RaiseEventOptions options = new RaiseEventOptions();
+        options.Receivers = ReceiverGroup.Others;
+        PhotonNetwork.RaiseEvent((byte)playerMove.PHOTON_EVENTS.SEND_MSG, list, true, options);
     }
 }

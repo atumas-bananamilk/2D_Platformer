@@ -29,15 +29,17 @@ public class playerMove : Photon.MonoBehaviour
     public GameObject bullet_prefab;
     [SerializeField] Text ping_text;
 
-    private enum PHOTON_EVENTS : byte
+    public enum PHOTON_EVENTS : byte
     {
         NO_ACTION = 0,
         ACTION_DIG_BLOCK = 1,
-        ACTION_PUT_BLOCK = 2
+        ACTION_PUT_BLOCK = 2,
+        SEND_MSG = 3
     }
     public static readonly string NO_ACTION = "NO_ACTION";
     public static readonly string ACTION_DIG_BLOCK = "ACTION_DIG_BLOCK";
     public static readonly string ACTION_PUT_BLOCK = "ACTION_PUT_BLOCK";
+    public static readonly string SEND_MSG = "SEND_MSG";
 
     private void Awake()
     {
@@ -90,7 +92,7 @@ public class playerMove : Photon.MonoBehaviour
             if (Input.GetKeyDown(KeyCode.D))
             {
                 sprite.flipX = false;
-                view.RPC("onSpriteFlipFalse", PhotonTargets.Others); // call this on other players (without myself)
+                view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
@@ -103,7 +105,6 @@ public class playerMove : Photon.MonoBehaviour
                 Vector3 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
                 Vector3 v = new Vector3((int)Math.Round(pos.x), (int)Math.Round(pos.y), 0);
 
-                // destroy remotely
                 RaiseEventOptions options = new RaiseEventOptions();
                 options.Receivers = ReceiverGroup.All;
                 PhotonNetwork.RaiseEvent((byte)PHOTON_EVENTS.ACTION_DIG_BLOCK, v, true, options);
@@ -137,6 +138,14 @@ public class playerMove : Photon.MonoBehaviour
             case PHOTON_EVENTS.ACTION_PUT_BLOCK:
                 {
 
+                    break;
+                }
+            case PHOTON_EVENTS.SEND_MSG:
+                {
+                    object[] list = (object[]) content;
+                    int photon_view_id = (int)list[0];
+                    string msg = (string)list[1];
+                    PhotonView.Find(photon_view_id).gameObject.GetComponent<ChatManager>().local_player_chat_text.text = msg;
                     break;
                 }
             default: { break; }
