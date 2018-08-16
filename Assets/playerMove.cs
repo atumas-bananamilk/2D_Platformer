@@ -143,9 +143,11 @@ public class playerMove : Photon.MonoBehaviour
             case PHOTON_EVENTS.SEND_MSG:
                 {
                     object[] list = (object[]) content;
-                    int photon_view_id = (int)list[0];
-                    string msg = (string)list[1];
-                    PhotonView.Find(photon_view_id).gameObject.GetComponent<ChatManager>().local_player_chat_text.text = msg;
+                    if (list.Length >= 2){
+                        int photon_view_id = (int) list[0];
+                        string msg = (string) list[1];
+                        PhotonView.Find(photon_view_id).gameObject.GetComponent<ChatManager>().ShowMessage(msg);
+                    }
                     break;
                 }
             default: { break; }
@@ -182,6 +184,11 @@ public class playerMove : Photon.MonoBehaviour
     private void OnCollisionEnter2D(Collision2D c)
     {
         reset_jumps(ref c);
+
+        if (c.gameObject.tag == "Player")
+        {
+            Physics2D.IgnoreCollision(c.collider, GetComponent<Collider2D>());
+        }
     }
 
     private void OnCollisionExit2D(Collision2D c)
