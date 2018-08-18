@@ -27,6 +27,7 @@ public class playerMove : Photon.MonoBehaviour
     public Text player_name;
     public Color enemy_text_color;
     public GameObject bullet_prefab;
+    public GameObject inventory_big_panel;
     [SerializeField] Text ping_text;
 
     public enum PHOTON_EVENTS : byte
@@ -48,6 +49,9 @@ public class playerMove : Photon.MonoBehaviour
             player_camera.SetActive(true);
             player_name.text = PhotonNetwork.playerName;
         }
+        else{
+            player_camera.SetActive(true);
+        }
 
         if (!dev_testing && !view.isMine)
         {
@@ -58,7 +62,7 @@ public class playerMove : Photon.MonoBehaviour
 
     private void Update()
     {
-        //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
+        ping_text.text = "Ping: " + PhotonNetwork.GetPing();
 
         if (!dev_testing)
         {
@@ -92,12 +96,16 @@ public class playerMove : Photon.MonoBehaviour
             if (Input.GetKeyDown(KeyCode.D))
             {
                 sprite.flipX = false;
-                view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
+                if (!dev_testing){
+                    view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
+                }
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 sprite.flipX = true;
-                view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
+                if (!dev_testing){
+                    view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
+                }
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -105,9 +113,27 @@ public class playerMove : Photon.MonoBehaviour
                 Vector3 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
                 Vector3 v = new Vector3((int)Math.Round(pos.x), (int)Math.Round(pos.y), 0);
 
-                RaiseEventOptions options = new RaiseEventOptions();
-                options.Receivers = ReceiverGroup.All;
-                PhotonNetwork.RaiseEvent((byte)PHOTON_EVENTS.ACTION_DIG_BLOCK, v, true, options);
+                GameObject[] items = GameObject.FindGameObjectsWithTag("PickUpItem");
+                foreach (GameObject item in items)
+                {
+                    //if (item.transform.position == pos)
+                    //{
+                    //gameObject.GetComponent<InventorySlot>().AddItem(null);
+                    //}
+                    if (item.GetComponent<BoxCollider2D>().bounds.Contains((Vector2) pos))
+                    {
+                        //inventory_big_panel.GetComponent<InventorySlot>().AddItem(null);
+                        Debug.Log("COUNT: "+inventory_big_panel.GetComponentsInChildren<InventorySlot>().Length);
+                        inventory_big_panel.GetComponentsInChildren<InventorySlot>()[0].AddItem(item.GetComponent<WorldItem>());
+                        Destroy(item);
+                    }
+                }
+
+                if (!dev_testing){
+                    RaiseEventOptions options = new RaiseEventOptions();
+                    options.Receivers = ReceiverGroup.All;
+                    PhotonNetwork.RaiseEvent((byte)PHOTON_EVENTS.ACTION_DIG_BLOCK, v, true, options);
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.Q))

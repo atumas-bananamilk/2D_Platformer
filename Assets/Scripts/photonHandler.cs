@@ -63,7 +63,7 @@ public class photonHandler : MonoBehaviour {
             // "main_player", [0, 0, 0], 0, 0
             PhotonNetwork.Instantiate(main_player.name, spawn_points[0].transform.position, main_player.transform.rotation, 0);
         }
-        if (PhotonNetwork.playerList.Length > 1)
+        else
         {
             PhotonNetwork.Instantiate(main_player.name, spawn_points[1].transform.position, main_player.transform.rotation, 0);
         }

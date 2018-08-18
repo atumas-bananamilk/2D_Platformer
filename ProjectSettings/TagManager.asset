@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - SpawnPoint
+  - PickUpItem
   layers:
   - Default
   - TransparentFX

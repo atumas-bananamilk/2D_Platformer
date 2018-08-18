@@ -40,26 +40,32 @@ public class MapManager : MonoBehaviour
     {
         MapBlockImages();
 
-        // maps - stored locally
-        if (PhotonNetwork.room.Name.Equals("main_world"))
-        {
-            // 101 x 100
+        if (gameObject.GetComponent<playerMove>().dev_testing){
             map = ReadMap(CSV_file);
-        }
-        // map changes - stored remotely
-        //else if (PhotonNetwork.room.Name.Equals(PhotonNetwork.playerName)){
-
-        //}
-        else
-        {
-            map = ReadMap(CSV_file);
-            AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name, gameObject);
-        }
-
-        if (gameObject.GetComponent<playerMove>().view.isMine){
             PlaceBlocks();
         }
+        else{
+            // maps - stored locally
+            if (PhotonNetwork.room.Name.Equals("main_world"))
+            {
+                // 101 x 100
+                map = ReadMap(CSV_file);
+            }
+            // map changes - stored remotely
+            //else if (PhotonNetwork.room.Name.Equals(PhotonNetwork.playerName)){
 
+            //}
+            else
+            {
+                map = ReadMap(CSV_file);
+                AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name, gameObject);
+            }
+
+            if (gameObject.GetComponent<playerMove>().view.isMine)
+            {
+                PlaceBlocks();
+            }
+        }
     }
 
     private void MapBlockImages()
@@ -97,12 +103,6 @@ public class MapManager : MonoBehaviour
             y--;
         }
     }
-
-    //public void TryDestroyBlock(Vector3 block_position, string action)
-    //{
-    //    GameObject[] blocks = GameObject.FindGameObjectsWithTag("Ground");
-    //    Destroy(blocks[0]);
-    //}
 
     public void UpdateMapChanges()
     {
