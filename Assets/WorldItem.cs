@@ -2,29 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//public class WorldItem : ScriptableObject {
 public class WorldItem : MonoBehaviour {
-
-    private readonly string PICK_UP_ITEM = "PickUpItem";
-    
-    void OnMouseDown(){
-        //GameObject[] items = null;
-
-        //if (gameObject.tag.Equals(PICK_UP_ITEM)){
-        //    items = GameObject.FindGameObjectsWithTag(PICK_UP_ITEM);
-        //}
-
-        //foreach (GameObject p in items)
-        //{
-        //    if (gameObject.GetInstanceID() == p.GetInstanceID()){
-        //        Destroy(p);
-        //    }
-        //}
-
-        //Debug.Log("VIEW: "+gameObject.GetPhotonView());
-
-        //PhotonView.Find()
-    }
+    GameObject obj = null;
+    //private readonly string PICK_UP_ITEM = "PickUpItem";
 
     public Sprite GetSprite(){
         return gameObject.GetComponent<SpriteRenderer>().sprite;
@@ -38,32 +18,17 @@ public class WorldItem : MonoBehaviour {
         }
     }
 
-    //[HideInInspector] public Sprite icon;
-    //public GameObject item_prefab;
-    //GameObject obj = null;
-
-    //public WorldItem(Sprite image)
-    //{
-    //    icon = image;
-    //}
-
-    //public void Use()
-    //{
-    //    Destroy(obj);
-    //    Destroy(this);
-    //}
-
-    public void Remove(){
-        //Destroy(this);
+    public void Use()
+    {
+        Debug.Log("USING ITEM 2");
+        //gameObject.SetActive(!gameObject.GetActive());
     }
 
-    //public void Drop()
+    //public void Drop(Vector2 v)
     //{
-    //    float x = item_prefab.transform.position.x;
-    //    float y = item_prefab.transform.position.y;
-
-    //    obj = Instantiate(item_prefab, new Vector2(x, y), Quaternion.identity) as GameObject;
-    //    obj.GetComponent<SpriteRenderer>().sprite = icon;
+    //    Debug.Log("DROPPING ITEM");
+    //    //obj = Instantiate(gameObject, v, Quaternion.identity) as GameObject;
+    //    //obj.GetComponent<SpriteRenderer>().sprite = GetSprite();
     //}
 
 }

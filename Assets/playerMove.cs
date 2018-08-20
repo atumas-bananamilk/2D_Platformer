@@ -27,7 +27,6 @@ public class playerMove : Photon.MonoBehaviour
     public Text player_name;
     public Color enemy_text_color;
     public GameObject bullet_prefab;
-    public GameObject inventory_big_panel;
     [SerializeField] Text ping_text;
 
     public enum PHOTON_EVENTS : byte
@@ -116,16 +115,11 @@ public class playerMove : Photon.MonoBehaviour
                 GameObject[] items = GameObject.FindGameObjectsWithTag("PickUpItem");
                 foreach (GameObject item in items)
                 {
-                    //if (item.transform.position == pos)
-                    //{
-                    //gameObject.GetComponent<InventorySlot>().AddItem(null);
-                    //}
                     if (item.GetComponent<BoxCollider2D>().bounds.Contains((Vector2) pos))
                     {
-                        //inventory_big_panel.GetComponent<InventorySlot>().AddItem(null);
-                        Debug.Log("COUNT: "+inventory_big_panel.GetComponentsInChildren<InventorySlot>().Length);
-                        inventory_big_panel.GetComponentsInChildren<InventorySlot>()[0].AddItem(item.GetComponent<WorldItem>());
+                        gameObject.GetComponent<PlayerInventory>().AddToInventory(item);
                         Destroy(item);
+                        break;
                     }
                 }
 
