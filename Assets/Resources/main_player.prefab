@@ -1177,6 +1177,7 @@ GameObject:
   - component: {fileID: 114034992352879168}
   - component: {fileID: 114269299143852982}
   - component: {fileID: 114176535711969888}
+  - component: {fileID: 114365127610677172}
   m_Layer: 0
   m_Name: main_player
   m_TagString: Player
@@ -3894,6 +3895,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114365127610677172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1640063479367680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858e7f27bdf3444bc8908f6e84078cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  default_icon: {fileID: 21300000, guid: 8b3ca09353259234c956f941321fc377, type: 3}
+  dropped_items: []
+  item_prefab: {fileID: 1201257649064294, guid: 728012a004d654672b38cbc4d5618f6b,
+    type: 2}
 --- !u!114 &114367938129444042
 MonoBehaviour:
   m_ObjectHideFlags: 1
