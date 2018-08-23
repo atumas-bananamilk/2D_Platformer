@@ -15,6 +15,7 @@ public class WorldItem : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D c)
     {
+        Debug.Log("HERE");
         if (c.gameObject.tag == PLAYER)
         {
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer(PICK_UP_ITEM), LayerMask.NameToLayer(PLAYER), true);

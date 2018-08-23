@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224584311311694414}
   - component: {fileID: 222584636054747480}
   - component: {fileID: 114192349514441952}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 222115064600069304}
   - component: {fileID: 114807556025496686}
   - component: {fileID: 114555292774490664}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 224986724771057494}
   - component: {fileID: 222564888500908088}
   - component: {fileID: 114474093883116078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224412103982992138}
   - component: {fileID: 114952941756650582}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 222909287231862168}
   - component: {fileID: 114939712140631830}
   - component: {fileID: 114697206766679484}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: chat_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 222534158644988794}
   - component: {fileID: 114008058950614956}
   - component: {fileID: 114189191761201256}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: chat_input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 224078574361749956}
   - component: {fileID: 222704739835929200}
   - component: {fileID: 114799312716629414}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 224464269849758184}
   - component: {fileID: 222520727093035120}
   - component: {fileID: 114380879617918118}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 224148865708125660}
   - component: {fileID: 222829015508745354}
   - component: {fileID: 114982388915646542}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224086338972724466}
   - component: {fileID: 114815428188881872}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 224313220807879406}
   - component: {fileID: 222492052719108054}
   - component: {fileID: 114432875429136018}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: fill_amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 222351876362377314}
   - component: {fileID: 114993732955029978}
   - component: {fileID: 114012176248428068}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 224404616897866824}
   - component: {fileID: 222886783226806442}
   - component: {fileID: 114307549490134606}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 222213405473510598}
   - component: {fileID: 114059415237469710}
   - component: {fileID: 114903031412622286}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224572521656320844}
   - component: {fileID: 114132533086343092}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 224708421697248744}
   - component: {fileID: 222466817399539610}
   - component: {fileID: 114858556461799396}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 224734537564352656}
   - component: {fileID: 222627284430115588}
   - component: {fileID: 114394773612074978}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 222582235194361762}
   - component: {fileID: 114657098118462062}
   - component: {fileID: 114248963947991702}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: chat_send_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224016554033565046}
   - component: {fileID: 114204053757849796}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 224695294078903294}
   - component: {fileID: 222323503785113304}
   - component: {fileID: 114714525339926706}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: gold_amount_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224991595074482158}
   - component: {fileID: 114875396525481550}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,7 +380,7 @@ GameObject:
   - component: {fileID: 20271770733032434}
   - component: {fileID: 124368480645340078}
   - component: {fileID: 81184363660355414}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 223050636731185150}
   - component: {fileID: 114020903322681670}
   - component: {fileID: 114349275228918728}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: canvas_local_player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 222788560743963198}
   - component: {fileID: 114181636308011230}
   - component: {fileID: 114181112022478738}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 224904783052636152}
   - component: {fileID: 222090287974228850}
   - component: {fileID: 114642135032570004}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +451,7 @@ GameObject:
   - component: {fileID: 222368440750533226}
   - component: {fileID: 114822931178540696}
   - component: {fileID: 114033657972728880}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 222076696689049554}
   - component: {fileID: 114342175805168116}
   - component: {fileID: 114124764926002590}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +486,7 @@ GameObject:
   - component: {fileID: 224020695911456118}
   - component: {fileID: 222882794158263912}
   - component: {fileID: 114388995902334948}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,7 +503,7 @@ GameObject:
   - component: {fileID: 224509767366305858}
   - component: {fileID: 222148891093211244}
   - component: {fileID: 114717683625722670}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -519,7 +519,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224086311931000854}
   - component: {fileID: 114569061407530036}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,7 +535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224982643301067182}
   - component: {fileID: 114304972686060922}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -552,7 +552,7 @@ GameObject:
   - component: {fileID: 224639283839639124}
   - component: {fileID: 222037567800683418}
   - component: {fileID: 114375489253751362}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 224632682796663300}
   - component: {fileID: 222354151657309564}
   - component: {fileID: 114693945968086198}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: player_name_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -587,7 +587,7 @@ GameObject:
   - component: {fileID: 222433047076122886}
   - component: {fileID: 114484246326986144}
   - component: {fileID: 114012025789322878}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: add_item_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,7 +604,7 @@ GameObject:
   - component: {fileID: 224508237894790408}
   - component: {fileID: 222082911927521610}
   - component: {fileID: 114844256804824566}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: fill_amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 222033053212074656}
   - component: {fileID: 114804549441200382}
   - component: {fileID: 114912576290439192}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +639,7 @@ GameObject:
   - component: {fileID: 224389298879335128}
   - component: {fileID: 222538392418575248}
   - component: {fileID: 114830196185668214}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -656,7 +656,7 @@ GameObject:
   - component: {fileID: 224338796826492834}
   - component: {fileID: 222173266754033278}
   - component: {fileID: 114996406299296106}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,7 +672,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224972437153953744}
   - component: {fileID: 114169540528445364}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -689,7 +689,7 @@ GameObject:
   - component: {fileID: 224292012690300128}
   - component: {fileID: 222404458868750230}
   - component: {fileID: 114047892490062010}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 222450018133998368}
   - component: {fileID: 114663235446259768}
   - component: {fileID: 114274934559280170}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -725,7 +725,7 @@ GameObject:
   - component: {fileID: 222272712776152106}
   - component: {fileID: 114414846276531988}
   - component: {fileID: 114377834760664674}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +743,7 @@ GameObject:
   - component: {fileID: 222577887826268964}
   - component: {fileID: 114281338596133162}
   - component: {fileID: 114353880707873902}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -761,7 +761,7 @@ GameObject:
   - component: {fileID: 222542770485123176}
   - component: {fileID: 114220754463286510}
   - component: {fileID: 114924241070997770}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -779,7 +779,7 @@ GameObject:
   - component: {fileID: 222622180735398550}
   - component: {fileID: 114131765459078840}
   - component: {fileID: 114751003023231048}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224860114798629602}
   - component: {fileID: 114669980855665808}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 224002347485630176}
   - component: {fileID: 222279863039272428}
   - component: {fileID: 114712414295247418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,7 +830,7 @@ GameObject:
   - component: {fileID: 222773252888777998}
   - component: {fileID: 114158687502919226}
   - component: {fileID: 114984279119142774}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -848,7 +848,7 @@ GameObject:
   - component: {fileID: 222385211122845774}
   - component: {fileID: 114489244239621740}
   - component: {fileID: 114599300416261784}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -866,7 +866,7 @@ GameObject:
   - component: {fileID: 222208744839303004}
   - component: {fileID: 114840820156477158}
   - component: {fileID: 114071046958824588}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: buy_300_SP_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 222189058895205430}
   - component: {fileID: 114632540971343286}
   - component: {fileID: 114575960449467072}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -900,7 +900,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224275869499646838}
   - component: {fileID: 114912451988357516}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -918,7 +918,7 @@ GameObject:
   - component: {fileID: 222799341149223086}
   - component: {fileID: 114857340086931618}
   - component: {fileID: 114232048557895362}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: player_chat_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -936,7 +936,7 @@ GameObject:
   - component: {fileID: 222622218206028896}
   - component: {fileID: 114026811638354804}
   - component: {fileID: 114308290101900886}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -954,7 +954,7 @@ GameObject:
   - component: {fileID: 222553070066032102}
   - component: {fileID: 114775702770611562}
   - component: {fileID: 114832993220167304}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -973,7 +973,7 @@ GameObject:
   - component: {fileID: 114543999718977964}
   - component: {fileID: 114246144589680118}
   - component: {fileID: 114838584357846260}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_small_panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -991,7 +991,7 @@ GameObject:
   - component: {fileID: 222622372100418190}
   - component: {fileID: 114367938129444042}
   - component: {fileID: 114950380330025288}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1008,7 +1008,7 @@ GameObject:
   - component: {fileID: 224721210477601830}
   - component: {fileID: 222941342886122330}
   - component: {fileID: 114926968082265228}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1025,7 +1025,7 @@ GameObject:
   - component: {fileID: 224684641389674232}
   - component: {fileID: 222923773141541122}
   - component: {fileID: 114674570070739482}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1043,7 +1043,7 @@ GameObject:
   - component: {fileID: 222767161971645632}
   - component: {fileID: 114408184848249400}
   - component: {fileID: 114452073542098382}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1061,7 +1061,7 @@ GameObject:
   - component: {fileID: 222740331548402450}
   - component: {fileID: 114462966383451752}
   - component: {fileID: 114727139491140010}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1079,7 +1079,7 @@ GameObject:
   - component: {fileID: 222856989799772598}
   - component: {fileID: 114958974597893418}
   - component: {fileID: 114961572362112078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1097,7 +1097,7 @@ GameObject:
   - component: {fileID: 222214082485630562}
   - component: {fileID: 114763865294862810}
   - component: {fileID: 114178894656509018}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1115,7 +1115,7 @@ GameObject:
   - component: {fileID: 222587174714410190}
   - component: {fileID: 114383068124391648}
   - component: {fileID: 114204882607399640}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1133,7 +1133,7 @@ GameObject:
   - component: {fileID: 222571194604668652}
   - component: {fileID: 114851912861875578}
   - component: {fileID: 114153046684805332}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1151,7 +1151,7 @@ GameObject:
   - component: {fileID: 222666361885594178}
   - component: {fileID: 114990449045456462}
   - component: {fileID: 114614256946604762}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1178,7 +1178,7 @@ GameObject:
   - component: {fileID: 114269299143852982}
   - component: {fileID: 114176535711969888}
   - component: {fileID: 114365127610677172}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: main_player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1196,7 +1196,7 @@ GameObject:
   - component: {fileID: 222019567373626074}
   - component: {fileID: 114752604816096636}
   - component: {fileID: 114665301296857362}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1214,7 +1214,7 @@ GameObject:
   - component: {fileID: 222169893356725066}
   - component: {fileID: 114537058899834518}
   - component: {fileID: 114455384168076808}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1231,7 +1231,7 @@ GameObject:
   - component: {fileID: 224941628560572758}
   - component: {fileID: 222608480669021564}
   - component: {fileID: 114593474405408206}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ping_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1247,7 +1247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224259544188841874}
   - component: {fileID: 114678548871393232}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1265,7 +1265,7 @@ GameObject:
   - component: {fileID: 222939841354796346}
   - component: {fileID: 114764730372205670}
   - component: {fileID: 114965607132087910}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1283,7 +1283,7 @@ GameObject:
   - component: {fileID: 222339566345016472}
   - component: {fileID: 114423682263971044}
   - component: {fileID: 114338362902710110}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1301,7 +1301,7 @@ GameObject:
   - component: {fileID: 222657167083926072}
   - component: {fileID: 114627130024458676}
   - component: {fileID: 114087841835466402}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1317,7 +1317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224438823880036170}
   - component: {fileID: 114902950594861110}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1335,7 +1335,7 @@ GameObject:
   - component: {fileID: 222117635912350382}
   - component: {fileID: 114919263501554428}
   - component: {fileID: 114489457172599022}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1352,7 +1352,7 @@ GameObject:
   - component: {fileID: 224017942239518394}
   - component: {fileID: 222898168953235516}
   - component: {fileID: 114733244249824990}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1369,7 +1369,7 @@ GameObject:
   - component: {fileID: 224546653250254724}
   - component: {fileID: 222338036388415368}
   - component: {fileID: 114833345638701008}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1386,7 +1386,7 @@ GameObject:
   - component: {fileID: 224359826686739878}
   - component: {fileID: 222912548962609278}
   - component: {fileID: 114436008914343584}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1402,7 +1402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224886359814428808}
   - component: {fileID: 114684940197865896}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1420,7 +1420,7 @@ GameObject:
   - component: {fileID: 222430696806338272}
   - component: {fileID: 114698671273926786}
   - component: {fileID: 114995675573880188}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1438,7 +1438,7 @@ GameObject:
   - component: {fileID: 222023823454857724}
   - component: {fileID: 114742151944916626}
   - component: {fileID: 114426595319982122}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1456,7 +1456,7 @@ GameObject:
   - component: {fileID: 223738398897964594}
   - component: {fileID: 114052867228351266}
   - component: {fileID: 114016236046576832}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: canvas_worldspace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1472,7 +1472,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224264195815591432}
   - component: {fileID: 222359631527126348}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1489,7 +1489,7 @@ GameObject:
   - component: {fileID: 224441564558582840}
   - component: {fileID: 222455235677227146}
   - component: {fileID: 114182630907009350}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1507,7 +1507,7 @@ GameObject:
   - component: {fileID: 222151515546989992}
   - component: {fileID: 114866278183006714}
   - component: {fileID: 114014386323675814}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1525,7 +1525,7 @@ GameObject:
   - component: {fileID: 222917944390442362}
   - component: {fileID: 114741902350283198}
   - component: {fileID: 114442283273726946}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1543,7 +1543,7 @@ GameObject:
   - component: {fileID: 222599028638431522}
   - component: {fileID: 114693936463694656}
   - component: {fileID: 114237604709317142}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1559,7 +1559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224047361126273426}
   - component: {fileID: 114065195767366440}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1575,7 +1575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224260516411214302}
   - component: {fileID: 114785546313609298}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1594,7 +1594,7 @@ GameObject:
   - component: {fileID: 114849818466498696}
   - component: {fileID: 114882535996849002}
   - component: {fileID: 114384190796613976}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_big_panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1611,7 +1611,7 @@ GameObject:
   - component: {fileID: 224914324357444094}
   - component: {fileID: 222587514032481018}
   - component: {fileID: 114810819750849708}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1629,7 +1629,7 @@ GameObject:
   - component: {fileID: 222355523812233344}
   - component: {fileID: 114425758379680478}
   - component: {fileID: 114976923520170272}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1645,7 +1645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224321929819527326}
   - component: {fileID: 114880267364709204}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1661,7 +1661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224069114643417862}
   - component: {fileID: 114006741152206966}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1679,7 +1679,7 @@ GameObject:
   - component: {fileID: 223825736532796758}
   - component: {fileID: 114943250877078612}
   - component: {fileID: 114686470706125628}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: canvas_other_player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1696,7 +1696,7 @@ GameObject:
   - component: {fileID: 224184184073277722}
   - component: {fileID: 222486054832474836}
   - component: {fileID: 114320278171404792}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1714,7 +1714,7 @@ GameObject:
   - component: {fileID: 222057775642024316}
   - component: {fileID: 114063958769802304}
   - component: {fileID: 114776628435557418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1732,7 +1732,7 @@ GameObject:
   - component: {fileID: 222227344930498970}
   - component: {fileID: 114328597380703210}
   - component: {fileID: 114159815787235042}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1749,7 +1749,7 @@ GameObject:
   - component: {fileID: 224349307801458486}
   - component: {fileID: 222823187487233138}
   - component: {fileID: 114055261366045966}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1765,7 +1765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224369487968459384}
   - component: {fileID: 114829167035023956}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1783,7 +1783,7 @@ GameObject:
   - component: {fileID: 222341073606888486}
   - component: {fileID: 114110044572743460}
   - component: {fileID: 114941384224728420}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 224071948083492066}
   - component: {fileID: 222890566436100460}
   - component: {fileID: 114521326258285324}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: chat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1817,7 +1817,7 @@ GameObject:
   - component: {fileID: 224110022734617802}
   - component: {fileID: 222596586091938156}
   - component: {fileID: 114222449608006154}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1835,7 +1835,7 @@ GameObject:
   - component: {fileID: 222692770394135980}
   - component: {fileID: 114580507157723064}
   - component: {fileID: 114003687156060606}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1852,7 +1852,7 @@ GameObject:
   - component: {fileID: 224178997490879294}
   - component: {fileID: 222213006775829974}
   - component: {fileID: 114748794595496998}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1870,7 +1870,7 @@ GameObject:
   - component: {fileID: 222538878852166558}
   - component: {fileID: 114111602650458482}
   - component: {fileID: 114979839375137004}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1887,7 +1887,7 @@ GameObject:
   - component: {fileID: 224025549260990520}
   - component: {fileID: 222989874209443850}
   - component: {fileID: 114384212086936662}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1905,7 +1905,7 @@ GameObject:
   - component: {fileID: 222551999468439892}
   - component: {fileID: 114867139477745506}
   - component: {fileID: 114934625920572338}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_click_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1922,7 +1922,7 @@ GameObject:
   - component: {fileID: 224715086548366032}
   - component: {fileID: 222661183647807270}
   - component: {fileID: 114581841785075650}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SP_amount_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1938,7 +1938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224250559785994118}
   - component: {fileID: 114607072187094388}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1956,7 +1956,7 @@ GameObject:
   - component: {fileID: 222223869705360446}
   - component: {fileID: 114440427041419314}
   - component: {fileID: 114210649510723160}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_remove_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1973,7 +1973,7 @@ GameObject:
   - component: {fileID: 224084262225199008}
   - component: {fileID: 222557682926933352}
   - component: {fileID: 114294563310171422}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slot_icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1989,7 +1989,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224322819810828718}
   - component: {fileID: 114510280289697482}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: inventory_slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2235,7 +2235,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114365127610677172}
         m_MethodName: AddItemToWorld
         m_Mode: 1
         m_Arguments:
