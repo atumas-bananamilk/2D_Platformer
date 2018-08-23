@@ -2165,6 +2165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114733244249824990}
   remove_button: {fileID: 114614256946604762}
 --- !u!114 &114008058950614956
@@ -2589,6 +2590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114858556461799396}
   remove_button: {fileID: 114924241070997770}
 --- !u!114 &114071046958824588
@@ -2790,6 +2792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114996406299296106}
   remove_button: {fileID: 114353880707873902}
 --- !u!114 &114153046684805332
@@ -2934,6 +2937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114810819750849708}
   remove_button: {fileID: 114903031412622286}
 --- !u!114 &114176535711969888
@@ -3208,6 +3212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114047892490062010}
   remove_button: {fileID: 114003687156060606}
 --- !u!114 &114204882607399640
@@ -3614,6 +3619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114222449608006154}
   remove_button: {fileID: 114776628435557418}
 --- !u!114 &114307549490134606
@@ -4721,6 +4727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114436008914343584}
   remove_button: {fileID: 114995675573880188}
 --- !u!114 &114521326258285324
@@ -4856,6 +4863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114394773612074978}
   remove_button: {fileID: 114426595319982122}
 --- !u!114 &114575960449467072
@@ -5066,6 +5074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114320278171404792}
   remove_button: {fileID: 114832993220167304}
 --- !u!114 &114614256946604762
@@ -5313,6 +5322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114388995902334948}
   remove_button: {fileID: 114338362902710110}
 --- !u!114 &114674570070739482
@@ -5353,6 +5363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114830196185668214}
   remove_button: {fileID: 114124764926002590}
 --- !u!114 &114684940197865896
@@ -5366,6 +5377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114748794595496998}
   remove_button: {fileID: 114751003023231048}
 --- !u!114 &114686470706125628
@@ -6004,6 +6016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114192349514441952}
   remove_button: {fileID: 114555292774490664}
 --- !u!114 &114799312716629414
@@ -6131,6 +6144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114055261366045966}
   remove_button: {fileID: 114237604709317142}
 --- !u!114 &114822931178540696
@@ -6171,6 +6185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114182630907009350}
   remove_button: {fileID: 114452073542098382}
 --- !u!114 &114830196185668214
@@ -6279,7 +6294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47948876044054e67a2753a4bf144d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dev_testing: 1
+  dev_testing: 0
   is_grounded: 0
   disable_move: 0
   move_speed: 10
@@ -6550,6 +6565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114380879617918118}
   remove_button: {fileID: 114976923520170272}
 --- !u!114 &114880267364709204
@@ -6563,6 +6579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114294563310171422}
   remove_button: {fileID: 114181112022478738}
 --- !u!114 &114882535996849002
@@ -6590,6 +6607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114642135032570004}
   remove_button: {fileID: 114308290101900886}
 --- !u!114 &114903031412622286
@@ -6721,6 +6739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114375489253751362}
   remove_button: {fileID: 114961572362112078}
 --- !u!114 &114912576290439192
@@ -7091,6 +7110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32402533f07341ad80f26ec6dcd697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item_prefab: {fileID: 0}
   slot_icon: {fileID: 114833345638701008}
   remove_button: {fileID: 114210649510723160}
 --- !u!114 &114958974597893418

@@ -11,7 +11,8 @@ public class AwsApiManager : MonoBehaviour
 {
     public static AwsApiManager Instance;
 
-    private const string base_url = "http://35.180.41.35";
+    //private const string base_url = "http://35.180.41.35";
+    private const string base_url = "http://35.180.39.50";
     private const string login_endpoint = "/login.php";
     private const string register_endpoint = "/register.php";
     private const string stats_endpoint = "/stats.php";

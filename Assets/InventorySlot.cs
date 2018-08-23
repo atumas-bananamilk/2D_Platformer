@@ -20,13 +20,21 @@ public class InventorySlot : MonoBehaviour {
     public GameObject item_prefab;
     public Image slot_icon;
     public Button remove_button;
-    //private WorldItem item;
-    private GameObject item;
+    private WorldItem item;
+    //private GameObject item;
+
+    //void Start()
+    //{
+    //    item = gameObject.AddComponent<WorldItem>();
+    //}
+
+    private void CreateNewItem(){
+        item = gameObject.AddComponent<WorldItem>();
+    }
 
     public void AddItem(WorldItem i){
-        item = Instantiate(item_prefab, new Vector2(0, 0), Quaternion.identity) as GameObject;
+        CreateNewItem();
         item.icon = i.GetSprite();
-        //item = i;
         slot_icon.sprite = item.icon;
         slot_icon.enabled = true;
         remove_button.interactable = true;
@@ -51,14 +59,13 @@ public class InventorySlot : MonoBehaviour {
 
     public void RemoveItem()
     {
-        //item.Remove();
+        item.Remove();
     }
 
     public void DropItem()
     {
-        float x = gameObject.GetComponentInParent<playerMove>().transform.position.x;
-        float y = gameObject.GetComponentInParent<playerMove>().transform.position.y;
-        Vector2 v = new Vector2(x, y);
-        item.Drop(v);
+        playerMove p = gameObject.GetComponentInParent<playerMove>();
+        Vector2 v = new Vector2(p.transform.position.x, p.transform.position.y + 1);
+        item.Drop(v, p.sprite.flipX);
     }
 }

@@ -109,13 +109,13 @@ public class playerMove : Photon.MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                Vector3 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
-                Vector3 v = new Vector3((int)Math.Round(pos.x), (int)Math.Round(pos.y), 0);
+                Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+                Vector2 v = new Vector2((int)Math.Round(pos.x), (int)Math.Round(pos.y));
 
                 GameObject[] items = GameObject.FindGameObjectsWithTag("PickUpItem");
                 foreach (GameObject item in items)
                 {
-                    if (item.GetComponent<BoxCollider2D>().bounds.Contains((Vector2) pos))
+                    if (item.GetComponent<BoxCollider2D>().bounds.Contains(pos))
                     {
                         gameObject.GetComponent<PlayerInventory>().AddToInventory(item);
                         Destroy(item);
@@ -151,7 +151,7 @@ public class playerMove : Photon.MonoBehaviour
         {
             case PHOTON_EVENTS.ACTION_DIG_BLOCK:
                 {
-                    Vector3 v = (Vector3)content;
+                    Vector2 v = (Vector2)content;
                     gameObject.GetComponent<MapManager>().UpdateMapLocally(v, true, ACTION_DIG_BLOCK);
                     break;
                 }

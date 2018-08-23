@@ -112,12 +112,12 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void UpdateMapLocally(Vector3 unit_pos, bool updating_from_player, string action)
+    public void UpdateMapLocally(Vector2 unit_pos, bool updating_from_player, string action)
     {
         GameObject[] blocks = GameObject.FindGameObjectsWithTag("Ground");
         foreach (GameObject block in blocks)
         {
-            if (block.transform.position == unit_pos)
+            if ((Vector2) block.transform.position == unit_pos)
             {
                 // local update
                 if (action.Equals(playerMove.ACTION_DIG_BLOCK))
