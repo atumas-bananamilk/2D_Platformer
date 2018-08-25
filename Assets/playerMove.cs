@@ -46,7 +46,12 @@ public class playerMove : Photon.MonoBehaviour
     public static readonly string ACTION_PUT_BLOCK = "ACTION_PUT_BLOCK";
     public static readonly string SEND_MSG = "SEND_MSG";
 
-    private void Awake()
+	private void Start()
+	{
+        Screen.fullScreen = true;
+	}
+
+	private void Awake()
     {
         if (!dev_testing && view.isMine)
         {
@@ -199,7 +204,7 @@ public class playerMove : Photon.MonoBehaviour
         }
     }
 
-    void shoot()
+    public void shoot()
     {
         if (!dev_testing)
         {
@@ -217,7 +222,7 @@ public class playerMove : Photon.MonoBehaviour
         }
     }
 
-    private void jump()
+    public void jump()
     {
         jumps_done++;
         if (jumps_done < jump_limit)

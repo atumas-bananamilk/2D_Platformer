@@ -26,7 +26,7 @@ public class playerHealthBar : Photon.MonoBehaviour {
             local_player_canvas.SetActive(true);
         }
 
-        if (player_move.dev_testing){
+        if (photonView.isMine || player_move.dev_testing){
             RespawnScript.Instance.local_player = this.gameObject;
         }
 	}

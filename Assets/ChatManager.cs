@@ -13,6 +13,8 @@ public class ChatManager : Photon.MonoBehaviour {
     public Text player_chat_text_prefab;
     public GameObject canvas_local_player;
 
+    private static readonly float MSG_TIME = 4f;
+
 	private void Update()
 	{
         if (chat_input.isFocused)
@@ -32,7 +34,7 @@ public class ChatManager : Photon.MonoBehaviour {
     public void ShowMessage(string msg){
         local_player_chat_text.text = msg;
         local_player_chat_text.gameObject.SetActive(true);
-        StartCoroutine(RemoveMessageAfterSeconds(2));
+        StartCoroutine(RemoveMessageAfterSeconds(MSG_TIME));
     }
 
     IEnumerator RemoveMessageAfterSeconds(float time)
