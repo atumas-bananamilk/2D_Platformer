@@ -53,14 +53,15 @@ public class playerMove : Photon.MonoBehaviour
             player_camera.SetActive(true);
             player_name.text = PhotonNetwork.playerName;
         }
-        else{
-            player_camera.SetActive(true);
-        }
 
         if (!dev_testing && !view.isMine)
         {
             player_name.text = view.owner.NickName;
             player_name.color = enemy_text_color;
+        }
+
+        if (dev_testing){
+            player_camera.SetActive(true);
         }
     }
 
@@ -142,21 +143,26 @@ public class playerMove : Photon.MonoBehaviour
     }
 
     private void MovePlayer(){
-        //var move = new Vector3(Input.GetAxis("Horizontal"), 0);
-        //transform.position += move * move_speed * Time.deltaTime;
+        var move = new Vector3(Input.GetAxis("Horizontal"), 0);
+        transform.position += move * move_speed * Time.deltaTime;
 
-        //public float moveSpeed = 8f;
-        //public Joystick joystick;
+        //if (photonView.isMine)
+        //{
+        //    Vector3 joystick_move = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
-        Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
-
-        if (moveVector != Vector3.zero){
-            Debug.Log("MOVING FROM: "+transform.position+", VECTOR: "+moveVector);
-            //body.transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
-            //body.transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
-            body.transform.Translate(moveVector * moveSpeed * Time.deltaTime);
-            Debug.Log("MOVING TO: " + transform.position);
-        }
+        //    // controlling with joystick
+        //    if (joystick_move != Vector3.zero)
+        //    {
+        //        //body.transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
+        //        transform.Translate(joystick_move * moveSpeed * Time.deltaTime);
+        //    }
+        //    // controlling with buttons
+        //    else
+        //    {
+        //        var move = new Vector3(Input.GetAxis("Horizontal"), 0);
+        //        transform.position += move * move_speed * Time.deltaTime;
+        //    }
+        //}
     }
 
     void OnEnable()
