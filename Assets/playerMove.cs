@@ -31,7 +31,7 @@ public class playerMove : Photon.MonoBehaviour
 
 
     public float moveSpeed = 8f;
-    //public Joystick joystick;
+    public Joystick joystick;
 
 
     public enum PHOTON_EVENTS : byte
@@ -142,20 +142,21 @@ public class playerMove : Photon.MonoBehaviour
     }
 
     private void MovePlayer(){
-        var move = new Vector3(Input.GetAxis("Horizontal"), 0);
-        transform.position += move * move_speed * Time.deltaTime;
+        //var move = new Vector3(Input.GetAxis("Horizontal"), 0);
+        //transform.position += move * move_speed * Time.deltaTime;
 
         //public float moveSpeed = 8f;
         //public Joystick joystick;
 
-        //Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
+        Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
-        //if (moveVector != Vector3.zero){
-        //    Debug.Log("MOVING FROM: "+transform.position+", VECTOR: "+moveVector);
-        //    transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
-        //    transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
-        //    Debug.Log("MOVING TO: " + transform.position);
-        //}
+        if (moveVector != Vector3.zero){
+            Debug.Log("MOVING FROM: "+transform.position+", VECTOR: "+moveVector);
+            //body.transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
+            //body.transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
+            body.transform.Translate(moveVector * moveSpeed * Time.deltaTime);
+            Debug.Log("MOVING TO: " + transform.position);
+        }
     }
 
     void OnEnable()
