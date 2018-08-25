@@ -29,6 +29,11 @@ public class playerMove : Photon.MonoBehaviour
     public GameObject bullet_prefab;
     [SerializeField] Text ping_text;
 
+
+    public float moveSpeed = 8f;
+    //public Joystick joystick;
+
+
     public enum PHOTON_EVENTS : byte
     {
         NO_ACTION = 0,
@@ -85,8 +90,7 @@ public class playerMove : Photon.MonoBehaviour
     {
         if (!disable_move)
         {
-            var move = new Vector3(Input.GetAxis("Horizontal"), 0);
-            transform.position += move * move_speed * Time.deltaTime;
+            MovePlayer();
 
             if (Input.GetKeyDown(KeyCode.Space) && jumps_done < jump_limit)
             {
@@ -135,6 +139,23 @@ public class playerMove : Photon.MonoBehaviour
                 shoot();
             }
         }
+    }
+
+    private void MovePlayer(){
+        var move = new Vector3(Input.GetAxis("Horizontal"), 0);
+        transform.position += move * move_speed * Time.deltaTime;
+
+        //public float moveSpeed = 8f;
+        //public Joystick joystick;
+
+        //Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
+
+        //if (moveVector != Vector3.zero){
+        //    Debug.Log("MOVING FROM: "+transform.position+", VECTOR: "+moveVector);
+        //    transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
+        //    transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
+        //    Debug.Log("MOVING TO: " + transform.position);
+        //}
     }
 
     void OnEnable()

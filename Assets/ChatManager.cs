@@ -13,7 +13,19 @@ public class ChatManager : Photon.MonoBehaviour {
     public Text player_chat_text_prefab;
     public GameObject canvas_local_player;
 
-    public void OpenChatWindow(){
+	private void Update()
+	{
+        if (chat_input.isFocused)
+        {
+            gameObject.GetComponent<playerMove>().disable_move = true;
+        }
+        else
+        {
+            gameObject.GetComponent<playerMove>().disable_move = false;
+        }
+	}
+
+	public void OpenChatWindow(){
         chat.SetActive(!chat.GetActive());
     }
 
@@ -39,15 +51,20 @@ public class ChatManager : Photon.MonoBehaviour {
             chat_input.text
         };
 
+        ResetChatInput();
+
         // remotely
         RaiseEventOptions options = new RaiseEventOptions();
         options.Receivers = ReceiverGroup.Others;
         PhotonNetwork.RaiseEvent((byte)playerMove.PHOTON_EVENTS.SEND_MSG, list, true, options);
     }
 
+    private void ResetChatInput(){
+        chat_input.text = "";
+    }
 
     public void CheckMessageFinished(){
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
         {
             SendChatMessage();
         }

@@ -3,36 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryItem : MonoBehaviour {
-    public Sprite icon { get; set; }
-
-    public void Use(){
-        //WorldItemManager.AddItemToWorld();
-    }
-
-    public void Drop(Vector2 v){
-        Debug.Log("DROPPING ITEM");
-        //WorldItemManager
-    }
-}
-
 public class InventorySlot : MonoBehaviour {
-    public GameObject item_prefab;
     public Image slot_icon;
     public Button remove_button;
     private WorldItem item;
-    //private GameObject item;
-
-    //void Start()
-    //{
-    //    item = gameObject.AddComponent<WorldItem>();
-    //}
 
     private void CreateNewItem(){
         item = gameObject.AddComponent<WorldItem>();
     }
 
-    public void AddItem(WorldItem i){
+    public void AddToSlot(WorldItem i){
         CreateNewItem();
         item.icon = i.GetSprite();
         slot_icon.sprite = item.icon;
@@ -49,6 +29,7 @@ public class InventorySlot : MonoBehaviour {
 
     public void UseItem()
     {
+        Debug.Log("USING");
         if (item != null)
         {
             //item.Use();
@@ -59,7 +40,12 @@ public class InventorySlot : MonoBehaviour {
 
     public void RemoveItem()
     {
-        item.Remove();
+        bool is_null = item == null;
+        Debug.Log("IS NULL BEFORE: " + is_null);
+        item.Destroy();
+        ClearSlot();
+        is_null = item == null;
+        Debug.Log("IS NULL AFTER: "+is_null);
     }
 
     public void DropItem()

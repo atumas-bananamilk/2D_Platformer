@@ -11,6 +11,6 @@ public class PlayerInventory : MonoBehaviour {
     }
 
     public void AddToInventory(GameObject item){
-        inventory_big_panel.GetComponentsInChildren<InventorySlot>()[0].AddItem(item.GetComponent<WorldItem>());
+        inventory_big_panel.GetComponentsInChildren<InventorySlot>()[0].AddToSlot(item.GetComponent<WorldItem>());
     }
 }
