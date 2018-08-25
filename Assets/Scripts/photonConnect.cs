@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class photonConnect : MonoBehaviour {
     public string versionName = "0.1";
@@ -12,6 +13,7 @@ public class photonConnect : MonoBehaviour {
     }
 
     private void OnConnectedToMaster(){
+        //SceneManager.LoadScene("Lobby");
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         Debug.Log("CONNECTED TO MASTER");
     }

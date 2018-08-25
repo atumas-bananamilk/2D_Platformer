@@ -143,25 +143,22 @@ public class playerMove : Photon.MonoBehaviour
     }
 
     private void MovePlayer(){
-        var move = new Vector3(Input.GetAxis("Horizontal"), 0);
-        transform.position += move * move_speed * Time.deltaTime;
-
         //if (photonView.isMine)
         //{
-        //    Vector3 joystick_move = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
+            Vector3 joystick_move = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
-        //    // controlling with joystick
-        //    if (joystick_move != Vector3.zero)
-        //    {
-        //        //body.transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
-        //        transform.Translate(joystick_move * moveSpeed * Time.deltaTime);
-        //    }
-        //    // controlling with buttons
-        //    else
-        //    {
-        //        var move = new Vector3(Input.GetAxis("Horizontal"), 0);
-        //        transform.position += move * move_speed * Time.deltaTime;
-        //    }
+            // controlling with joystick
+            if (joystick_move != Vector3.zero)
+            {
+                //body.transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
+                transform.Translate(joystick_move * moveSpeed * Time.deltaTime);
+            }
+            // controlling with buttons
+            else
+            {
+                var move = new Vector3(Input.GetAxis("Horizontal"), 0);
+                transform.position += move * move_speed * Time.deltaTime;
+            }
         //}
     }
 

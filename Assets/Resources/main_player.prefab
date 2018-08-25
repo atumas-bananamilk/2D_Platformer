@@ -3159,7 +3159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handleLimit: 0.8
-  joystickMode: 1
+  joystickMode: 0
   background: {fileID: 224641628719927008}
   handle: {fileID: 224850805109059906}
 --- !u!114 &114232048557895362
