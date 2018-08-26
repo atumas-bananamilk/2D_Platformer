@@ -8,6 +8,14 @@ public class WorldItem : MonoBehaviour {
     private readonly string PLAYER = "Player";
     private readonly string PICK_UP_ITEM = "PickUpItem";
 
+    public enum ITEM_NAME
+    {
+        COIN_GOLD,
+        BLOCK_DIRT
+    }
+
+    public ITEM_NAME item_name;
+
 	public Sprite GetSprite(){
         icon = gameObject.GetComponent<SpriteRenderer>().sprite;
         return gameObject.GetComponent<SpriteRenderer>().sprite;
