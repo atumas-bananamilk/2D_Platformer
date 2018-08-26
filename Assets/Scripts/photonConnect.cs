@@ -13,13 +13,18 @@ public class photonConnect : MonoBehaviour {
     }
 
     private void OnConnectedToMaster(){
-        //SceneManager.LoadScene("Lobby");
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         Debug.Log("CONNECTED TO MASTER");
     }
 
     private void OnJoinedLobby(){
         Debug.Log("JOINED LOBBY");
+
+        // in case of disconnect
+        if (LocalStorageManager.GetConnectedWorldName().Length > 0)
+        {
+            gameObject.GetComponent<WorldManager>().JoinWorld(LocalStorageManager.GetConnectedWorldName());
+        }
     }
 
     private void OnDisconnectedFromPhoton(){

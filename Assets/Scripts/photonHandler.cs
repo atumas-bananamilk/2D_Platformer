@@ -39,6 +39,7 @@ public class photonHandler : MonoBehaviour {
 
     private void OnJoinedRoom()
     {
+        LocalStorageManager.StoreConnectedWorldName(PhotonNetwork.room.Name);
         moveScene();
         Debug.Log("CONNECTED TO THE ROOM: " + PhotonNetwork.room.Name);
     }

@@ -30,7 +30,7 @@ public class playerMove : Photon.MonoBehaviour
     [SerializeField] Text ping_text;
 
 
-    public float moveSpeed = 8f;
+    //public float moveSpeed = 4f;
     public Joystick joystick;
 
 
@@ -104,17 +104,11 @@ public class playerMove : Photon.MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                sprite.flipX = false;
-                if (!dev_testing){
-                    view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
-                }
+                FlipPlayerRight();
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
-                sprite.flipX = true;
-                if (!dev_testing){
-                    view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
-                }
+                FlipPlayerLeft();
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -147,24 +141,47 @@ public class playerMove : Photon.MonoBehaviour
         }
     }
 
+    private void FlipPlayerRight()
+    {
+        sprite.flipX = false;
+        if (!dev_testing)
+        {
+            view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
+        }
+    }
+
+    private void FlipPlayerLeft()
+    {
+        sprite.flipX = true;
+        if (!dev_testing)
+        {
+            view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
+        }
+    }
+
     private void MovePlayer(){
-        //if (photonView.isMine)
-        //{
+        if (photonView.isMine || dev_testing)
+        {
             Vector3 joystick_move = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
             // controlling with joystick
             if (joystick_move != Vector3.zero)
             {
-                //body.transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
-                transform.Translate(joystick_move * moveSpeed * Time.deltaTime);
+                if (joystick_move.x > 0){
+                    FlipPlayerRight();
+                }
+                else{
+                    FlipPlayerLeft();
+                }
+                transform.Translate(joystick_move * (float)(move_speed * 0.7) * Time.deltaTime);
             }
             // controlling with buttons
             else
             {
-                var move = new Vector3(Input.GetAxis("Horizontal"), 0);
-                transform.position += move * move_speed * Time.deltaTime;
+                var keyboard_move = new Vector3(Input.GetAxis("Horizontal"), 0);
+                transform.Translate(keyboard_move * move_speed * Time.deltaTime);
             }
-        //}
+        }
     }
 
     void OnEnable()

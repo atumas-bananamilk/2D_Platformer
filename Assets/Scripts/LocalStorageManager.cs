@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class LocalStorageManager {
     private static readonly string ACCESS_TOKEN = "access_token";
+    private static readonly string CONNECTED_WORLD_NAME = "connected_world";
 
     private enum LOADTYPE{
         STRING, INT, FLOAT
@@ -16,6 +17,13 @@ public static class LocalStorageManager {
     public static string GetAccessToken()
     {
         return (string) Load(ACCESS_TOKEN, LOADTYPE.STRING);
+    }
+    public static void StoreConnectedWorldName(string world_name){
+        Save(CONNECTED_WORLD_NAME, world_name);
+    }
+    public static string GetConnectedWorldName()
+    {
+        return (string)Load(CONNECTED_WORLD_NAME, LOADTYPE.STRING);
     }
 
 

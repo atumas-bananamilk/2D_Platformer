@@ -19,12 +19,14 @@ public class WorldManager : MonoBehaviour {
         AwsApiManager.Instance.TryCreateWorld(AnalyseResponse_2);
     }
 
+    // being called by AwsApiManager
     public void AnalyseResponse_1(object response){
         string msg = (string)response;
         bool has_no_text = msg.Length <= 0;
         SwitchButtons(msg, has_no_text);
     }
 
+    // being called by AwsApiManager
     public void AnalyseResponse_2(object response){
         string msg = (string) response;
         bool has_text = msg.Length > 0;
@@ -46,5 +48,10 @@ public class WorldManager : MonoBehaviour {
     public void JoinWorld()
     {
         gameObject.GetComponent<photonHandler>().joinOrCreateRoom(join_server_input.text);
+    }
+
+    public void JoinWorld(string name)
+    {
+        gameObject.GetComponent<photonHandler>().joinOrCreateRoom(name);
     }
 }

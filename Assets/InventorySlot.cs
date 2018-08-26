@@ -29,7 +29,6 @@ public class InventorySlot : MonoBehaviour {
 
     public void UseItem()
     {
-        Debug.Log("USING");
         if (item != null)
         {
             //item.Use();
@@ -41,11 +40,9 @@ public class InventorySlot : MonoBehaviour {
     public void RemoveItem()
     {
         bool is_null = item == null;
-        Debug.Log("IS NULL BEFORE: " + is_null);
         item.Destroy();
         ClearSlot();
         is_null = item == null;
-        Debug.Log("IS NULL AFTER: "+is_null);
     }
 
     public void DropItem()
