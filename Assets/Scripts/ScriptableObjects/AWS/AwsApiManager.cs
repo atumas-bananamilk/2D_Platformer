@@ -11,8 +11,8 @@ public class AwsApiManager : MonoBehaviour
 {
     public static AwsApiManager Instance;
 
-    //private const string base_url = "http://35.180.41.35";
-    private const string base_url = "http://35.180.39.50";
+    //private const string base_url = "http://hubrill.com";
+    private const string base_url = "http://35.180.106.179";
     private const string login_endpoint = "/login.php";
     private const string register_endpoint = "/register.php";
     private const string stats_endpoint = "/stats.php";
@@ -42,7 +42,6 @@ public class AwsApiManager : MonoBehaviour
 	public void TryLogin(IDictionary<string, string> pairs)
     {
         //PlayerPrefs.DeleteAll();
-
         StartCoroutine(POST(base_url + login_endpoint, pairs, 200, CALLBACK.TRYLOGIN));
     }
     public void Register(IDictionary<string, string> pairs)
@@ -92,7 +91,7 @@ public class AwsApiManager : MonoBehaviour
     private void Response(ref UnityWebRequest www, int response_code, CALLBACK callback, Action<object> action = null)
     {
         string response_json = www.downloadHandler.text;
-        //Debug.Log("RESPONSE: " + response_json);
+        Debug.Log("RESPONSE: " + response_json);
         APIResponse response = JsonUtility.FromJson<APIResponse>(response_json);
 
         if (www.responseCode == response_code){

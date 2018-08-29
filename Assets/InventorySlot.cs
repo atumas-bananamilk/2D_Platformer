@@ -15,12 +15,13 @@ public class InventorySlot : MonoBehaviour {
     }
 
     public void AddToSlot(WorldItem i){
-        // check if something is already in this slot & the same type - increment amount
+        // if something of this type is already in this slot - just add amount
         if (item && item.item_name == i.item_name){
-            ToggleAmount(true);
+            UpdateAmount(1);
         }
+        // otherwise - put new item into inventory
         else{
-            ToggleAmount(false);
+            ResetAmount();
             CreateNewItem();
             item.icon = i.GetSprite();
             slot_icon.sprite = item.icon;
@@ -29,19 +30,31 @@ public class InventorySlot : MonoBehaviour {
         }
     }
 
-    private void ToggleAmount(bool toggle_on){
-        Text amount_text = slot_amount.GetComponentInChildren<Text>();
+    private int GetAmount(){
+        return Int32.Parse(slot_amount.GetComponentInChildren<Text>().text);
+    }
 
-        if (toggle_on){
+    private void SetAmount(int amount){
+        slot_amount.GetComponentInChildren<Text>().text = amount.ToString();
+    }
+
+    private void ResetAmount(){
+        Text amount_text = slot_amount.GetComponentInChildren<Text>();
+        slot_amount.enabled = false;
+        amount_text.enabled = false;
+        amount_text.text = "1";
+    }
+
+    private void UpdateAmount(int amount){
+        Text amount_text = slot_amount.GetComponentInChildren<Text>();
+        int new_amount = GetAmount() + amount;
+        if (new_amount > 1){
             slot_amount.enabled = true;
             amount_text.enabled = true;
-            int amount = Int32.Parse(amount_text.text) + 1;
-            amount_text.text = amount.ToString();
+            SetAmount(new_amount);
         }
         else{
-            slot_amount.enabled = false;
-            amount_text.enabled = false;
-            amount_text.text = "1";
+            ResetAmount();
         }
     }
 
@@ -62,7 +75,6 @@ public class InventorySlot : MonoBehaviour {
         {
             //item.Use();
             DropItem();
-            ClearSlot();
         }
     }
 
@@ -70,6 +82,7 @@ public class InventorySlot : MonoBehaviour {
     {
         bool is_null = item == null;
         item.Destroy();
+        ResetAmount();
         ClearSlot();
         is_null = item == null;
     }
@@ -79,5 +92,9 @@ public class InventorySlot : MonoBehaviour {
         playerMove p = gameObject.GetComponentInParent<playerMove>();
         Vector2 v = new Vector2(p.transform.position.x, p.transform.position.y + 1);
         item.Drop(v, p.sprite.flipX);
+        if (GetAmount() <= 1){
+            ClearSlot();
+        }
+        UpdateAmount(-1);
     }
 }
