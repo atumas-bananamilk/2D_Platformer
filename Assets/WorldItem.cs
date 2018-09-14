@@ -7,14 +7,14 @@ public class WorldItem : MonoBehaviour {
 
     private readonly string PLAYER = "Player";
     private readonly string PICK_UP_ITEM = "PickUpItem";
+    public ITEM_NAME item_name;
+    public int amount;
 
     public enum ITEM_NAME
     {
         COIN_GOLD,
         BLOCK_DIRT
     }
-
-    public ITEM_NAME item_name;
 
 	public Sprite GetSprite(){
         icon = gameObject.GetComponent<SpriteRenderer>().sprite;
@@ -34,7 +34,7 @@ public class WorldItem : MonoBehaviour {
         Debug.Log("USING ITEM 2");
     }
 
-    public void Drop(Vector2 v, bool direction)
+    public void Drop(Vector2 v, bool direction, int how_many)
     {
         GameObject obj = Instantiate(gameObject, v, Quaternion.identity) as GameObject;
         obj.transform.localScale = new Vector3(0.5f, 0.5f, 0);
@@ -53,6 +53,8 @@ public class WorldItem : MonoBehaviour {
         b.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
         Vector2 direction_v = direction ? Vector2.left : Vector2.right;
         b.AddForce(Vector2.up * 800 + direction_v * 200);
+
+        obj.GetComponent<WorldItem>().amount = how_many;
     }
 
     public void Destroy(){

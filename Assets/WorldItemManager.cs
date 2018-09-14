@@ -19,6 +19,7 @@ public class WorldItemManager : MonoBehaviour {
         obj.transform.localScale = scale;
         obj.GetComponent<SpriteRenderer>().sprite = sprite;
         obj.GetComponent<WorldItem>().item_name = name;
+        obj.GetComponent<WorldItem>().amount = 1;
 
         return obj;
     }
