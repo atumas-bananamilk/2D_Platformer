@@ -34,10 +34,12 @@ public class Joystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointer
 
     protected void ClampJoystick()
     {
-        if (joystickMode == JoystickMode.Horizontal)
+        if (joystickMode == JoystickMode.Horizontal){
             inputVector = new Vector2(inputVector.x, 0f);
-        if (joystickMode == JoystickMode.Vertical)
+        }
+        if (joystickMode == JoystickMode.Vertical){
             inputVector = new Vector2(0f, inputVector.y);
+        }
     }
 }
 
