@@ -1,13 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour {
     public GameObject inventory;
     public GameObject inventory_big_panel;
+    public Button inventory_drop_button;
+    public Button inventory_use_button;
 
     public void OpenInventory(){
         inventory.SetActive(!inventory.GetActive());
+    }
+
+    public void ToggleDropButton(){
+        inventory_drop_button.enabled = !inventory_drop_button.enabled;
+    }
+
+    public void DropItem(){
+        
     }
 
     public void AddToInventory(GameObject item){

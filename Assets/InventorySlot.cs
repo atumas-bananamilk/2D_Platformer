@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.Net.Sockets;
+using System.IO;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +12,7 @@ public class InventorySlot : MonoBehaviour, IDragHandler, IEndDragHandler, IDrop
     public Image slot_icon;
     public Button remove_button;
     public Image slot_amount;
+    public Image slot_glow;
     public WorldItem item;
 
     public void OnDrag(PointerEventData eventData)
@@ -100,6 +104,91 @@ public class InventorySlot : MonoBehaviour, IDragHandler, IEndDragHandler, IDrop
         SetAmount(1);
     }
 
+    public void SelectItem(){
+        // deselect all other slots
+        //gameObject.GetComponents<InventorySlot>().slot_glow.enabled = false;
+
+        //TcpClient tcpClient = new TcpClient();
+        //tcpClient.Connect("35.180.106.179", 8999);
+        //Console.WriteLine("you connected to the server!");
+
+        //NetworkStream networkStream = tcpClient.GetStream();
+        //StreamReader clientStreamReader = new StreamReader(networkStream);
+        //StreamWriter clientStreamWriter = new StreamWriter(networkStream);
+
+        //var client = new TcpClient("35.180.106.179", 8999);
+        //var message = System.Text.Encoding.ASCII.GetBytes("Testing");
+        //var stream = client.GetStream();
+        //stream.Write(message, 0, message.Length); //sends bytes to server
+
+        //var data = new byte[128];
+        //int respLength = stream.Read(data, 0, data.Length); //gets next 128 bytes when sent to client
+        //Console.Write("RECEIVED: "+System.Text.Encoding.ASCII.GetString(data));
+        //stream.Close();
+        //client.Close();
+
+        Connect("35.180.106.179", "");
+
+        // select this slot
+        slot_glow.enabled = !slot_glow.enabled;
+        
+        gameObject.GetComponentInParent<PlayerInventory>().ToggleDropButton();
+    }
+
+    static void Connect(String server, String message)
+    {
+        try
+        {
+            // Create a TcpClient.
+            // Note, for this client to work you need to have a TcpServer 
+            // connected to the same address as specified by the server, port
+            // combination.
+            Int32 port = 8999;
+            TcpClient client = new TcpClient(server, port);
+
+            // Translate the passed message into ASCII and store it as a Byte array.
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+
+            // Get a client stream for reading and writing.
+            //  Stream stream = client.GetStream();
+
+            NetworkStream stream = client.GetStream();
+
+            // Send the message to the connected TcpServer. 
+            stream.Write(data, 0, data.Length);
+
+            Console.WriteLine("Sent: {0}", message);
+
+            // Receive the TcpServer.response.
+
+            // Buffer to store the response bytes.
+            data = new Byte[256];
+
+            // String to store the response ASCII representation.
+            String responseData = String.Empty;
+
+            // Read the first batch of the TcpServer response bytes.
+            Int32 bytes = stream.Read(data, 0, data.Length);
+            responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            Debug.Log("Received: "+responseData);
+
+            // Close everything.
+            stream.Close();
+            client.Close();
+        }
+        catch (ArgumentNullException e)
+        {
+            Console.WriteLine("ArgumentNullException: {0}", e);
+        }
+        catch (SocketException e)
+        {
+            Console.WriteLine("SocketException: {0}", e);
+        }
+
+        Console.WriteLine("\n Press Enter to continue...");
+        Console.Read();
+    }
+
     public void UseItem()
     {
         if (item != null)
@@ -111,16 +200,19 @@ public class InventorySlot : MonoBehaviour, IDragHandler, IEndDragHandler, IDrop
 
     public void DropItem()
     {
-        playerMove p = gameObject.GetComponentInParent<playerMove>();
-        Vector2 v = new Vector2(p.transform.position.x, p.transform.position.y + 1);
-
-        item.Drop(v, p.sprite.flipX, 1);
-        if (item.amount <= 1)
+        if (item != null)
         {
-            ResetAmount();
-            ClearSlot();
+            playerMove p = gameObject.GetComponentInParent<playerMove>();
+            Vector2 v = new Vector2(p.transform.position.x, p.transform.position.y + 1);
+
+            item.Drop(v, p.sprite.flipX, 1);
+            if (item.amount <= 1)
+            {
+                ResetAmount();
+                ClearSlot();
+            }
+            SetAmount(item.amount - 1);
         }
-        SetAmount(item.amount - 1);
     }
 
     public void RemoveItem()
