@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading;
 
 public class playerMove : Photon.MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class playerMove : Photon.MonoBehaviour
     //public float moveSpeed = 4f;
     public Joystick joystick;
 
+    int aa = 0;
+    long milliseconds = 0;
 
     public enum PHOTON_EVENTS : byte
     {
@@ -72,7 +75,8 @@ public class playerMove : Photon.MonoBehaviour
 
     private void Update()
     {
-        ping_text.text = "Ping: " + PhotonNetwork.GetPing();
+        //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
+        ping_text.text = "Ping: " + TCPNetwork.GetPing();
 
         if (!dev_testing)
         {
@@ -88,6 +92,12 @@ public class playerMove : Photon.MonoBehaviour
         }
         else
         {
+            if (aa == 10){
+                //Thread t1 = new Thread(new ThreadStart(TCPNetwork.SendAndReceiveResponse));
+                //t1.Start();
+                aa = 0;
+            }
+            aa++;
             checkInput();
         }
     }

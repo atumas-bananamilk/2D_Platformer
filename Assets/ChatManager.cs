@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading;
 
 public class ChatManager : Photon.MonoBehaviour {
     public GameObject chat;
@@ -46,19 +47,22 @@ public class ChatManager : Photon.MonoBehaviour {
 
     public void SendChatMessage(){
         // locally
-        ShowMessage(chat_input.text);
+        //ShowMessage(chat_input.text);
 
-        object[] list = { 
-            gameObject.GetComponent<PhotonView>().viewID, 
-            chat_input.text
-        };
+        //object[] list = { 
+        //    gameObject.GetComponent<PhotonView>().viewID, 
+        //    chat_input.text
+        //};
 
-        ResetChatInput();
+        //ResetChatInput();
 
-        // remotely
-        RaiseEventOptions options = new RaiseEventOptions();
-        options.Receivers = ReceiverGroup.Others;
-        PhotonNetwork.RaiseEvent((byte)playerMove.PHOTON_EVENTS.SEND_MSG, list, true, options);
+        //// remotely
+        //RaiseEventOptions options = new RaiseEventOptions();
+        //options.Receivers = ReceiverGroup.Others;
+        //PhotonNetwork.RaiseEvent((byte)playerMove.PHOTON_EVENTS.SEND_MSG, list, true, options);
+
+        Thread thread = new Thread(() => TCPNetwork.Send(chat_input.text));
+        thread.Start();
     }
 
     private void ResetChatInput(){
