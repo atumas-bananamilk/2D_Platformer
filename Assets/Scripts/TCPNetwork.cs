@@ -5,32 +5,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
+using System.Text.RegularExpressions;
+using System.Text;
 
-public class TCPNetwork {
+public class TCPNetwork : MonoBehaviour
+{
 
     //private static readonly string IP = "35.180.106.179";
-    //private static readonly Int32 PORT = 8999;
     private static readonly string IP = "127.0.0.1";
-    private static readonly Int32 PORT = 8999;
+    private static readonly Int32 PORT = 9999;
     private static long ping = 0;
     private static Boolean Connected = false;
 
     private static TcpClient client;
     private static NetworkStream stream;
-    private static Byte[] data;
-    private static String response = String.Empty;
+    private static Byte[] comm_data;
     private static System.Diagnostics.Stopwatch watch;
     private static Thread thread;
 
-    public static void Connect(){
-        if (!Connected){
+    private static string l_response = String.Empty;
+    private static string[] l_response_split = { };
+
+    private static List<string> l_cmds = new List<string>();
+    private static List<string> l_data = new List<string>();
+
+    Regex regex = new Regex(@"\(.*?\)");
+    MatchCollection matches;
+
+    public static void Connect()
+    {
+        if (!Connected)
+        {
             try
             {
                 client = new TcpClient(IP, PORT);
-                //client = new TcpClient();
-                //IPEndPoint server_endpoint = new IPEndPoint(IPAddress.Parse(IP), PORT);
-                //client.Connect(server_endpoint);
-
                 stream = client.GetStream();
                 Connected = true;
             }
@@ -39,53 +47,142 @@ public class TCPNetwork {
         }
     }
 
-    public static void Instantiate(string prefab, Vector2 position, Quaternion rotation){
-        thread = new Thread(() => AsyncInstantiate(prefab, position, rotation));
+    public void Instantiate(string prefab, Vector2 position, Quaternion rotation)
+    {
+        Connect();
+        float velocity = 0;
+        AssignPlayerId(ref prefab, position, velocity);
+        AsyncListen();
+    }
+
+    public static void AssignPlayerId(ref string prefab, Vector2 position, float velocity)
+    {
+        AsyncSend("(assign:" + position.x + "," + position.y + "," + velocity + ")");
+    }
+
+    public static void SendMovementInfo(Vector2 position, ref float velocity)
+    {
+        if (TCPPlayer.IdIsSet())
+        {
+            AsyncSend("(pos:" + TCPPlayer.my_tcp_id + "," + position.x.ToString("0.##") + "," + position.y.ToString("0.##") + "," + velocity.ToString("0.##") + ")");
+        }
+        else
+        {
+            Debug.Log("NO PLAYER ID");
+        }
+    }
+
+    public IEnumerator DestroyPlayer(int id)
+    {
+        Destroy(TCPPlayer.GetPlayerById(id));
+        yield return null;
+    }
+
+    private void AsyncListen()
+    {
+        thread = new Thread(() => Listen());
         thread.Start();
     }
 
-    private static void AsyncInstantiate(string prefab, Vector2 position, Quaternion rotation){
-        Connect();
-        //SendPlayerInfo(prefab, position, rotation);
-        Listen();
+    private static void AsyncSend(string msg)
+    {
+        thread = new Thread(() => Send(msg));
+        thread.Start();
     }
 
-    private static void SendPlayerInfo(string prefab, Vector2 position, Quaternion rotation){
-        //Vector2 v = new Vector2(this.transform.position.x, this.transform.position.y);
-        //GameObject obj = PhotonNetwork.Instantiate(bullet_prefab.name, v, Quaternion.identity, 0);
-
-        Instantiate(prefab, position, rotation);
-        string msg = position.ToString() + rotation.ToString();
-        Send(msg);
+    public IEnumerator SetupPlayers()
+    {
+        TCPPlayer.GetPlayerById(TCPPlayer.my_tcp_id).GetComponent<playerMove>().SetupPlayers();
+        yield return null;
     }
 
-    public static void Listen(){
-        while (true){
+    private void Listen()
+    {
+        while (true)
+        {
             try
             {
-                data = new Byte[256];
-                response = System.Text.Encoding.ASCII.GetString(data, 0, stream.Read(data, 0, data.Length));
-                Debug.Log("RECEIVED: " + response);
+                comm_data = new Byte[256];
+                l_response = Encoding.ASCII.GetString(comm_data, 0, stream.Read(comm_data, 0, comm_data.Length));
+                if (l_response.Length > 0)
+                {
+                    Debug.Log("RECEIVED: " + l_response);
+
+                    ProcessReceivedData(l_response);
+                }
             }
             catch (ArgumentNullException e) { Debug.Log("ArgumentNullException: " + e); }
             catch (SocketException e) { Debug.Log("SocketException: " + e); }
         }
     }
 
-    public static void Send(string msg){
+    private void ProcessReceivedData(string data)
+    {
+        //string str = "(a)(b)(c)()";
+        matches = regex.Matches(data);
+        for (int i = 0; i < matches.Count; i++)
+        {
+            string v = matches[i].ToString().Split('(', ')')[1];
+            if (v.Length > 0)
+            {
+                string[] entries = v.Split(':');
+                ProcessMessages(entries[0], entries[1]);
+            }
+        }
+    }
+
+    private void ProcessMessages(string cmd, string data_str)
+    {
+        string[] data = data_str.Split(',');
+        int id = Int32.Parse(data[0]);
+
+        if (cmd == "assign")
+        {
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                TCPPlayer.InstantiateMine(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
+            );
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                SetupPlayers()
+            );
+        }
+        else if (cmd == "init")
+        {
+            Debug.Log("INSTANTIATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                TCPPlayer.InstantiateOther(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
+            );
+        }
+        else if (cmd == "pos")
+        {
+            if (id != TCPPlayer.my_tcp_id)
+            {
+                Debug.Log("UPDATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
+                UnityMainThreadDispatcher.Instance().Enqueue(
+                    TCPPlayer.UpdateOther(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
+                );
+            }
+        }
+        else if (cmd == "disconnect")
+        {
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                DestroyPlayer(id)
+            );
+        }
+        else
+        {
+
+        }
+    }
+
+    private static void Send(string msg)
+    {
         watch = System.Diagnostics.Stopwatch.StartNew();
         try
         {
-            // send
-            data = new Byte[256];
-            data = System.Text.Encoding.ASCII.GetBytes(msg);
-            stream.Write(data, 0, data.Length);
-            Debug.Log("SENT: " + msg);
-
-            // receive
-            data = new Byte[256];
-            response = System.Text.Encoding.ASCII.GetString(data, 0, stream.Read(data, 0, data.Length));
-            //Debug.Log("RECEIVED: " + response);
+            comm_data = new Byte[256];
+            comm_data = Encoding.ASCII.GetBytes(msg);
+            stream.Write(comm_data, 0, comm_data.Length);
+            //Debug.Log("SENT: " + msg);
         }
         catch (ArgumentNullException e) { Debug.Log("ArgumentNullException: " + e); }
         catch (SocketException e) { Debug.Log("SocketException: " + e); }
@@ -94,9 +191,12 @@ public class TCPNetwork {
         ping = watch.ElapsedMilliseconds;
     }
 
-    public static void Disconnect(){
+    public static void Disconnect()
+    {
         try
         {
+            AsyncSend("(disconnect:" + TCPPlayer.my_tcp_id + ")");
+            Debug.Log("DISCONNECTING");
             stream.Close();
             client.Close();
             Connected = false;
@@ -105,7 +205,8 @@ public class TCPNetwork {
         catch (SocketException e) { Debug.Log("SocketException: " + e); }
     }
 
-    public static long GetPing(){
+    public static long GetPing()
+    {
         return ping;
     }
 }

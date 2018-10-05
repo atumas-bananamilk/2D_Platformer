@@ -2498,6 +2498,7 @@ GameObject:
   - component: {fileID: 114269299143852982}
   - component: {fileID: 114176535711969888}
   - component: {fileID: 114365127610677172}
+  - component: {fileID: 114480711621789744}
   m_Layer: 9
   m_Name: main_player
   m_TagString: Player
@@ -5720,6 +5721,7 @@ MonoBehaviour:
   player_chat_text_prefab: {fileID: 114262655495771198, guid: f0bb163c36741465bb4b36da123429b7,
     type: 2}
   canvas_local_player: {fileID: 1787707556821306}
+  main_player: {fileID: 1640063479367680}
 --- !u!114 &114271381019440622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7285,6 +7287,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114480711621789744
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1640063479367680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9896ec864a6884aa698f710667373d1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114480963892514420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10139,7 +10152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47948876044054e67a2753a4bf144d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dev_testing: 1
+  dev_testing: 0
   is_grounded: 0
   disable_move: 0
   move_speed: 10

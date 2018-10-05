@@ -11,6 +11,8 @@ public class LobbyManager : Singleton<LobbyManager> {
 
 	void Start () {
         AwsApiManager.Instance.GetUserStats();
+
+
 	}
 
     public void SetStats(){

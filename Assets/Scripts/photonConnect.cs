@@ -21,15 +21,16 @@ public class photonConnect : MonoBehaviour {
         Debug.Log("JOINED LOBBY");
 
         // in case of disconnect
-        if (LocalStorageManager.GetConnectedWorldName().Length > 0)
-        {
-            gameObject.GetComponent<WorldManager>().JoinWorld(LocalStorageManager.GetConnectedWorldName());
-        }
+        //if (LocalStorageManager.GetConnectedWorldName().Length > 0)
+        //{
+        //    //gameObject.GetComponent<WorldManager>().JoinWorld(LocalStorageManager.GetConnectedWorldName());
+        //}
     }
 
     private void OnDisconnectedFromPhoton(){
         Debug.Log("DISCONNECTED");
-        PhotonNetwork.ConnectUsingSettings(versionName);
-        Debug.Log("TRYING TO RECONNECT...");
+        // BRING THIS BACK
+        //PhotonNetwork.ConnectUsingSettings(versionName);
+        //Debug.Log("TRYING TO RECONNECT...");
     }
 }

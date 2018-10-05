@@ -28,10 +28,9 @@ public class AuthController : Singleton<AuthController> {
     private string _registerPWConfInput { get { return registerPWConfInput.text;  } } //USE EncryptPassword(registerPWConfInput.text.toString()); instead when the DB is updated with the encrypted value and after error handling and compare
     private string _registerEmailInput { get { return registerEmailInput.text;  } }
 
-    //Display error messages here
     public Text Error_Text;
 
-    public void RegisterUser()
+	public void RegisterUser()
     {
         /* TODO: Check for errors (build error manager class)
          * e.g. same password in the two inputs (create method checkPWs)

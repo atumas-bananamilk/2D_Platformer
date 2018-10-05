@@ -34,8 +34,8 @@ public class playerMove : Photon.MonoBehaviour
     //public float moveSpeed = 4f;
     public Joystick joystick;
 
-    int aa = 0;
-    long milliseconds = 0;
+    Vector3 prev_velocity;
+    float velocity;
 
     public enum PHOTON_EVENTS : byte
     {
@@ -51,30 +51,44 @@ public class playerMove : Photon.MonoBehaviour
 
 	private void Start()
 	{
-        Screen.fullScreen = true;
+        //Screen.fullScreen = true;
 	}
 
 	private void Awake()
     {
-        if (!dev_testing && view.isMine)
-        {
-            player_camera.SetActive(true);
-            player_name.text = PhotonNetwork.playerName;
-        }
-
-        if (!dev_testing && !view.isMine)
-        {
-            player_name.text = view.owner.NickName;
-            player_name.color = enemy_text_color;
-        }
+        //if (!dev_testing && view.isMine)
+        //{
+        //    player_camera.SetActive(true);
+        //    player_name.text = PhotonNetwork.playerName;
+        //}
+        //if (!dev_testing && !view.isMine)
+        //{
+        //    player_name.text = view.owner.NickName;
+        //    player_name.color = enemy_text_color;
+        //}
 
         if (dev_testing){
             player_camera.SetActive(true);
         }
     }
 
+    public void SetupPlayers(){
+        if (!dev_testing && TCPPlayer.IsMine(gameObject))
+        {
+            player_camera.SetActive(true);
+            player_name.text = "RANDOM-"+TCPPlayer.my_tcp_id;
+        }
+    }
+
+    private void UpdateVelocity(){
+        velocity = ((transform.position - prev_velocity).magnitude) / Time.deltaTime;
+        prev_velocity = transform.position;
+    }
+
     private void Update()
     {
+        UpdateVelocity();
+
         //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
         ping_text.text = "Ping: " + TCPNetwork.GetPing();
 
@@ -92,19 +106,13 @@ public class playerMove : Photon.MonoBehaviour
         }
         else
         {
-            if (aa == 10){
-                //Thread t1 = new Thread(new ThreadStart(TCPNetwork.SendAndReceiveResponse));
-                //t1.Start();
-                aa = 0;
-            }
-            aa++;
             checkInput();
         }
     }
 
     private void checkInput()
     {
-        if (!disable_move)
+        if (!disable_move && TCPPlayer.IsMine(gameObject))
         {
             MovePlayer();
 
@@ -170,7 +178,7 @@ public class playerMove : Photon.MonoBehaviour
     }
 
     private void MovePlayer(){
-        if (photonView.isMine || dev_testing)
+        if (photonView.isMine || !dev_testing)
         {
             Vector3 joystick_move = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
@@ -188,8 +196,18 @@ public class playerMove : Photon.MonoBehaviour
             // controlling with buttons
             else
             {
-                var keyboard_move = new Vector3(Input.GetAxis("Horizontal"), 0);
-                transform.Translate(keyboard_move * move_speed * Time.deltaTime);
+                if (TCPPlayer.IsMine(gameObject))
+                {
+                    var keyboard_move = new Vector3(Input.GetAxis("Horizontal"), 0);
+                    transform.position += keyboard_move * move_speed * Time.deltaTime;
+
+                    if (Math.Abs(velocity) > 0)
+                    {
+                        TCPNetwork.SendMovementInfo(transform.position, ref velocity);
+                    }
+                }
+
+                //transform.Translate(keyboard_move * move_speed * Time.deltaTime);
             }
         }
     }

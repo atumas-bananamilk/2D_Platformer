@@ -16,6 +16,10 @@ public class photonHandler : MonoBehaviour {
         PhotonNetwork.sendRate = 30; // default - 20
         PhotonNetwork.sendRateOnSerialize = 20; // default - 10
         SceneManager.sceneLoaded += OnSceneFinishedLoading;
+
+        if (main_player.GetComponent<playerMove>().dev_testing){
+            moveScene();
+        }
 	}
 
     public void createNewRoom(string world_name){
@@ -58,15 +62,18 @@ public class photonHandler : MonoBehaviour {
     private void spawnPlayer(){
         GameObject[] spawn_points = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
+        gameObject.GetComponent<TCPNetwork>().Instantiate(main_player.name, spawn_points[1].transform.position, main_player.transform.rotation);
+
+        //TCPNetwork.Instantiate(main_player.name, spawn_points[1].transform.position, main_player.transform.rotation);
+
         if (PhotonNetwork.playerList.Length == 1)
         {
             //PhotonNetwork.Instantiate(main_player.name, main_player.transform.position, main_player.transform.rotation, 0);
-            // "main_player", [0, 0, 0], 0, 0
-            PhotonNetwork.Instantiate(main_player.name, spawn_points[0].transform.position, main_player.transform.rotation, 0);
+            //PhotonNetwork.Instantiate(main_player.name, spawn_points[0].transform.position, main_player.transform.rotation, 0);
         }
-        else
-        {
-            PhotonNetwork.Instantiate(main_player.name, spawn_points[1].transform.position, main_player.transform.rotation, 0);
-        }
+        //else
+        //{
+        //    PhotonNetwork.Instantiate(main_player.name, spawn_points[1].transform.position, main_player.transform.rotation, 0);
+        //}
     }
 }

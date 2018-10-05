@@ -16,6 +16,8 @@ public class ChatManager : Photon.MonoBehaviour {
 
     private static readonly float MSG_TIME = 4f;
 
+    public GameObject main_player;
+
 	private void Update()
 	{
         if (chat_input.isFocused)
@@ -61,8 +63,13 @@ public class ChatManager : Photon.MonoBehaviour {
         //options.Receivers = ReceiverGroup.Others;
         //PhotonNetwork.RaiseEvent((byte)playerMove.PHOTON_EVENTS.SEND_MSG, list, true, options);
 
-        Thread thread = new Thread(() => TCPNetwork.Send(chat_input.text));
-        thread.Start();
+        //Thread thread = new Thread(() => TCPNetwork.Instantiate(
+        //    main_player.name,
+        //    main_player.transform.position,
+        //    main_player.transform.rotation
+        //));
+        //thread.Start();
+        //TCPNetwork.Instantiate(main_player.name, main_player.transform.position, main_player.transform.rotation);
     }
 
     private void ResetChatInput(){
