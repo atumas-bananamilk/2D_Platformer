@@ -76,7 +76,11 @@ public class playerMove : Photon.MonoBehaviour
         if (!dev_testing && TCPPlayer.IsMine(gameObject))
         {
             player_camera.SetActive(true);
-            player_name.text = "RANDOM-"+TCPPlayer.my_tcp_id;
+            player_name.text = TCPPlayer.my_name;
+        }
+        else{
+            player_name.text = TCPPlayer.GetNameByObj(gameObject);
+            player_name.color = enemy_text_color;
         }
     }
 
@@ -92,19 +96,7 @@ public class playerMove : Photon.MonoBehaviour
         //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
         ping_text.text = "Ping: " + TCPNetwork.GetPing();
 
-        if (!dev_testing)
-        {
-            // otherwise would control every player
-            if (photonView.isMine)
-            {
-                checkInput();
-            }
-            else
-            {
-                smoothNetMovement();
-            }
-        }
-        else
+        if (!dev_testing && TCPPlayer.IsMine(gameObject))
         {
             checkInput();
         }
@@ -112,7 +104,7 @@ public class playerMove : Photon.MonoBehaviour
 
     private void checkInput()
     {
-        if (!disable_move && TCPPlayer.IsMine(gameObject))
+        if (!disable_move)
         {
             MovePlayer();
 
@@ -178,7 +170,7 @@ public class playerMove : Photon.MonoBehaviour
     }
 
     private void MovePlayer(){
-        if (photonView.isMine || !dev_testing)
+        if (!dev_testing)
         {
             Vector3 joystick_move = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
@@ -196,18 +188,13 @@ public class playerMove : Photon.MonoBehaviour
             // controlling with buttons
             else
             {
-                if (TCPPlayer.IsMine(gameObject))
-                {
-                    var keyboard_move = new Vector3(Input.GetAxis("Horizontal"), 0);
-                    transform.position += keyboard_move * move_speed * Time.deltaTime;
+                var keyboard_move = new Vector3(Input.GetAxis("Horizontal"), 0);
+                transform.Translate(keyboard_move * move_speed * Time.deltaTime);
+            }
 
-                    if (Math.Abs(velocity) > 0)
-                    {
-                        TCPNetwork.SendMovementInfo(transform.position, ref velocity);
-                    }
-                }
-
-                //transform.Translate(keyboard_move * move_speed * Time.deltaTime);
+            if (Math.Abs(velocity) > 0)
+            {
+                TCPNetwork.SendMovementInfo(transform.position, ref velocity);
             }
         }
     }

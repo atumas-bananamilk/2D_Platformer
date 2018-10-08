@@ -15,7 +15,7 @@ public class TCPNetwork : MonoBehaviour
     private static readonly string IP = "127.0.0.1";
     private static readonly Int32 PORT = 9999;
     private static long ping = 0;
-    private static Boolean Connected = false;
+    public static Boolean Connected = false;
 
     private static TcpClient client;
     private static NetworkStream stream;
@@ -32,7 +32,7 @@ public class TCPNetwork : MonoBehaviour
     Regex regex = new Regex(@"\(.*?\)");
     MatchCollection matches;
 
-    public static void Connect()
+    public bool Connect()
     {
         if (!Connected)
         {
@@ -41,23 +41,27 @@ public class TCPNetwork : MonoBehaviour
                 client = new TcpClient(IP, PORT);
                 stream = client.GetStream();
                 Connected = true;
+                Debug.Log("TCP: CONNECTED");
+                return true;
             }
             catch (ArgumentNullException e) { Debug.Log("ArgumentNullException: " + e); }
             catch (SocketException e) { Debug.Log("SocketException: " + e); }
         }
+        return false;
     }
 
-    public void Instantiate(string prefab, Vector2 position, Quaternion rotation)
+    public void Instantiate(string prefab, string room_name, Vector2 position, Quaternion rotation)
     {
-        Connect();
-        float velocity = 0;
-        AssignPlayerId(ref prefab, position, velocity);
-        AsyncListen();
+        if (Connected){
+            float velocity = 0;
+            AssignPlayerId(ref prefab, ref room_name, position, velocity);
+            AsyncListen();
+        }
     }
 
-    public static void AssignPlayerId(ref string prefab, Vector2 position, float velocity)
+    public static void AssignPlayerId(ref string prefab, ref string room_name, Vector2 position, float velocity)
     {
-        AsyncSend("(assign:" + position.x + "," + position.y + "," + velocity + ")");
+        AsyncSend("(assign:" + TCPPlayer.my_name + "," + room_name + "," + position.x + "," + position.y + "," + velocity + ")");
     }
 
     public static void SendMovementInfo(Vector2 position, ref float velocity)
@@ -74,7 +78,8 @@ public class TCPNetwork : MonoBehaviour
 
     public IEnumerator DestroyPlayer(int id)
     {
-        Destroy(TCPPlayer.GetPlayerById(id));
+        TCPPlayer.RemovePlayer(id);
+        //Destroy(TCPPlayer.GetPlayerById(id));
         yield return null;
     }
 
@@ -90,9 +95,15 @@ public class TCPNetwork : MonoBehaviour
         thread.Start();
     }
 
-    public IEnumerator SetupPlayers()
+    public IEnumerator SetupPlayers(int id)
     {
-        TCPPlayer.GetPlayerById(TCPPlayer.my_tcp_id).GetComponent<playerMove>().SetupPlayers();
+        TCPPlayer.GetPlayerById(id).GetComponent<playerMove>().SetupPlayers();
+        yield return null;
+    }
+
+    public IEnumerator SetCorrectCanvas(int id)
+    {
+        TCPPlayer.GetPlayerById(id).GetComponent<playerHealthBar>().SetCorrectCanvas();
         yield return null;
     }
 
@@ -139,24 +150,33 @@ public class TCPNetwork : MonoBehaviour
         if (cmd == "assign")
         {
             UnityMainThreadDispatcher.Instance().Enqueue(
-                TCPPlayer.InstantiateMine(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
+                TCPPlayer.InstantiateMine(id, data[1], data[2], new Vector2(float.Parse(data[3]), float.Parse(data[4])))
             );
             UnityMainThreadDispatcher.Instance().Enqueue(
-                SetupPlayers()
+                SetupPlayers(id)
+            );
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                SetCorrectCanvas(id)
             );
         }
         else if (cmd == "init")
         {
-            Debug.Log("INSTANTIATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
+            //Debug.Log("INSTANTIATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
             UnityMainThreadDispatcher.Instance().Enqueue(
-                TCPPlayer.InstantiateOther(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
+                TCPPlayer.InstantiateOther(id, data[1], new Vector2(float.Parse(data[2]), float.Parse(data[3])))
+            );
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                SetupPlayers(id)
+            );
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                SetCorrectCanvas(id)
             );
         }
         else if (cmd == "pos")
         {
             if (id != TCPPlayer.my_tcp_id)
             {
-                Debug.Log("UPDATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
+                //Debug.Log("UPDATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
                 UnityMainThreadDispatcher.Instance().Enqueue(
                     TCPPlayer.UpdateOther(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
                 );

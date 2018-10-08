@@ -105,10 +105,6 @@ public class InventorySlot : MonoBehaviour, IDragHandler, IEndDragHandler, IDrop
     public void SelectItem(){
         // select this slot
         slot_glow.enabled = !slot_glow.enabled;
-
-        //TCPNetwork.Instantiate(null, new Vector2(0, 0), Quaternion.identity);
-        //Debug.Log("MY ID: "+TCPNetwork.player_id);
-        
         gameObject.GetComponentInParent<PlayerInventory>().ToggleDropButton();
     }
 

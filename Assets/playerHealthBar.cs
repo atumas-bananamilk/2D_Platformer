@@ -19,20 +19,22 @@ public class playerHealthBar : Photon.MonoBehaviour {
 
 	void Awake()
     {
-        if (!player_move.dev_testing){
-            setCorrectCanvas();
-        }
-        else{
-            local_player_canvas.SetActive(true);
-        }
+        //if (!player_move.dev_testing){
+        //    SetCorrectCanvas();
+        //}
+        //else{
+        //    local_player_canvas.SetActive(true);
+        //}
 
-        if (photonView.isMine || player_move.dev_testing){
+        //if (photonView.isMine || player_move.dev_testing){
+        if (TCPPlayer.IsMine(gameObject) || player_move.dev_testing){
             RespawnScript.Instance.local_player = this.gameObject;
         }
 	}
     
-    void setCorrectCanvas(){
-        if (photonView.isMine){
+    public void SetCorrectCanvas(){
+        //if (photonView.isMine){
+        if (TCPPlayer.IsMine(gameObject)){
             player_move.player_name.GetComponent<RectTransform>().anchoredPosition = (local_player_name_pos);
             local_player_canvas.SetActive(true);
         }
@@ -50,7 +52,8 @@ public class playerHealthBar : Photon.MonoBehaviour {
 
     public void reduceHealthAmount(float hit)
     {
-        if (photonView.isMine)
+        //if (photonView.isMine)
+        if (TCPPlayer.IsMine(gameObject))
         {
             local_player_healthbar.fillAmount -= hit;
             checkHealthAmount();
@@ -78,7 +81,8 @@ public class playerHealthBar : Photon.MonoBehaviour {
         this.GetComponent<Rigidbody2D>().simulated = false;
         this.GetComponent<BoxCollider2D>().enabled = false;
 
-        if (!photonView.isMine){
+        //if (!photonView.isMine){
+        if (!TCPPlayer.IsMine(gameObject)){
             other_player_canvas.SetActive(false);
         }
 
@@ -92,8 +96,8 @@ public class playerHealthBar : Photon.MonoBehaviour {
         this.GetComponent<Rigidbody2D>().simulated = true;
         this.GetComponent<BoxCollider2D>().enabled = true;
 
-        if (!photonView.isMine)
-        {
+        //if (!photonView.isMine)
+        if (!TCPPlayer.IsMine(gameObject)){
             other_player_canvas.SetActive(true);
             other_player_healthbar.fillAmount = 1;
         }

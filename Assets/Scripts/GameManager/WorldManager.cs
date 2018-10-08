@@ -3,8 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class WorldManager : MonoBehaviour {
+    public GameObject main_player;
+
     public InputField join_server_input;
     public Text error_create_world;
     public Button create_server_button;
@@ -14,6 +17,13 @@ public class WorldManager : MonoBehaviour {
 	{
         AwsApiManager.Instance.CheckWorldExists(AnalyseResponse_1);
 	}
+
+	private void Awake()
+    {
+        DontDestroyOnLoad(this.transform);
+        SceneManager.sceneLoaded += OnSceneFinishedLoading;
+        gameObject.GetComponent<TCPNetwork>().Connect();
+    }
 
 	public void TryCreateWorld(){
         AwsApiManager.Instance.TryCreateWorld(AnalyseResponse_2);
@@ -42,16 +52,31 @@ public class WorldManager : MonoBehaviour {
     }
 
     public void GoToMyWorld(){
-        gameObject.GetComponent<photonHandler>().joinOrCreateRoom(PhotonNetwork.playerName);
+        if (TCPNetwork.Connected){
+            SceneManager.LoadScene("MainGame");
+        }
+        //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(PhotonNetwork.playerName);
     }
 
     public void JoinWorld()
     {
-        gameObject.GetComponent<photonHandler>().joinOrCreateRoom(join_server_input.text);
+        //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(join_server_input.text);
     }
 
     public void JoinWorld(string name)
     {
-        gameObject.GetComponent<photonHandler>().joinOrCreateRoom(name);
+        //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(name);
+    }
+
+    private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode){
+        if (scene.name == "MainGame"){
+            SpawnPlayer();
+        }
+    }
+
+    private void SpawnPlayer()
+    {
+        GameObject[] spawn_points = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        gameObject.GetComponent<TCPNetwork>().Instantiate(main_player.name, "main_world", spawn_points[1].transform.position, main_player.transform.rotation);
     }
 }

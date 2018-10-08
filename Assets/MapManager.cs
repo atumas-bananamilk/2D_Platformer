@@ -46,7 +46,7 @@ public class MapManager : MonoBehaviour
         }
         else{
             // maps - stored locally
-            if (PhotonNetwork.room.Name.Equals("main_world"))
+            if (TCPPlayer.my_room_name.Equals("main_world"))
             {
                 // 101 x 100
                 map = ReadMap(CSV_file);
@@ -61,7 +61,7 @@ public class MapManager : MonoBehaviour
                 AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name, gameObject);
             }
 
-            if (gameObject.GetComponent<playerMove>().view.isMine)
+            if (TCPPlayer.IsMine(gameObject))
             {
                 PlaceBlocks();
             }

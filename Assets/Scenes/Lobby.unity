@@ -1537,6 +1537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b71eaeda6e24928a988948d7f0a326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  main_player: {fileID: 1640063479367680, guid: c960698deac284c93bb845be4c25f08c,
+    type: 2}
   join_server_input: {fileID: 1812292927}
   error_create_world: {fileID: 1539072040}
   create_server_button: {fileID: 777208163}
@@ -1552,8 +1554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45304fa12912740179aa6ae54062166a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  main_player: {fileID: 1640063479367680, guid: c960698deac284c93bb845be4c25f08c,
-    type: 2}
 --- !u!114 &983947381
 MonoBehaviour:
   m_ObjectHideFlags: 0
