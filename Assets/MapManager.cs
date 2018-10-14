@@ -46,7 +46,7 @@ public class MapManager : MonoBehaviour
         }
         else{
             // maps - stored locally
-            if (TCPPlayer.my_room_name.Equals("main_world"))
+            if (TCPPlayer.my_player.room.Equals("main_world"))
             {
                 // 101 x 100
                 map = ReadMap(CSV_file);

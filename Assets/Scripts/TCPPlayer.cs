@@ -10,7 +10,7 @@ public class Player
     public GameObject obj { get; set; }
     public string room { get; set; }
 
-    public Player(int id, string name, GameObject obj, string room = "")
+    public Player(int id = -1, string name = "", GameObject obj = null, string room = "")
     {
         this.id = id;
         this.name = name;
@@ -22,32 +22,32 @@ public class Player
 public class TCPPlayer {
 
     public static List<Player> players = new List<Player>();
-    public static string my_name = "";
-    public static int my_tcp_id = -1;
-    public static string my_room_name = "";
+    public static Player my_player = new Player(-1, "", null);
 
     public static IEnumerator InstantiateMine(int id, string name, string room_name, Vector2 position)
     {
-        my_name = name;
-        my_tcp_id = id;
-        my_room_name = room_name;
-        GameObject go = GameObject.Instantiate((GameObject)Resources.Load("main_player", typeof(GameObject)), position, Quaternion.identity);
-        players.Add(new Player(id, name, go, room_name));
+        GameObject go = GameObject.Instantiate(LoadPrefabResource("main_player"), position, Quaternion.identity);
+        my_player = new Player(id, name, go, room_name);
+        players.Add(my_player);
         yield return null;
     }
 
     public static IEnumerator InstantiateOther(int id, string name, Vector2 position)
     {
-        GameObject go = GameObject.Instantiate((GameObject)Resources.Load("main_player", typeof(GameObject)), position, Quaternion.identity);
+        GameObject go = GameObject.Instantiate(LoadPrefabResource("main_player"), position, Quaternion.identity);
         go.GetComponent<Rigidbody2D>().gravityScale = 0;
         players.Add(new Player(id, name, go));
         yield return null;
     }
 
+    private static GameObject LoadPrefabResource(string prefab){
+        return (GameObject)Resources.Load(prefab, typeof(GameObject));
+    }
+
     public static IEnumerator UpdateOther(int id, Vector2 position){
-        GameObject other = GetPlayerById(id);
+        GameObject other = GetPlayerGameObject(id);
         if (other){
-            GetPlayerById(id).transform.position = position;
+            GetPlayerGameObject(id).transform.position = position;
         }
         else{
             Debug.Log("OTHER OBJ IS NULL");
@@ -64,7 +64,7 @@ public class TCPPlayer {
         }
     }
 
-    public static string GetNameByObj(GameObject obj){
+    public static string GetNameByGameObj(GameObject obj){
         foreach (Player p in players)
         {
             if (p.obj == obj){
@@ -74,7 +74,7 @@ public class TCPPlayer {
         return "";
     }
 
-    public static GameObject GetPlayerById(int id){
+    public static GameObject GetPlayerGameObject(int id){
         foreach (Player p in players)
         {
             if (p.id == id)
@@ -87,11 +87,11 @@ public class TCPPlayer {
 
     public static bool IdIsSet()
     {
-        return my_tcp_id != -1;
+        return my_player.id != -1;
     }
 
     public static bool IsMine(GameObject g)
     {
-        return g == GetPlayerById(my_tcp_id);
+        return g == my_player.obj;
     }
 }

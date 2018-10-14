@@ -32,7 +32,7 @@ public class TCPNetwork : MonoBehaviour
     Regex regex = new Regex(@"\(.*?\)");
     MatchCollection matches;
 
-    public bool Connect()
+    public void Connect()
     {
         if (!Connected)
         {
@@ -42,12 +42,13 @@ public class TCPNetwork : MonoBehaviour
                 stream = client.GetStream();
                 Connected = true;
                 Debug.Log("TCP: CONNECTED");
-                return true;
+                AsyncListen();
+                //return true;
             }
             catch (ArgumentNullException e) { Debug.Log("ArgumentNullException: " + e); }
             catch (SocketException e) { Debug.Log("SocketException: " + e); }
         }
-        return false;
+        //return false;
     }
 
     public void Instantiate(string prefab, string room_name, Vector2 position, Quaternion rotation)
@@ -55,20 +56,27 @@ public class TCPNetwork : MonoBehaviour
         if (Connected){
             float velocity = 0;
             AssignPlayerId(ref prefab, ref room_name, position, velocity);
-            AsyncListen();
         }
+    }
+
+    public static void FindMatch(){
+        AsyncSend("(find)");
+    }
+
+    public static void LeaveMatch(){
+        AsyncSend("(leave)");
     }
 
     public static void AssignPlayerId(ref string prefab, ref string room_name, Vector2 position, float velocity)
     {
-        AsyncSend("(assign:" + TCPPlayer.my_name + "," + room_name + "," + position.x + "," + position.y + "," + velocity + ")");
+        AsyncSend("(assign:" + TCPPlayer.my_player.name + "," + room_name + "," + position.x + "," + position.y + "," + velocity + ")");
     }
 
     public static void SendMovementInfo(Vector2 position, ref float velocity)
     {
         if (TCPPlayer.IdIsSet())
         {
-            AsyncSend("(pos:" + TCPPlayer.my_tcp_id + "," + position.x.ToString("0.##") + "," + position.y.ToString("0.##") + "," + velocity.ToString("0.##") + ")");
+            AsyncSend("(pos:" + TCPPlayer.my_player.id + "," + position.x.ToString("0.##") + "," + position.y.ToString("0.##") + "," + velocity.ToString("0.##") + ")");
         }
         else
         {
@@ -79,7 +87,6 @@ public class TCPNetwork : MonoBehaviour
     public IEnumerator DestroyPlayer(int id)
     {
         TCPPlayer.RemovePlayer(id);
-        //Destroy(TCPPlayer.GetPlayerById(id));
         yield return null;
     }
 
@@ -97,13 +104,26 @@ public class TCPNetwork : MonoBehaviour
 
     public IEnumerator SetupPlayers(int id)
     {
-        TCPPlayer.GetPlayerById(id).GetComponent<playerMove>().SetupPlayers();
+        TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().SetupPlayers();
         yield return null;
     }
 
     public IEnumerator SetCorrectCanvas(int id)
     {
-        TCPPlayer.GetPlayerById(id).GetComponent<playerHealthBar>().SetCorrectCanvas();
+        TCPPlayer.GetPlayerGameObject(id).GetComponent<playerHealthBar>().SetCorrectCanvas();
+        yield return null;
+    }
+
+    public IEnumerator UpdateMatchInfo(int match_players_count)
+    {
+        gameObject.GetComponent<MatchManager>().IndicateReadyPlayers(match_players_count);
+        yield return null;
+    }
+
+    public IEnumerator LeaveMatchQueue()
+    {
+        Debug.Log("LEAVING");
+        gameObject.GetComponent<MatchManager>().ClearIndicators();
         yield return null;
     }
 
@@ -118,7 +138,6 @@ public class TCPNetwork : MonoBehaviour
                 if (l_response.Length > 0)
                 {
                     Debug.Log("RECEIVED: " + l_response);
-
                     ProcessReceivedData(l_response);
                 }
             }
@@ -137,17 +156,43 @@ public class TCPNetwork : MonoBehaviour
             if (v.Length > 0)
             {
                 string[] entries = v.Split(':');
-                ProcessMessages(entries[0], entries[1]);
+                if (entries.Length < 2){
+                    ProcessMessages(entries[0]);
+                }
+                else{
+                    ProcessMessages(entries[0], entries[1]);
+                }
             }
         }
     }
 
-    private void ProcessMessages(string cmd, string data_str)
+    private void ProcessMessages(string cmd = "", string data_str = "")
     {
         string[] data = data_str.Split(',');
-        int id = Int32.Parse(data[0]);
+        int id;
+        Int32.TryParse(data[0], out id);
 
-        if (cmd == "assign")
+        if (cmd == "find")
+        {
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                UpdateMatchInfo(Int32.Parse(data[0]))
+            );
+        }
+        else if (cmd == "leave"){
+            // someone else left
+            if (data[0].Length > 0){
+                UnityMainThreadDispatcher.Instance().Enqueue(
+                    UpdateMatchInfo(Int32.Parse(data[0]))
+                );
+            }
+            // this user left
+            else{
+                UnityMainThreadDispatcher.Instance().Enqueue(
+                    LeaveMatchQueue()
+                );
+            }
+        }
+        else if (cmd == "assign")
         {
             UnityMainThreadDispatcher.Instance().Enqueue(
                 TCPPlayer.InstantiateMine(id, data[1], data[2], new Vector2(float.Parse(data[3]), float.Parse(data[4])))
@@ -174,7 +219,7 @@ public class TCPNetwork : MonoBehaviour
         }
         else if (cmd == "pos")
         {
-            if (id != TCPPlayer.my_tcp_id)
+            if (id != TCPPlayer.my_player.id)
             {
                 //Debug.Log("UPDATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
                 UnityMainThreadDispatcher.Instance().Enqueue(
@@ -215,7 +260,7 @@ public class TCPNetwork : MonoBehaviour
     {
         try
         {
-            AsyncSend("(disconnect:" + TCPPlayer.my_tcp_id + ")");
+            AsyncSend("(disconnect:" + TCPPlayer.my_player.id + ")");
             Debug.Log("DISCONNECTING");
             stream.Close();
             client.Close();

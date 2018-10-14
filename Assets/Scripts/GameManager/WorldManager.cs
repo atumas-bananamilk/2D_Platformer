@@ -13,11 +13,6 @@ public class WorldManager : MonoBehaviour {
     public Button create_server_button;
     public Button my_server_button;
 
-	private void Start()
-	{
-        AwsApiManager.Instance.CheckWorldExists(AnalyseResponse_1);
-	}
-
 	private void Awake()
     {
         DontDestroyOnLoad(this.transform);
@@ -25,47 +20,13 @@ public class WorldManager : MonoBehaviour {
         gameObject.GetComponent<TCPNetwork>().Connect();
     }
 
-	public void TryCreateWorld(){
-        AwsApiManager.Instance.TryCreateWorld(AnalyseResponse_2);
-    }
-
-    // being called by AwsApiManager
-    public void AnalyseResponse_1(object response){
-        string msg = (string)response;
-        bool has_no_text = msg.Length <= 0;
-        SwitchButtons(msg, has_no_text);
-    }
-
-    // being called by AwsApiManager
-    public void AnalyseResponse_2(object response){
-        string msg = (string) response;
-        bool has_text = msg.Length > 0;
-        SwitchButtons(msg, has_text);
-    }
-
-    private void SwitchButtons(string msg, bool on){
-        error_create_world.text = msg;
-        error_create_world.gameObject.SetActive(on);
-        create_server_button.gameObject.SetActive(on);
-        my_server_button.gameObject.SetActive(!on);
-        //my_server_button.GetComponentInChildren<Text>().text = "My world (" + PhotonNetwork.playerName + ")";
-    }
-
-    public void GoToMyWorld(){
-        if (TCPNetwork.Connected){
+    public void GoToMyWorld()
+    {
+        if (TCPNetwork.Connected)
+        {
             SceneManager.LoadScene("MainGame");
         }
         //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(PhotonNetwork.playerName);
-    }
-
-    public void JoinWorld()
-    {
-        //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(join_server_input.text);
-    }
-
-    public void JoinWorld(string name)
-    {
-        //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(name);
     }
 
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode){
@@ -79,4 +40,45 @@ public class WorldManager : MonoBehaviour {
         GameObject[] spawn_points = GameObject.FindGameObjectsWithTag("SpawnPoint");
         gameObject.GetComponent<TCPNetwork>().Instantiate(main_player.name, "main_world", spawn_points[1].transform.position, main_player.transform.rotation);
     }
+
+    //private void Start()
+    //{
+    //       AwsApiManager.Instance.CheckWorldExists(AnalyseResponse_1);
+    //}
+
+	//public void TryCreateWorld(){
+    //    AwsApiManager.Instance.TryCreateWorld(AnalyseResponse_2);
+    //}
+
+    // being called by AwsApiManager
+    //public void AnalyseResponse_1(object response){
+    //    string msg = (string)response;
+    //    bool has_no_text = msg.Length <= 0;
+    //    SwitchButtons(msg, has_no_text);
+    //}
+
+    //// being called by AwsApiManager
+    //public void AnalyseResponse_2(object response){
+    //    string msg = (string) response;
+    //    bool has_text = msg.Length > 0;
+    //    SwitchButtons(msg, has_text);
+    //}
+
+    //private void SwitchButtons(string msg, bool on){
+    //    error_create_world.text = msg;
+    //    error_create_world.gameObject.SetActive(on);
+    //    create_server_button.gameObject.SetActive(on);
+    //    my_server_button.gameObject.SetActive(!on);
+    //    //my_server_button.GetComponentInChildren<Text>().text = "My world (" + PhotonNetwork.playerName + ")";
+    //}
+
+    //public void JoinWorld()
+    //{
+    //    //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(join_server_input.text);
+    //}
+
+    //public void JoinWorld(string name)
+    //{
+    //    //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(name);
+    //}
 }

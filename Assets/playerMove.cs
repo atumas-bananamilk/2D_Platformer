@@ -76,10 +76,10 @@ public class playerMove : Photon.MonoBehaviour
         if (!dev_testing && TCPPlayer.IsMine(gameObject))
         {
             player_camera.SetActive(true);
-            player_name.text = TCPPlayer.my_name;
+            player_name.text = TCPPlayer.my_player.name;
         }
         else{
-            player_name.text = TCPPlayer.GetNameByObj(gameObject);
+            player_name.text = TCPPlayer.GetNameByGameObj(gameObject);
             player_name.color = enemy_text_color;
         }
     }

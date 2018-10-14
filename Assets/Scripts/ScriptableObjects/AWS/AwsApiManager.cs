@@ -113,8 +113,7 @@ public class AwsApiManager : MonoBehaviour
                     break;
                 }
                 case CALLBACK.USER_STATS_GET:{
-                    //PhotonNetwork.playerName = response.data[0];
-                    TCPPlayer.my_name = response.data[0];
+                    TCPPlayer.my_player.name = response.data[0];
                     LobbyManager.Instance.welcome_message.text = "Welcome back, " + response.data[0] + "!";
                     LobbyManager.Instance.gold_amount_text.text = response.data[1] + " gold";
                     LobbyManager.Instance.SP_amount_text.text = response.data[2] + " SP";
