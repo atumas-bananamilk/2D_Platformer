@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading;
+using System.Linq;
 
 public class Player
 {
@@ -56,10 +56,10 @@ public class TCPPlayer {
     }
 
     public static void RemovePlayer(int id){
-        foreach (Player p in players){
-            if (p.id == id){
-                GameObject.Destroy(p.obj);
-                players.Remove(p);
+        for (int i = 0; i < players.Count; i++){
+            if (players[i].id == id){
+                GameObject.Destroy(players[i].obj);
+                players.Remove(players[i]);
             }
         }
     }

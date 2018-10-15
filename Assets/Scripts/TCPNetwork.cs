@@ -122,8 +122,13 @@ public class TCPNetwork : MonoBehaviour
 
     public IEnumerator LeaveMatchQueue()
     {
-        Debug.Log("LEAVING");
         gameObject.GetComponent<MatchManager>().ClearIndicators();
+        yield return null;
+    }
+
+    public IEnumerator StartGame(string room_name, int spawn_location_id)
+    {
+        gameObject.GetComponent<MatchManager>().GoToRoom(room_name, spawn_location_id);
         yield return null;
     }
 
@@ -191,6 +196,12 @@ public class TCPNetwork : MonoBehaviour
                     LeaveMatchQueue()
                 );
             }
+        }
+        else if (cmd == "start")
+        {
+            UnityMainThreadDispatcher.Instance().Enqueue(
+                StartGame(data[0], Int32.Parse(data[1]))
+            );
         }
         else if (cmd == "assign")
         {

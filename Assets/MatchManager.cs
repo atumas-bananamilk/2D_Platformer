@@ -60,4 +60,8 @@ public class MatchManager : MonoBehaviour {
             ready_indicators[i].color = DEFAULT_INDICATOR_COLOUR;
         }
     }
+
+    public void GoToRoom(string room_name, int spawn_location_id){
+        gameObject.GetComponent<WorldManager>().GoToRoom(room_name, spawn_location_id);
+    }
 }

@@ -13,6 +13,8 @@ public class WorldManager : MonoBehaviour {
     public Button create_server_button;
     public Button my_server_button;
 
+    private int spawn_location_id = -1;
+
 	private void Awake()
     {
         DontDestroyOnLoad(this.transform);
@@ -20,10 +22,11 @@ public class WorldManager : MonoBehaviour {
         gameObject.GetComponent<TCPNetwork>().Connect();
     }
 
-    public void GoToMyWorld()
+    public void GoToRoom(string room_name, int id)
     {
         if (TCPNetwork.Connected)
         {
+            spawn_location_id = id;
             SceneManager.LoadScene("MainGame");
         }
         //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(PhotonNetwork.playerName);
@@ -38,7 +41,8 @@ public class WorldManager : MonoBehaviour {
     private void SpawnPlayer()
     {
         GameObject[] spawn_points = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        gameObject.GetComponent<TCPNetwork>().Instantiate(main_player.name, "main_world", spawn_points[1].transform.position, main_player.transform.rotation);
+        GameObject spawn_location = spawn_points[spawn_location_id % spawn_points.Length];
+        gameObject.GetComponent<TCPNetwork>().Instantiate(main_player.name, "main_world", spawn_location.transform.position, main_player.transform.rotation);
     }
 
     //private void Start()
