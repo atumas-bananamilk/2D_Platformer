@@ -143,7 +143,7 @@ public class AwsApiManager : MonoBehaviour
                 default: { break; }
             }
         }
-        else if (www.isNetworkError){ AuthController.Instance.SetError(true, "No internet connection."); }
+        else if (www.isNetworkError){ AuthController.Instance.SetError(true, "No internet connection or server down."); }
         else if (www.isHttpError){ Debug.Log("REASON: "+response.reason); AuthController.Instance.SetError(true, response.reason); }
         else{ AuthController.Instance.SetError(true, "Unknown server response."); }
     }

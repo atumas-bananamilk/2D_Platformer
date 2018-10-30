@@ -22,11 +22,11 @@ public class WorldManager : MonoBehaviour {
         gameObject.GetComponent<TCPNetwork>().Connect();
     }
 
-    public void GoToRoom(string room_name, int id)
+    public void GoToRoom(string room_name, int spawn_id)
     {
         if (TCPNetwork.Connected)
         {
-            spawn_location_id = id;
+            spawn_location_id = spawn_id;
             SceneManager.LoadScene("MainGame");
         }
         //gameObject.GetComponent<photonHandler>().joinOrCreateRoom(PhotonNetwork.playerName);

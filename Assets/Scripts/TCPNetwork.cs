@@ -114,7 +114,7 @@ public class TCPNetwork : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator UpdateMatchInfo(int match_players_count)
+    public IEnumerator UpdateMatchIndicators(int match_players_count)
     {
         gameObject.GetComponent<MatchManager>().IndicateReadyPlayers(match_players_count);
         yield return null;
@@ -180,14 +180,16 @@ public class TCPNetwork : MonoBehaviour
         if (cmd == "find")
         {
             UnityMainThreadDispatcher.Instance().Enqueue(
-                UpdateMatchInfo(Int32.Parse(data[0]))
+                UpdateMatchIndicators(Int32.Parse(data[0]))
             );
         }
         else if (cmd == "leave"){
             // someone else left
             if (data[0].Length > 0){
+                int players_waiting = Int32.Parse(data[0]);
+
                 UnityMainThreadDispatcher.Instance().Enqueue(
-                    UpdateMatchInfo(Int32.Parse(data[0]))
+                    UpdateMatchIndicators(players_waiting)
                 );
             }
             // this user left

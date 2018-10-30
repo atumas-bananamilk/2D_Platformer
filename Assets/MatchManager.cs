@@ -5,23 +5,23 @@ using UnityEngine.UI;
 using System.Linq;
 
 public class MatchManager : MonoBehaviour {
+    // sends TCP request - findmatch
+    // TCP:
+    // 1. tries to find a room (with X available spots)
+    // 2. if couldn't find - creates a room (with 4 available spots)
+    // 3. sends info (players' names) to all players about new players
+    // 4. if enough players joined - send room name to everyone, notify to start the game
+    // everyone joins the room
+    // TCP ids are assigned, everyone inits everyone
+    // game starts
+
     public GameObject match_ready_panel;
     public GameObject find_match_button;
     public GameObject leave_match_button;
+    public Text match_ready_players_count;
 
     private Color DEFAULT_INDICATOR_COLOUR;
-
     private readonly int MATCH_PLAYER_LIMIT = 4;
-
-	// sends TCP request - findmatch
-	// TCP:
-	// 1. tries to find a room (with X available spots)
-	// 2. if couldn't find - creates a room (with 4 available spots)
-	// 3. sends info (players' names) to all players about new players
-	// 4. if enough players joined - send room name to everyone, notify to start the game
-	// everyone joins the room
-	// TCP ids are assigned, everyone inits everyone
-	// game starts
 
 	private void Start()
     {
@@ -30,12 +30,14 @@ public class MatchManager : MonoBehaviour {
 
 	public void FindMatch(){
         TCPNetwork.FindMatch();
+        match_ready_panel.SetActive(true);
         find_match_button.SetActive(false);
         leave_match_button.SetActive(true);
     }
 
     public void LeaveMatch(){
         TCPNetwork.LeaveMatch();
+        match_ready_panel.SetActive(false);
         find_match_button.SetActive(true);
         leave_match_button.SetActive(false);
     }
@@ -51,13 +53,14 @@ public class MatchManager : MonoBehaviour {
                 ready_indicators[i].color = new Color(0, 255, 0);
             }
         }
+        match_ready_players_count.text = amount + " / " + MATCH_PLAYER_LIMIT + " Players Found";
     }
 
     public void ClearIndicators(){
         Image[] ready_indicators = match_ready_panel.GetComponentsInChildren<Image>().Skip(1).ToArray();
-        for (int i = 0; i < MATCH_PLAYER_LIMIT; i++)
-        {
-            ready_indicators[i].color = DEFAULT_INDICATOR_COLOUR;
+
+        foreach (Image indicator in ready_indicators){
+            indicator.color = DEFAULT_INDICATOR_COLOUR;
         }
     }
 
