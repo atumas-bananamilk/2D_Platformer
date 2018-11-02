@@ -1515,7 +1515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83cf5b4396cc04354a9a3fb7cc66a029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  match_ready_panel: {fileID: 0}
+  match_ready_panel: {fileID: 968057882}
   find_match_button: {fileID: 2145619916}
   leave_match_button: {fileID: 1387009833}
   match_ready_players_count: {fileID: 850916385}

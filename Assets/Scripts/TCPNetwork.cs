@@ -82,11 +82,11 @@ public class TCPNetwork : MonoBehaviour
         }
     }
 
-    public IEnumerator DestroyPlayer(int id)
-    {
-        TCPPlayer.RemovePlayer(id);
-        yield return null;
-    }
+    //public IEnumerator DestroyPlayer(int id)
+    //{
+    //    TCPPlayer.RemovePlayer(id);
+    //    yield return null;
+    //}
 
     private void AsyncListen()
     {
@@ -100,41 +100,41 @@ public class TCPNetwork : MonoBehaviour
         thread.Start();
     }
 
-    public void SetupPlayers(int id)
-    {
-        TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().SetupPlayers();
-    }
+    //public void SetupPlayers(int id)
+    //{
+    //    TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().SetupPlayers();
+    //}
 
-    public void SetCorrectCanvas(int id)
-    {
-        TCPPlayer.GetPlayerGameObject(id).GetComponent<playerHealthBar>().SetCorrectCanvas();
-    }
+    //public void SetCorrectCanvas(int id)
+    //{
+    //    TCPPlayer.GetPlayerGameObject(id).GetComponent<playerHealthBar>().SetCorrectCanvas();
+    //}
 
-    public IEnumerator UpdateMatchIndicators(int match_players_count)
-    {
-        gameObject.GetComponent<MatchManager>().IndicateReadyPlayers(match_players_count);
-        yield return null;
-    }
+    //public IEnumerator UpdateMatchIndicators(int match_players_count)
+    //{
+    //    gameObject.GetComponent<MatchManager>().IndicateReadyPlayers(match_players_count);
+    //    yield return null;
+    //}
 
-    public IEnumerator LeaveMatchQueue()
-    {
-        gameObject.GetComponent<MatchManager>().ClearIndicators();
-        yield return null;
-    }
+    //public IEnumerator LeaveMatchQueue()
+    //{
+    //    gameObject.GetComponent<MatchManager>().ClearIndicators();
+    //    yield return null;
+    //}
 
-    public IEnumerator StartGame(string room_name, int spawn_location_id)
-    {
-        gameObject.GetComponent<MatchManager>().GoToRoom(room_name, spawn_location_id);
-        yield return null;
-    }
+    //public IEnumerator StartGame(string room_name, int spawn_location_id)
+    //{
+    //    gameObject.GetComponent<MatchManager>().GoToRoom(room_name, spawn_location_id);
+    //    yield return null;
+    //}
 
-    public IEnumerator InstantiatePlayer(int id, string player_name, string room_name, Vector2 position)
-    {
-        TCPPlayer.InstantiatePlayer(id, player_name, room_name, position);
-        SetupPlayers(id);
-        SetCorrectCanvas(id);
-        yield return null;
-    }
+    //public IEnumerator InstantiatePlayer(int id, string player_name, string room_name, Vector2 position)
+    //{
+    //    TCPPlayer.InstantiatePlayer(id, player_name, room_name, position);
+    //    SetupPlayers(id);
+    //    SetCorrectCanvas(id);
+    //    yield return null;
+    //}
 
     private void Listen()
     {
@@ -155,6 +155,12 @@ public class TCPNetwork : MonoBehaviour
         }
     }
 
+    public IEnumerator ProcessMessages(string cmd = "", string data_str = "")
+    {
+        gameObject.GetComponent<TCPMessageManager>().ProcessMessages(cmd, data_str);
+        yield return null;
+    }
+
     private void ProcessReceivedData(string data)
     {
         //string str = "(a)(b)(c)()";
@@ -166,80 +172,18 @@ public class TCPNetwork : MonoBehaviour
             {
                 string[] entries = v.Split(':');
                 if (entries.Length < 2){
-                    ProcessMessages(entries[0]);
+                    UnityMainThreadDispatcher.Instance().Enqueue(
+                        ProcessMessages(entries[0])
+                    );
+                    //gameObject.GetComponent<TCPMessageManager>().ProcessMessages(entries[0]);
                 }
                 else{
-                    ProcessMessages(entries[0], entries[1]);
+                    UnityMainThreadDispatcher.Instance().Enqueue(
+                        ProcessMessages(entries[0], entries[1])
+                    );
+                    //gameObject.GetComponent<TCPMessageManager>().ProcessMessages(entries[0], entries[1]);
                 }
             }
-        }
-    }
-
-    private void ProcessMessages(string cmd = "", string data_str = "")
-    {
-        string[] data = data_str.Split(',');
-        int id;
-        Int32.TryParse(data[0], out id);
-
-        if (cmd == "find")
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                UpdateMatchIndicators(Int32.Parse(data[0]))
-            );
-        }
-        else if (cmd == "leave"){
-            // someone else left
-            if (data[0].Length > 0){
-                int players_waiting = Int32.Parse(data[0]);
-
-                UnityMainThreadDispatcher.Instance().Enqueue(
-                    UpdateMatchIndicators(players_waiting)
-                );
-            }
-            // this user left
-            else{
-                UnityMainThreadDispatcher.Instance().Enqueue(
-                    LeaveMatchQueue()
-                );
-            }
-        }
-        else if (cmd == "start")
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                StartGame(data[0], Int32.Parse(data[1]))
-            );
-        }
-        else if (cmd == "assign")
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                InstantiatePlayer(id, data[1], data[2], new Vector2(float.Parse(data[3]), float.Parse(data[4])))
-            );
-        }
-        else if (cmd == "init")
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                InstantiatePlayer(id, data[1], "", new Vector2(float.Parse(data[3]), float.Parse(data[4])))
-            );
-        }
-        else if (cmd == "pos")
-        {
-            if (id != TCPPlayer.my_player.id)
-            {
-                //Debug.Log("UPDATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
-                UnityMainThreadDispatcher.Instance().Enqueue(
-                    TCPPlayer.UpdateOther(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
-                );
-            }
-        }
-        else if (cmd == "disconnect")
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                DestroyPlayer(id)
-            );
-        }
-        else
-        {
-
         }
     }
 
