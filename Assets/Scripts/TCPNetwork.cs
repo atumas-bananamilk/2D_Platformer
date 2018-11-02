@@ -29,8 +29,8 @@ public class TCPNetwork : MonoBehaviour
     private static List<string> l_cmds = new List<string>();
     private static List<string> l_data = new List<string>();
 
-    Regex regex = new Regex(@"\(.*?\)");
-    MatchCollection matches;
+    private static Regex regex = new Regex(@"\(.*?\)");
+    private static MatchCollection matches;
 
     public void Connect()
     {
@@ -43,40 +43,38 @@ public class TCPNetwork : MonoBehaviour
                 Connected = true;
                 Debug.Log("TCP: CONNECTED");
                 AsyncListen();
-                //return true;
             }
             catch (ArgumentNullException e) { Debug.Log("ArgumentNullException: " + e); }
             catch (SocketException e) { Debug.Log("SocketException: " + e); }
         }
-        //return false;
     }
 
     public void Instantiate(string prefab, string room_name, Vector2 position, Quaternion rotation)
     {
         if (Connected){
             float velocity = 0;
-            AssignPlayerId(ref prefab, ref room_name, position, velocity);
+            AsyncSend(TCPMessageManager.AssignPlayerId(ref prefab, ref room_name, position, velocity));
         }
     }
 
-    public static void FindMatch(){
-        AsyncSend("(find)");
+    public void FindMatch(){
+        AsyncSend(TCPMessageManager.FindMatch());
     }
 
-    public static void LeaveMatch(){
-        AsyncSend("(leave)");
+    public void LeaveMatch(){
+        AsyncSend(TCPMessageManager.LeaveMatch());
     }
 
-    public static void AssignPlayerId(ref string prefab, ref string room_name, Vector2 position, float velocity)
-    {
-        AsyncSend("(assign:" + TCPPlayer.my_player.name + "," + room_name + "," + position.x + "," + position.y + "," + velocity + ")");
-    }
+    //public static void AssignPlayerId(ref string prefab, ref string room_name, Vector2 position, float velocity)
+    //{
+    //    AsyncSend("(assign:" + TCPPlayer.my_player.name + "," + room_name + "," + position.x + "," + position.y + "," + velocity + ")");
+    //}
 
     public static void SendMovementInfo(Vector2 position, ref float velocity)
     {
         if (TCPPlayer.IdIsSet())
         {
-            AsyncSend("(pos:" + TCPPlayer.my_player.id + "," + position.x.ToString("0.##") + "," + position.y.ToString("0.##") + "," + velocity.ToString("0.##") + ")");
+            AsyncSend(TCPMessageManager.SendMovementInfo(position, ref velocity));
         }
         else
         {
@@ -102,16 +100,14 @@ public class TCPNetwork : MonoBehaviour
         thread.Start();
     }
 
-    public IEnumerator SetupPlayers(int id)
+    public void SetupPlayers(int id)
     {
         TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().SetupPlayers();
-        yield return null;
     }
 
-    public IEnumerator SetCorrectCanvas(int id)
+    public void SetCorrectCanvas(int id)
     {
         TCPPlayer.GetPlayerGameObject(id).GetComponent<playerHealthBar>().SetCorrectCanvas();
-        yield return null;
     }
 
     public IEnumerator UpdateMatchIndicators(int match_players_count)
@@ -129,6 +125,14 @@ public class TCPNetwork : MonoBehaviour
     public IEnumerator StartGame(string room_name, int spawn_location_id)
     {
         gameObject.GetComponent<MatchManager>().GoToRoom(room_name, spawn_location_id);
+        yield return null;
+    }
+
+    public IEnumerator InstantiatePlayer(int id, string player_name, string room_name, Vector2 position)
+    {
+        TCPPlayer.InstantiatePlayer(id, player_name, room_name, position);
+        SetupPlayers(id);
+        SetCorrectCanvas(id);
         yield return null;
     }
 
@@ -208,26 +212,13 @@ public class TCPNetwork : MonoBehaviour
         else if (cmd == "assign")
         {
             UnityMainThreadDispatcher.Instance().Enqueue(
-                TCPPlayer.InstantiateMine(id, data[1], data[2], new Vector2(float.Parse(data[3]), float.Parse(data[4])))
-            );
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                SetupPlayers(id)
-            );
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                SetCorrectCanvas(id)
+                InstantiatePlayer(id, data[1], data[2], new Vector2(float.Parse(data[3]), float.Parse(data[4])))
             );
         }
         else if (cmd == "init")
         {
-            //Debug.Log("INSTANTIATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
             UnityMainThreadDispatcher.Instance().Enqueue(
-                TCPPlayer.InstantiateOther(id, data[1], new Vector2(float.Parse(data[2]), float.Parse(data[3])))
-            );
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                SetupPlayers(id)
-            );
-            UnityMainThreadDispatcher.Instance().Enqueue(
-                SetCorrectCanvas(id)
+                InstantiatePlayer(id, data[1], "", new Vector2(float.Parse(data[3]), float.Parse(data[4])))
             );
         }
         else if (cmd == "pos")
@@ -273,7 +264,7 @@ public class TCPNetwork : MonoBehaviour
     {
         try
         {
-            AsyncSend("(disconnect:" + TCPPlayer.my_player.id + ")");
+            AsyncSend(TCPMessageManager.Disconnect());
             Debug.Log("DISCONNECTING");
             stream.Close();
             client.Close();

@@ -24,20 +24,22 @@ public class TCPPlayer {
     public static List<Player> players = new List<Player>();
     public static Player my_player = new Player(-1, "", null);
 
-    public static IEnumerator InstantiateMine(int id, string name, string room_name, Vector2 position)
+    public static void InstantiatePlayer(int id, string name, string room_name, Vector2 position)
     {
         GameObject go = GameObject.Instantiate(LoadPrefabResource("main_player"), position, Quaternion.identity);
-        my_player = new Player(id, name, go, room_name);
-        players.Add(my_player);
-        yield return null;
-    }
+        Player player;
 
-    public static IEnumerator InstantiateOther(int id, string name, Vector2 position)
-    {
-        GameObject go = GameObject.Instantiate(LoadPrefabResource("main_player"), position, Quaternion.identity);
-        go.GetComponent<Rigidbody2D>().gravityScale = 0;
-        players.Add(new Player(id, name, go));
-        yield return null;
+        // mine
+        if (room_name.Length > 0){
+            my_player = new Player(id, name, go, room_name);
+            player = my_player;
+        }
+        // other
+        else{
+            player = new Player(id, name, go);
+            go.GetComponent<Rigidbody2D>().gravityScale = 0;
+        }
+        players.Add(player);
     }
 
     private static GameObject LoadPrefabResource(string prefab){

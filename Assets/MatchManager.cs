@@ -29,14 +29,14 @@ public class MatchManager : MonoBehaviour {
 	}
 
 	public void FindMatch(){
-        TCPNetwork.FindMatch();
+        gameObject.GetComponent<TCPNetwork>().FindMatch();
         match_ready_panel.SetActive(true);
         find_match_button.SetActive(false);
         leave_match_button.SetActive(true);
     }
 
     public void LeaveMatch(){
-        TCPNetwork.LeaveMatch();
+        gameObject.GetComponent<TCPNetwork>().LeaveMatch();
         match_ready_panel.SetActive(false);
         find_match_button.SetActive(true);
         leave_match_button.SetActive(false);

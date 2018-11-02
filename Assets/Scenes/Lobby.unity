@@ -1394,6 +1394,7 @@ GameObject:
   - component: {fileID: 983947381}
   - component: {fileID: 983947379}
   - component: {fileID: 983947382}
+  - component: {fileID: 983947385}
   - component: {fileID: 983947383}
   - component: {fileID: 983947384}
   m_Layer: 0
@@ -1514,10 +1515,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83cf5b4396cc04354a9a3fb7cc66a029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  match_ready_panel: {fileID: 968057882}
+  match_ready_panel: {fileID: 0}
   find_match_button: {fileID: 2145619916}
   leave_match_button: {fileID: 1387009833}
   match_ready_players_count: {fileID: 850916385}
+--- !u!114 &983947385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 983947375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a69f4976f914159b07d8d2fba0bb7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1069511261
 GameObject:
   m_ObjectHideFlags: 0
