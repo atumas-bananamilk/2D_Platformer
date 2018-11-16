@@ -65,11 +65,6 @@ public class TCPNetwork : MonoBehaviour
         AsyncSend(TCPMessageManager.LeaveMatch());
     }
 
-    //public static void AssignPlayerId(ref string prefab, ref string room_name, Vector2 position, float velocity)
-    //{
-    //    AsyncSend("(assign:" + TCPPlayer.my_player.name + "," + room_name + "," + position.x + "," + position.y + "," + velocity + ")");
-    //}
-
     public static void SendMovementInfo(Vector2 position, ref float velocity)
     {
         if (TCPPlayer.IdIsSet())
@@ -82,12 +77,6 @@ public class TCPNetwork : MonoBehaviour
         }
     }
 
-    //public IEnumerator DestroyPlayer(int id)
-    //{
-    //    TCPPlayer.RemovePlayer(id);
-    //    yield return null;
-    //}
-
     private void AsyncListen()
     {
         thread = new Thread(() => Listen());
@@ -99,42 +88,6 @@ public class TCPNetwork : MonoBehaviour
         thread = new Thread(() => Send(msg));
         thread.Start();
     }
-
-    //public void SetupPlayers(int id)
-    //{
-    //    TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().SetupPlayers();
-    //}
-
-    //public void SetCorrectCanvas(int id)
-    //{
-    //    TCPPlayer.GetPlayerGameObject(id).GetComponent<playerHealthBar>().SetCorrectCanvas();
-    //}
-
-    //public IEnumerator UpdateMatchIndicators(int match_players_count)
-    //{
-    //    gameObject.GetComponent<MatchManager>().IndicateReadyPlayers(match_players_count);
-    //    yield return null;
-    //}
-
-    //public IEnumerator LeaveMatchQueue()
-    //{
-    //    gameObject.GetComponent<MatchManager>().ClearIndicators();
-    //    yield return null;
-    //}
-
-    //public IEnumerator StartGame(string room_name, int spawn_location_id)
-    //{
-    //    gameObject.GetComponent<MatchManager>().GoToRoom(room_name, spawn_location_id);
-    //    yield return null;
-    //}
-
-    //public IEnumerator InstantiatePlayer(int id, string player_name, string room_name, Vector2 position)
-    //{
-    //    TCPPlayer.InstantiatePlayer(id, player_name, room_name, position);
-    //    SetupPlayers(id);
-    //    SetCorrectCanvas(id);
-    //    yield return null;
-    //}
 
     private void Listen()
     {
@@ -155,12 +108,6 @@ public class TCPNetwork : MonoBehaviour
         }
     }
 
-    public IEnumerator ProcessMessages(string cmd = "", string data_str = "")
-    {
-        gameObject.GetComponent<TCPMessageManager>().ProcessMessages(cmd, data_str);
-        yield return null;
-    }
-
     private void ProcessReceivedData(string data)
     {
         //string str = "(a)(b)(c)()";
@@ -175,16 +122,20 @@ public class TCPNetwork : MonoBehaviour
                     UnityMainThreadDispatcher.Instance().Enqueue(
                         ProcessMessages(entries[0])
                     );
-                    //gameObject.GetComponent<TCPMessageManager>().ProcessMessages(entries[0]);
                 }
                 else{
                     UnityMainThreadDispatcher.Instance().Enqueue(
                         ProcessMessages(entries[0], entries[1])
                     );
-                    //gameObject.GetComponent<TCPMessageManager>().ProcessMessages(entries[0], entries[1]);
                 }
             }
         }
+    }
+
+    public IEnumerator ProcessMessages(string cmd = "", string data_str = "")
+    {
+        gameObject.GetComponent<TCPMessageManager>().ProcessMessages(cmd, data_str);
+        yield return null;
     }
 
     private static void Send(string msg)
@@ -210,8 +161,12 @@ public class TCPNetwork : MonoBehaviour
         {
             AsyncSend(TCPMessageManager.Disconnect());
             Debug.Log("DISCONNECTING");
-            stream.Close();
-            client.Close();
+            if (stream != null){
+                stream.Close();
+            }
+            if (client != null){
+                client.Close();
+            }
             Connected = false;
         }
         catch (ArgumentNullException e) { Debug.Log("ArgumentNullException: " + e); }
