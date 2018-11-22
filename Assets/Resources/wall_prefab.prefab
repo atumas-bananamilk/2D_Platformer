@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212062833977160406}
   - component: {fileID: 61575110136407042}
   - component: {fileID: 222097044758207176}
+  - component: {fileID: 114983619047107804}
   m_Layer: 0
   m_Name: wall_prefab
   m_TagString: Ground
@@ -41,19 +42,32 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0000042915344, y: -0.022529602}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 1.66, y: 1.54, z: 1.66, w: 1.5999999}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 11, y: 5}
+    newSize: {x: 11, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10.01011, y: 4.391674}
   m_EdgeRadius: 0
+--- !u!114 &114983619047107804
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1201257649064294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8b94d6c913f4a9da7b9baae13af593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item_name: 0
+  amount: 0
 --- !u!212 &212062833977160406
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -89,15 +103,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: c302daecef138499fb021c11c6b7794c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 11, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!222 &222097044758207176
 CanvasRenderer:
@@ -121,5 +135,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -10, y: 0}
-  m_SizeDelta: {x: 1, y: 1}
+  m_SizeDelta: {x: 10, y: 4.4}
   m_Pivot: {x: 0.5, y: 0.5}

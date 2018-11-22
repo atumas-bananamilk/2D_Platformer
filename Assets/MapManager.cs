@@ -17,24 +17,46 @@ public class MapChange
     }
 }
 
+public class MapInfo{
+    public int width;
+    public int height;
+
+    public MapInfo(int width, int height){
+        this.width = width;
+        this.height = height;
+    }
+}
+
 public class MapManager : MonoBehaviour
 {
-    public const float BLOCK_SIZE = 32;
-
+    //public const float BLOCK_SIZE = 32;
     [SerializeField] private GameObject player_info_text;
     [SerializeField] private GameObject player_grid;
 
     public TextAsset CSV_file;
     public GameObject block_prefab;
-    public Sprite ground_5;
-    public Sprite ground_6;
-    public Sprite ground_7;
-    public Sprite ground_11;
+    public Sprite TILE_ground_5;
+    public Sprite TILE_ground_6;
+    public Sprite TILE_ground_7;
+    public Sprite TILE_ground_11;
+    public Sprite TILE_storm;
+
+    private int TILE_ID_STORM = 0;
+    private int TILE_ID_GROUND_5 = 5;
+    private int TILE_ID_GROUND_6 = 6;
+    private int TILE_ID_GROUND_7 = 7;
+    private int TILE_ID_GROUND_11 = 11;
 
     private IDictionary<int, Sprite> block_images = new Dictionary<int, Sprite>();
     [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
     private List<List<string>> map;
     [HideInInspector] public List<MapChange> map_changes = new List<MapChange>();
+    
+    int offset = 2;
+    public int map_width;
+    public int map_height;
+    public float start_x;
+    public float start_y;
 
     public void Start()
     {
@@ -60,6 +82,11 @@ public class MapManager : MonoBehaviour
                 map = ReadMap(CSV_file);
                 AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name, gameObject);
             }
+            
+            map_width = map.Count;
+            map_height = (map.Count > 0) ? map[0].Count : 0;
+            map_width += offset;
+            map_height += offset;
 
             if (TCPPlayer.IsMine(gameObject))
             {
@@ -70,17 +97,29 @@ public class MapManager : MonoBehaviour
 
     private void MapBlockImages()
     {
-        block_images[5] = ground_5;
-        block_images[6] = ground_6;
-        block_images[7] = ground_7;
-        block_images[11] = ground_11;
+        block_images[TILE_ID_STORM] = TILE_storm;
+        block_images[TILE_ID_GROUND_5] = TILE_ground_5;
+        block_images[TILE_ID_GROUND_6] = TILE_ground_6;
+        block_images[TILE_ID_GROUND_7] = TILE_ground_7;
+        block_images[TILE_ID_GROUND_11] = TILE_ground_11;
+    }
+
+    private void PlaceSingleBlock(float x, float y, int cell_id){
+        GameObject block = null;
+        block = Instantiate(block_prefab, new Vector2(x, y), Quaternion.identity) as GameObject;
+        SetBlockImage(cell_id, ref block);
     }
 
     private void PlaceBlocks()
     {
-        float x = block_prefab.transform.position.x - 50;
-        float y = block_prefab.transform.position.y;
+        start_x = block_prefab.transform.position.x - 1;
+        start_y = block_prefab.transform.position.y;
+        float x = start_x;
+        float y = start_y;
 
+        DrawBoundaries(x, y);
+
+        // draw blocks
         foreach (List<string> row in map)
         {
             foreach (string cell in row)
@@ -89,18 +128,34 @@ public class MapManager : MonoBehaviour
                 {
                     int cell_id = 0;
                     Int32.TryParse(cell, out cell_id);
-
-                    GameObject block = null;
-                    block = Instantiate(block_prefab, new Vector2(x, y), Quaternion.identity) as GameObject;
-                    //block.transform.SetParent(map_obj.transform, false);
-                    //block.transform.localScale = new Vector2(0.08f, 1);
-
-                    SetBlockImage(cell_id, ref block);
+                    PlaceSingleBlock(x, y, cell_id);
                 }
                 x++;
             }
             x = block_prefab.transform.position.x;
             y--;
+        }
+    }
+
+    private void DrawBoundaries(float x, float y){
+        x--;
+        y++;
+
+        for (int i = 0; i < map_width; i++){
+            PlaceSingleBlock(x, y, TILE_ID_STORM);
+            x++;
+        }
+        for (int i = 0; i < map_height; i++){
+            PlaceSingleBlock(x, y, TILE_ID_STORM);
+            y--;
+        }
+        for (int i = 0; i < map_width; i++){
+            PlaceSingleBlock(x, y, TILE_ID_STORM);
+            x--;
+        }
+        for (int i = 0; i < map_height; i++){
+            PlaceSingleBlock(x, y, TILE_ID_STORM);
+            y++;
         }
     }
 
@@ -150,7 +205,12 @@ public class MapManager : MonoBehaviour
 
     private void SetBlockImage(int cell_id, ref GameObject block)
     {
-        block.GetComponent<SpriteRenderer>().sprite = block_images.ContainsKey(cell_id) ? block_images[cell_id] : ground_11;
+        block.GetComponent<SpriteRenderer>().sprite = TILE_ground_5;
+
+        if (block_images.ContainsKey(cell_id)){
+            block.GetComponent<SpriteRenderer>().sprite = block_images[cell_id];
+        }
+        //block.GetComponent<SpriteRenderer>().sprite = block_images.ContainsKey(cell_id) ? block_images[cell_id] : ground_11;
     }
 
     private List<List<string>> ReadMap(TextAsset file)

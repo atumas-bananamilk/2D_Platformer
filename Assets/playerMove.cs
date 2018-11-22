@@ -9,7 +9,6 @@ public class playerMove : Photon.MonoBehaviour
 {
     [Header("General Booleans")]
     public bool dev_testing = false;
-    public bool is_grounded = false;
     public bool disable_move = false;
 
     [Space]
@@ -29,7 +28,6 @@ public class playerMove : Photon.MonoBehaviour
     public Color enemy_text_color;
     public GameObject bullet_prefab;
     [SerializeField] Text ping_text;
-
 
     //public float moveSpeed = 4f;
     public Joystick joystick;
@@ -278,7 +276,30 @@ public class playerMove : Photon.MonoBehaviour
         reset_jumps(ref c);
     }
 
-    private void reset_jumps(ref Collision2D c)
+	private void OnTriggerStay2D(Collider2D c)
+    {
+        Vector2 v_1 = transform.position;
+        Vector2 v_2 = c.transform.position;
+        int qq = gameObject.GetComponentInChildren<BuilderOptionManager>().GetQuaternion(
+            gameObject.GetComponentInChildren<BuilderOptionManager>().GetAngle(
+                v_1, v_2
+            )
+        );
+
+        //c.gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
+
+        //if (qq == 2 || qq == 3){
+        //    c.gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
+        //}
+	}
+
+    private void OnTriggerExit2D(Collider2D c)
+    {
+        //c.gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+        //gameObject.GetComponent<PlayerWallManager>().available_walls[PlayerWallManager.WALL_ROTATION.LEFT] = false;
+    }
+
+	private void reset_jumps(ref Collision2D c)
     {
         if (!dev_testing && view.isMine)
         {
