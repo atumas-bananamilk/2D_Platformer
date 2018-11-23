@@ -77,7 +77,12 @@ public class BuilderOptionManager : MonoBehaviour, IBeginDragHandler, IDragHandl
     }
 
     private void HoverWall(int quaternion){
-        gameObject.GetComponentInParent<PlayerWallManager>().PlaceHoverWall(wall_selections[quaternion]);
+        if (wall_selections.ContainsKey(quaternion)){
+            gameObject.GetComponentInParent<PlayerWallManager>().PlaceHoverWall(wall_selections[quaternion]);
+        }
+        else{
+            Debug.Log("KEY DOESNT EXIST: "+quaternion);
+        }
     }
 
     private void ShowOption(int quaternion){
