@@ -35,6 +35,12 @@ public class playerMove : Photon.MonoBehaviour
     Vector3 prev_velocity;
     float velocity;
     public MOVEMENT_DIRECTION direction;
+    public PLAYERSTATE player_state;
+    private int collision_count = 0;
+
+    public enum PLAYERSTATE{
+        IDLE, RUNNING, JUMPING
+    }
 
     public enum MOVEMENT_DIRECTION{
         LEFT, RIGHT
@@ -103,6 +109,10 @@ public class playerMove : Photon.MonoBehaviour
         if (!dev_testing && TCPPlayer.IsMine(gameObject))
         {
             checkInput();
+        }
+
+        if (collision_count == 0){
+            ChangePlayerState(PLAYERSTATE.JUMPING);
         }
     }
 
@@ -199,7 +209,15 @@ public class playerMove : Photon.MonoBehaviour
 
             if (Math.Abs(velocity) > 0)
             {
+                if (collision_count > 0){
+                    ChangePlayerState(PLAYERSTATE.RUNNING);
+                }
                 TCPNetwork.SendMovementInfo(transform.position, ref velocity);
+            }
+            else{
+                if (collision_count > 0){
+                    ChangePlayerState(PLAYERSTATE.IDLE);
+                }
             }
         }
     }
@@ -268,8 +286,29 @@ public class playerMove : Photon.MonoBehaviour
         }
     }
 
+    private void ChangePlayerState(PLAYERSTATE s){
+        switch(s){
+            case PLAYERSTATE.IDLE:{
+                    player_state = PLAYERSTATE.IDLE;
+                    gameObject.GetComponent<Animator>().Play("player_idle");
+                    break;
+                }
+            case PLAYERSTATE.RUNNING:{
+                    player_state = PLAYERSTATE.RUNNING;
+                    gameObject.GetComponent<Animator>().Play("player_run");
+                    break;
+                }
+            case PLAYERSTATE.JUMPING:{
+                    player_state = PLAYERSTATE.JUMPING;
+                    gameObject.GetComponent<Animator>().Play("player_jump");
+                    break;
+                }
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D c)
     {
+        collision_count++;
         reset_jumps(ref c);
 
         if (c.gameObject.tag == "Player")
@@ -280,31 +319,14 @@ public class playerMove : Photon.MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D c)
     {
+        collision_count--;
         reset_jumps(ref c);
     }
 
-	private void OnTriggerStay2D(Collider2D c)
-    {
-        Vector2 v_1 = transform.position;
-        Vector2 v_2 = c.transform.position;
-        int qq = gameObject.GetComponentInChildren<BuilderOptionManager>().GetQuaternion(
-            gameObject.GetComponentInChildren<BuilderOptionManager>().GetAngle(
-                v_1, v_2
-            )
-        );
-
-        //c.gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 255, 0);
-
-        //if (qq == 2 || qq == 3){
-        //    c.gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
-        //}
+	private void OnCollisionStay2D(Collision2D collision)
+	{
+		
 	}
-
-    private void OnTriggerExit2D(Collider2D c)
-    {
-        //c.gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
-        //gameObject.GetComponent<PlayerWallManager>().available_walls[PlayerWallManager.WALL_ROTATION.LEFT] = false;
-    }
 
 	private void reset_jumps(ref Collision2D c)
     {

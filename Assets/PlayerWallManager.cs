@@ -53,35 +53,6 @@ public class PlayerWallManager : MonoBehaviour {
         return new WallTransform(rotation, wall_rotations[rotation], position);
     }
 
-    //private float GetWallTransform_Y_Coordinate(WALL_ROTATION rotation){
-    //    float offset = 0;
-    //    float start_coordinate = gameObject.GetComponent<MapManager>().start_y;
-    //    int units = (int)(Math.Abs(transform.position.y - start_coordinate) / WALL_UNIT_SIZE);
-    //    playerMove.MOVEMENT_DIRECTION direction = gameObject.GetComponent<playerMove>().direction;
-
-    //    switch (rotation){
-    //        case WALL_ROTATION.VERTICAL:{
-    //                offset = 0;
-    //                break;
-    //            }
-    //        case WALL_ROTATION.HORIZONTAL:{
-    //                offset = WALL_UNIT_SIZE / 2;
-    //                break;
-    //            }
-    //        case WALL_ROTATION.DIAGONAL_LEFT:{
-    //                offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? 0 : WALL_UNIT_SIZE;
-    //                break;
-    //            }
-    //        case WALL_ROTATION.DIAGONAL_RIGHT:{
-    //                offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? WALL_UNIT_SIZE : 0;
-    //                break;
-    //            }
-    //    }
-
-    //    float y = start_coordinate - (WALL_UNIT_SIZE * units) - offset;
-    //    return y;
-    //}
-
     private float GetWallTransformCoordinate(WALL_ROTATION rotation, bool check_x_coordinate){
         playerMove.MOVEMENT_DIRECTION direction = gameObject.GetComponent<playerMove>().direction;
         float offset = 0;
