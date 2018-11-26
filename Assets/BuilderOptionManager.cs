@@ -9,11 +9,11 @@ public class BuilderOptionManager : MonoBehaviour, IBeginDragHandler, IDragHandl
 
     public GameObject builder_options;
     private Dictionary<int, PlayerWallManager.WALL_ROTATION> wall_selections = new Dictionary<int, PlayerWallManager.WALL_ROTATION>();
-    private static int NUMBER_OF_OPTIONS = 8;
+    private static int NUMBER_OF_OPTIONS = 4;
     private int OPTION_DEGREE_SPAN = 360 / NUMBER_OF_OPTIONS;
 
     private bool dragging = false;
-    private int qq = 0;
+    private int quaternion = 0;
 
     void Start(){
         SetupWallSelections();
@@ -22,37 +22,36 @@ public class BuilderOptionManager : MonoBehaviour, IBeginDragHandler, IDragHandl
 	private void Update()
 	{
         if (dragging){
-            HoverWall(qq);
+            HoverWall();
         }
 	}
 
 	private void SetupWallSelections(){
-        wall_selections.Add(0, PlayerWallManager.WALL_ROTATION.TOP);
-        wall_selections.Add(1, PlayerWallManager.WALL_ROTATION.TOP_LEFT);
-        wall_selections.Add(2, PlayerWallManager.WALL_ROTATION.LEFT);
-        wall_selections.Add(3, PlayerWallManager.WALL_ROTATION.LEFT_BOTTOM);
-        wall_selections.Add(4, PlayerWallManager.WALL_ROTATION.BOTTOM);
-        wall_selections.Add(5, PlayerWallManager.WALL_ROTATION.BOTTOM_RIGHT);
-        wall_selections.Add(6, PlayerWallManager.WALL_ROTATION.RIGHT);
-        wall_selections.Add(7, PlayerWallManager.WALL_ROTATION.RIGHT_TOP);
+        wall_selections.Add(0, PlayerWallManager.WALL_ROTATION.HORIZONTAL);
+        wall_selections.Add(1, PlayerWallManager.WALL_ROTATION.DIAGONAL_LEFT);
+        wall_selections.Add(2, PlayerWallManager.WALL_ROTATION.VERTICAL);
+        wall_selections.Add(3, PlayerWallManager.WALL_ROTATION.DIAGONAL_RIGHT);
     }
 
+    // inherited
     public void OnDrag(PointerEventData eventData)
     {
         dragging = true;
-        int quaternion = GetQuaternion(GetAngle(transform.position, eventData.position));
-        qq = quaternion;
-        ShowOption(quaternion);
+        quaternion = GetQuaternion(GetAngle(transform.position, eventData.position));
+        ShowOption();
     }
 
+    // inherited
     public void OnEndDrag(PointerEventData eventData)
     {
         dragging = false;
         Destroy(gameObject.GetComponentInParent<PlayerWallManager>().wall_hover);
         ClearOptions();
-        BuildWall(GetQuaternion(GetAngle(transform.position, eventData.position)));
+        //BuildWall(GetQuaternion(GetAngle(transform.position, eventData.position)));
+        BuildWall();
     }
 
+    // inherited
     public void OnBeginDrag(PointerEventData eventData)
     {
 
@@ -72,11 +71,11 @@ public class BuilderOptionManager : MonoBehaviour, IBeginDragHandler, IDragHandl
         return (int)((angle + 292.5) / OPTION_DEGREE_SPAN) % NUMBER_OF_OPTIONS;
     }
 
-    private void BuildWall(int quaternion){
+    private void BuildWall(){
         gameObject.GetComponentInParent<PlayerWallManager>().PlaceWall(wall_selections[quaternion]);
     }
 
-    private void HoverWall(int quaternion){
+    private void HoverWall(){
         if (wall_selections.ContainsKey(quaternion)){
             gameObject.GetComponentInParent<PlayerWallManager>().PlaceHoverWall(wall_selections[quaternion]);
         }
@@ -85,7 +84,7 @@ public class BuilderOptionManager : MonoBehaviour, IBeginDragHandler, IDragHandl
         }
     }
 
-    private void ShowOption(int quaternion){
+    private void ShowOption(){
         ClearOptions();
         Image[] options = builder_options.GetComponentsInChildren<Image>().ToArray();
         options[quaternion * 2].enabled = true;

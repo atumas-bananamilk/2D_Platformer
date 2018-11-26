@@ -57,7 +57,8 @@ public class WorldItemManager : MonoBehaviour {
         obj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
         obj.GetComponent<WorldItem>().item_name = name;
         obj.GetComponent<WorldItem>().amount = 1;
-        obj.GetComponent<BoxCollider2D>().enabled = has_collider;
+        //obj.GetComponent<BoxCollider2D>().enabled = has_collider;
+        obj.GetComponent<PolygonCollider2D>().enabled = has_collider;
 
         return obj;
     }

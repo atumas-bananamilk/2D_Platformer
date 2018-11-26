@@ -34,6 +34,11 @@ public class playerMove : Photon.MonoBehaviour
 
     Vector3 prev_velocity;
     float velocity;
+    public MOVEMENT_DIRECTION direction;
+
+    public enum MOVEMENT_DIRECTION{
+        LEFT, RIGHT
+    }
 
     public enum PHOTON_EVENTS : byte
     {
@@ -64,6 +69,7 @@ public class playerMove : Photon.MonoBehaviour
         //    player_name.text = view.owner.NickName;
         //    player_name.color = enemy_text_color;
         //}
+        FlipPlayer(MOVEMENT_DIRECTION.RIGHT);
 
         if (dev_testing){
             player_camera.SetActive(true);
@@ -112,11 +118,11 @@ public class playerMove : Photon.MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                FlipPlayerRight();
+                FlipPlayer(MOVEMENT_DIRECTION.RIGHT);
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
-                FlipPlayerLeft();
+                FlipPlayer(MOVEMENT_DIRECTION.LEFT);
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -149,21 +155,22 @@ public class playerMove : Photon.MonoBehaviour
         }
     }
 
-    private void FlipPlayerRight()
-    {
-        sprite.flipX = false;
-        if (!dev_testing)
-        {
-            view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
-        }
-    }
+    private void FlipPlayer(MOVEMENT_DIRECTION d){
+        direction = d;
 
-    private void FlipPlayerLeft()
-    {
-        sprite.flipX = true;
-        if (!dev_testing)
-        {
-            view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
+        if (d == MOVEMENT_DIRECTION.LEFT){
+            sprite.flipX = true;
+            if (!dev_testing)
+            {
+                //view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
+            }
+        }
+        else{
+            sprite.flipX = false;
+            if (!dev_testing)
+            {
+                //view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
+            }
         }
     }
 
@@ -176,10 +183,10 @@ public class playerMove : Photon.MonoBehaviour
             if (joystick_move != Vector3.zero)
             {
                 if (joystick_move.x > 0){
-                    FlipPlayerRight();
+                    FlipPlayer(MOVEMENT_DIRECTION.RIGHT);
                 }
                 else{
-                    FlipPlayerLeft();
+                    FlipPlayer(MOVEMENT_DIRECTION.LEFT);
                 }
                 transform.Translate(joystick_move * (float)(move_speed * 0.7) * Time.deltaTime);
             }

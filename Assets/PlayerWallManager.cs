@@ -6,112 +6,158 @@ using UnityEngine;
 public class PlayerWallManager : MonoBehaviour {
     public Sprite wooden_wall;
     public GameObject wall_hover;
-    private readonly int WALL_UNIT_SIZE = 3;
+    private readonly float WALL_UNIT_SIZE = 3f;
+    private Vector2 wall_size_flat = new Vector2(0.3f, 0.18f);
+    private Vector2 wall_size_diagonal = new Vector2(0.42f, 0.18f);
 
     public enum WALL_ROTATION{
-        TOP, TOP_LEFT, LEFT, LEFT_BOTTOM, BOTTOM, BOTTOM_RIGHT, RIGHT, RIGHT_TOP
+        HORIZONTAL, DIAGONAL_LEFT, VERTICAL, DIAGONAL_RIGHT
     }
 
+    public Dictionary<WALL_ROTATION, Quaternion> wall_rotations = new Dictionary<WALL_ROTATION, Quaternion>();
+
+	private void Start()
+    {
+        wall_rotations.Add(WALL_ROTATION.HORIZONTAL, Rotation(0));
+        wall_rotations.Add(WALL_ROTATION.VERTICAL, Rotation(90));
+        wall_rotations.Add(WALL_ROTATION.DIAGONAL_RIGHT, Rotation(45));
+        wall_rotations.Add(WALL_ROTATION.DIAGONAL_LEFT, Rotation(-45));
+	}
+
 	public void PlaceWall(WALL_ROTATION wall_rotation){
-        WallTransform t = GetWall(wall_rotation);
+        WallTransform t = GetWallTransform(wall_rotation);
 
         if (t != null){
-            if (wall_rotation == WALL_ROTATION.TOP ||
-                wall_rotation == WALL_ROTATION.LEFT ||
-                wall_rotation == WALL_ROTATION.BOTTOM ||
-                wall_rotation == WALL_ROTATION.RIGHT){
-                gameObject.GetComponent<WorldItemManager>().AddWallToWorld(WorldItem.ITEM_NAME.WALL_WOODEN, t.position, t.rotation, new Vector2(0.3f, 0.18f), wooden_wall);
+            if (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL){
+                gameObject.GetComponent<WorldItemManager>().AddWallToWorld(WorldItem.ITEM_NAME.WALL_WOODEN, t.position, t.rotation, wall_size_flat, wooden_wall);
             }
             else{
-                gameObject.GetComponent<WorldItemManager>().AddWallToWorld(WorldItem.ITEM_NAME.WALL_WOODEN, t.position, t.rotation, new Vector2(0.4f, 0.18f), wooden_wall);
+                gameObject.GetComponent<WorldItemManager>().AddWallToWorld(WorldItem.ITEM_NAME.WALL_WOODEN, t.position, t.rotation, wall_size_diagonal, wooden_wall);
             }
         }
     }
 
     public void PlaceHoverWall(WALL_ROTATION wall_rotation){
-        WallTransform t = GetWall(wall_rotation);
+        WallTransform t = GetWallTransform(wall_rotation);
         Destroy(wall_hover);
         if (t != null){
             wall_hover = gameObject.GetComponent<WorldItemManager>().AddWallHoverToWorld(WorldItem.ITEM_NAME.WALL_WOODEN, t.position, t.rotation, new Vector2(0.3f, 0.18f), wooden_wall);
         }
     }
 
-    private WallTransform GetWall(WALL_ROTATION wall_rotation){
-        WallTransform t = GetWallTransform(wall_rotation);
-
-        float start_x = gameObject.GetComponent<MapManager>().start_x;
-        int offset_x = (int)(Math.Abs(transform.position.x - start_x) / WALL_UNIT_SIZE);
-        float x = t.offset.x + (float)(start_x + (WALL_UNIT_SIZE * offset_x) + (WALL_UNIT_SIZE / 2));
-
-        float start_y = gameObject.GetComponent<MapManager>().start_y;
-        int offset_y = (int)(Math.Abs(transform.position.y - start_y) / WALL_UNIT_SIZE);
-        float y = t.offset.y + (float)(start_y - (WALL_UNIT_SIZE * offset_y));
-
-        t.position = new Vector3(x, y, t.position.z);
-
-        //if (t.wall_rotation == WALL_ROTATION.LEFT && x < transform.position.x){
-        //    return t;
-        //}
-        //else{
-        //    return null;
-        //}
-        
-        return t;
-    }
-
     private WallTransform GetWallTransform(WALL_ROTATION rotation){
-        float dist = 1.5f;
+        Vector2 position = new Vector2(
+            GetWallTransformCoordinate(rotation, true), 
+            GetWallTransformCoordinate(rotation, false)
+        );
+        return new WallTransform(rotation, wall_rotations[rotation], position);
+    }
 
-        switch (rotation){
-            case WALL_ROTATION.TOP:{
-                    return new WallTransform(rotation, Rotation(0), Position(0, dist), transform);
-                }
-            case WALL_ROTATION.TOP_LEFT:{
-                    return new WallTransform(rotation, Rotation(-135), Position(0, 0), transform);
-                }
-            case WALL_ROTATION.LEFT:{
-                    return new WallTransform(rotation, Rotation(-90), Position(-dist, 0), transform);
-                }
-            case WALL_ROTATION.LEFT_BOTTOM:{
-                    return new WallTransform(rotation, Rotation(-45), Position(0, 0), transform);
-                }
-            case WALL_ROTATION.BOTTOM:{
-                    return new WallTransform(rotation, Rotation(-180), Position(0, -dist), transform);
-                }
-            case WALL_ROTATION.BOTTOM_RIGHT:{
-                    return new WallTransform(rotation, Rotation(-315), Position(0, 0), transform);
-                }
-            case WALL_ROTATION.RIGHT:{
-                    return new WallTransform(rotation, Rotation(-270), Position(dist, 0), transform);
-                }
-            case WALL_ROTATION.RIGHT_TOP:{
-                    return new WallTransform(rotation, Rotation(-225), Position(0, 0), transform);
-                }
-            default:{
-                    return new WallTransform(rotation, Rotation(0), Position(0, -dist), transform);
-                }
+    //private float GetWallTransform_Y_Coordinate(WALL_ROTATION rotation){
+    //    float offset = 0;
+    //    float start_coordinate = gameObject.GetComponent<MapManager>().start_y;
+    //    int units = (int)(Math.Abs(transform.position.y - start_coordinate) / WALL_UNIT_SIZE);
+    //    playerMove.MOVEMENT_DIRECTION direction = gameObject.GetComponent<playerMove>().direction;
+
+    //    switch (rotation){
+    //        case WALL_ROTATION.VERTICAL:{
+    //                offset = 0;
+    //                break;
+    //            }
+    //        case WALL_ROTATION.HORIZONTAL:{
+    //                offset = WALL_UNIT_SIZE / 2;
+    //                break;
+    //            }
+    //        case WALL_ROTATION.DIAGONAL_LEFT:{
+    //                offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? 0 : WALL_UNIT_SIZE;
+    //                break;
+    //            }
+    //        case WALL_ROTATION.DIAGONAL_RIGHT:{
+    //                offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? WALL_UNIT_SIZE : 0;
+    //                break;
+    //            }
+    //    }
+
+    //    float y = start_coordinate - (WALL_UNIT_SIZE * units) - offset;
+    //    return y;
+    //}
+
+    private float GetWallTransformCoordinate(WALL_ROTATION rotation, bool check_x_coordinate){
+        playerMove.MOVEMENT_DIRECTION direction = gameObject.GetComponent<playerMove>().direction;
+        float offset = 0;
+        float start_pos;
+        float player_pos;
+        int units;
+
+        // horizontal
+        if (check_x_coordinate){
+            start_pos = gameObject.GetComponent<MapManager>().start_x;
+            player_pos = transform.position.x;
+            units = (int)(Math.Abs(player_pos - start_pos) / WALL_UNIT_SIZE);
+            
+            switch (rotation){
+                case WALL_ROTATION.VERTICAL:{
+                        offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? 0 : WALL_UNIT_SIZE;
+                        break;
+                    }
+                case WALL_ROTATION.HORIZONTAL:{
+                        offset = WALL_UNIT_SIZE / 2;
+                        break;
+                    }
+                case WALL_ROTATION.DIAGONAL_LEFT:{
+                        offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? (-WALL_UNIT_SIZE / 2) : (WALL_UNIT_SIZE + WALL_UNIT_SIZE / 2);
+                        break;
+                    }
+                case WALL_ROTATION.DIAGONAL_RIGHT:{
+                        offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? (-WALL_UNIT_SIZE / 2) : (WALL_UNIT_SIZE + WALL_UNIT_SIZE / 2);
+                        break;
+                    }
+            }
+
+            return start_pos + (WALL_UNIT_SIZE * units) + offset;
         }
-    }
+        // vertical
+        else{
+            start_pos = gameObject.GetComponent<MapManager>().start_y;
+            player_pos = transform.position.y;
+            units = (int)(Math.Abs(player_pos - start_pos) / WALL_UNIT_SIZE);
+            
+            switch (rotation){
+                case WALL_ROTATION.VERTICAL:{
+                        offset = 0;
+                        break;
+                    }
+                case WALL_ROTATION.HORIZONTAL:{
+                        offset = WALL_UNIT_SIZE / 2;
+                        break;
+                    }
+                case WALL_ROTATION.DIAGONAL_LEFT:{
+                        offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? 0 : WALL_UNIT_SIZE;
+                        break;
+                    }
+                case WALL_ROTATION.DIAGONAL_RIGHT:{
+                        offset = (direction == playerMove.MOVEMENT_DIRECTION.LEFT) ? WALL_UNIT_SIZE : 0;
+                        break;
+                    }
+            }
 
-    private Quaternion Rotation(float degrees){
-        return Quaternion.Euler(0, 0, degrees);
-    }
-
-    private Vector2 Position(float x, float y){
-        return new Vector2(x, y);
+            return start_pos - (WALL_UNIT_SIZE * units) - offset;
+        }
     }
 
     private class WallTransform{
         public WALL_ROTATION wall_rotation;
         public Quaternion rotation;
-        public Vector3 position;
-        public Vector2 offset;
+        public Vector2 position;
 
-        public WallTransform(WALL_ROTATION wall_rotation, Quaternion rotation, Vector2 offset, Transform transform){
+        public WallTransform(WALL_ROTATION wall_rotation, Quaternion rotation, Vector2 position){
             this.wall_rotation = wall_rotation;
             this.rotation = rotation;
-            this.offset = offset;
-            this.position = new Vector2(transform.position.x + offset.x, transform.position.y + offset.y);
+            this.position = position;
         }
+    }
+
+    private Quaternion Rotation(float degrees){
+        return Quaternion.Euler(0, 0, degrees);
     }
 }
