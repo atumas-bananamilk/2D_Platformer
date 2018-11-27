@@ -170,6 +170,7 @@ public class playerMove : Photon.MonoBehaviour
 
         if (d == MOVEMENT_DIRECTION.LEFT){
             sprite.flipX = true;
+            gameObject.GetComponent<PlayerWeaponManager>().FlipWeapon(true);
             if (!dev_testing)
             {
                 //view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
@@ -177,6 +178,7 @@ public class playerMove : Photon.MonoBehaviour
         }
         else{
             sprite.flipX = false;
+            gameObject.GetComponent<PlayerWeaponManager>().FlipWeapon(false);
             if (!dev_testing)
             {
                 //view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
@@ -286,27 +288,30 @@ public class playerMove : Photon.MonoBehaviour
         }
     }
 
-    private void ChangePlayerState(PLAYERSTATE s){
+    public void ChangePlayerState(PLAYERSTATE s){
         switch(s){
             case PLAYERSTATE.IDLE:{
                     player_state = PLAYERSTATE.IDLE;
                     gameObject.GetComponent<Animator>().Play("player_idle");
+                    gameObject.GetComponent<Animator>().Play("player_idle_weapon");
                     break;
                 }
             case PLAYERSTATE.RUNNING:{
                     player_state = PLAYERSTATE.RUNNING;
                     gameObject.GetComponent<Animator>().Play("player_run");
+                    gameObject.GetComponent<Animator>().Play("player_run_weapon");
                     break;
                 }
             case PLAYERSTATE.JUMPING:{
                     player_state = PLAYERSTATE.JUMPING;
                     gameObject.GetComponent<Animator>().Play("player_jump");
+                    gameObject.GetComponent<Animator>().Play("player_idle_weapon");
                     break;
                 }
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D c)
+	private void OnCollisionEnter2D(Collision2D c)
     {
         collision_count++;
         reset_jumps(ref c);
