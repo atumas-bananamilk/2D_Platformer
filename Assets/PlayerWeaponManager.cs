@@ -7,7 +7,7 @@ public class PlayerWeaponManager : MonoBehaviour {
     public GameObject player_weapon;
     private Sprite new_weapon_sprite;
     private string weapons_path = "AssetsWeapons/gun_";
-    private int new_weapon_number = 26;
+    private int new_weapon_number = 13;
 
 	private void Start()
 	{
