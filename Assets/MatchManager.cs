@@ -16,12 +16,14 @@ public class MatchManager : MonoBehaviour {
     // game starts
 
     public GameObject match_ready_panel;
+    public GameObject player_panel;
+    public GameObject main_panel;
     public GameObject find_match_button;
     public GameObject leave_match_button;
     public Text match_ready_players_count;
 
     private Color DEFAULT_INDICATOR_COLOUR;
-    private readonly int MATCH_PLAYER_LIMIT = 4;
+    private readonly int MATCH_PLAYER_LIMIT = 1;
 
 	private void Start()
     {
@@ -31,6 +33,8 @@ public class MatchManager : MonoBehaviour {
 	public void FindMatch(){
         gameObject.GetComponent<TCPNetwork>().FindMatch();
         match_ready_panel.SetActive(true);
+        player_panel.SetActive(false);
+        main_panel.SetActive(false);
         find_match_button.SetActive(false);
         leave_match_button.SetActive(true);
     }
@@ -38,8 +42,11 @@ public class MatchManager : MonoBehaviour {
     public void LeaveMatch(){
         gameObject.GetComponent<TCPNetwork>().LeaveMatch();
         match_ready_panel.SetActive(false);
+        player_panel.SetActive(true);
+        main_panel.SetActive(true);
         find_match_button.SetActive(true);
         leave_match_button.SetActive(false);
+        gameObject.GetComponent<LobbyManager>().AnimatePlayer();
     }
 
     public void IndicateReadyPlayers(int amount){
@@ -53,7 +60,7 @@ public class MatchManager : MonoBehaviour {
                 ready_indicators[i].color = new Color(0, 255, 0);
             }
         }
-        match_ready_players_count.text = amount + " / " + MATCH_PLAYER_LIMIT + " Players Found";
+        match_ready_players_count.text = amount + " / " + MATCH_PLAYER_LIMIT;
     }
 
     public void ClearIndicators(){

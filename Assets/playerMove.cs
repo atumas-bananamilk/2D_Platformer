@@ -292,20 +292,20 @@ public class playerMove : Photon.MonoBehaviour
         switch(s){
             case PLAYERSTATE.IDLE:{
                     player_state = PLAYERSTATE.IDLE;
-                    gameObject.GetComponent<Animator>().Play("player_idle");
-                    gameObject.GetComponent<Animator>().Play("player_idle_weapon");
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE);
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WEAPON);
                     break;
                 }
             case PLAYERSTATE.RUNNING:{
                     player_state = PLAYERSTATE.RUNNING;
-                    gameObject.GetComponent<Animator>().Play("player_run");
-                    gameObject.GetComponent<Animator>().Play("player_run_weapon");
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN);
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN_WEAPON);
                     break;
                 }
             case PLAYERSTATE.JUMPING:{
                     player_state = PLAYERSTATE.JUMPING;
-                    gameObject.GetComponent<Animator>().Play("player_jump");
-                    gameObject.GetComponent<Animator>().Play("player_idle_weapon");
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP);
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WEAPON);
                     break;
                 }
         }

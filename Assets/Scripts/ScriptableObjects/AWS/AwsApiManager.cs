@@ -114,9 +114,9 @@ public class AwsApiManager : MonoBehaviour
                 }
                 case CALLBACK.USER_STATS_GET:{
                     TCPPlayer.my_player.name = response.data[0];
-                    LobbyManager.Instance.welcome_message.text = "Welcome back, " + response.data[0] + "!";
-                    LobbyManager.Instance.gold_amount_text.text = response.data[1] + " gold";
-                    LobbyManager.Instance.SP_amount_text.text = response.data[2] + " SP";
+                    LobbyManager.Instance.welcome_message.text = response.data[0];
+                    LobbyManager.Instance.gold_amount_text.text = response.data[1];
+                    LobbyManager.Instance.SP_amount_text.text = response.data[2];
                     break;
                 }
                 case CALLBACK.MAP_CHANGES_UPDATE:{
