@@ -838,9 +838,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: bff4d074-3e16-45ac-8d1b-abcbf7873b0d
+  cloudProjectId: 0e206363-c3e2-4759-b8b6-54841f11f275
   projectName: Photon_test
-  organizationId: aivaras-1520945
+  organizationId: aiwaras1111
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

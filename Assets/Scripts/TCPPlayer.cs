@@ -66,6 +66,14 @@ public class TCPPlayer {
         }
     }
 
+    public static void ApplyDamageToPlayer(int id, float amount){
+        for (int i = 0; i < players.Count; i++){
+            if (players[i].id == id){
+                players[i].obj.GetComponent<playerHealthBar>().ReduceHealth(amount);
+            }
+        }
+    }
+
     public static string GetNameByGameObj(GameObject obj){
         foreach (Player p in players)
         {
@@ -85,6 +93,17 @@ public class TCPPlayer {
             }
         }
         return null;
+    }
+
+    public static int GetIdByGameObject(ref GameObject obj){
+        foreach (Player p in players)
+        {
+            if (p.obj == obj)
+            {
+                return p.id;
+            }
+        }
+        return -1;
     }
 
     public static bool IdIsSet()

@@ -77,6 +77,10 @@ public class TCPNetwork : MonoBehaviour
         }
     }
 
+    public static void ApplyDamage(ref GameObject obj, float amount){
+        AsyncSend(TCPMessageManager.ApplyDamage(TCPPlayer.my_player.id, TCPPlayer.GetIdByGameObject(ref obj), ref amount));
+    }
+
     private void AsyncListen()
     {
         thread = new Thread(() => Listen());

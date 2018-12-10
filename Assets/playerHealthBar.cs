@@ -17,6 +17,11 @@ public class playerHealthBar : Photon.MonoBehaviour {
     public Vector3 local_player_name_pos;
     public Vector3 other_player_name_pos;
 
+    public Vector3 local_player_flag_pos;
+    public Vector3 other_player_flag_pos;
+
+    private float health_amount = 100f;
+
 	void Awake()
     {
         //if (!player_move.dev_testing){
@@ -36,31 +41,27 @@ public class playerHealthBar : Photon.MonoBehaviour {
         //if (photonView.isMine){
         if (TCPPlayer.IsMine(gameObject)){
             player_move.player_name.GetComponent<RectTransform>().anchoredPosition = (local_player_name_pos);
+            player_move.player_flag.GetComponent<RectTransform>().anchoredPosition = (local_player_flag_pos);
             local_player_canvas.SetActive(true);
         }
         else{
             player_move.player_name.GetComponent<RectTransform>().anchoredPosition = (other_player_name_pos);
+            player_move.player_flag.GetComponent<RectTransform>().anchoredPosition = (other_player_flag_pos);
             other_player_canvas.SetActive(true);
         }
     }
 
-    [PunRPC]
-    public void reduceHealth()
-    {
-        reduceHealthAmount(0.2f);
-    }
-
-    public void reduceHealthAmount(float hit)
+    public void ReduceHealth(float hit_amount)
     {
         //if (photonView.isMine)
         if (TCPPlayer.IsMine(gameObject))
         {
-            local_player_healthbar.fillAmount -= hit;
+            local_player_healthbar.fillAmount -= hit_amount;
             checkHealthAmount();
         }
         else
         {
-            other_player_healthbar.fillAmount -= hit;
+            other_player_healthbar.fillAmount -= hit_amount;
         }
     }
 
@@ -89,7 +90,7 @@ public class playerHealthBar : Photon.MonoBehaviour {
         world_space_canvas.SetActive(false);
     }
 
-    [PunRPC]
+    //[PunRPC]
     public void respawnPlayer()
     {
         this.GetComponent<SpriteRenderer>().enabled = true;

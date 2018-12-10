@@ -20,7 +20,7 @@ public class LobbyManager : Singleton<LobbyManager> {
     }
 
     public void AnimatePlayer(){
-        player_animator.Play(AnimatorManager.LOBBY_PLAYER_RUN);
+        player_animator.Play(AnimatorManager.LOBBY_PLAYER_IDLE);
     }
 
     public void OpenOutfitPanel(){

@@ -25,6 +25,7 @@ public class playerMove : Photon.MonoBehaviour
     public SpriteRenderer sprite;
     public Rigidbody2D body;
     public Text player_name;
+    public SpriteRenderer player_flag;
     public Color enemy_text_color;
     public GameObject bullet_prefab;
     [SerializeField] Text ping_text;
@@ -37,6 +38,8 @@ public class playerMove : Photon.MonoBehaviour
     public MOVEMENT_DIRECTION direction;
     public PLAYERSTATE player_state;
     private int collision_count = 0;
+
+    public LayerMask to_hit;
 
     public enum PLAYERSTATE{
         IDLE, RUNNING, JUMPING
@@ -140,7 +143,7 @@ public class playerMove : Photon.MonoBehaviour
                 Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
                 Vector2 v = new Vector2((int)Math.Round(pos.x), (int)Math.Round(pos.y));
 
-                GameObject[] items = GameObject.FindGameObjectsWithTag("PickUpItem");
+                GameObject[] items = GameObject.FindGameObjectsWithTag(TagManager.PICK_UP_ITEM);
                 foreach (GameObject item in items)
                 {
                     if (item.GetComponent<BoxCollider2D>().bounds.Contains(pos))
@@ -263,19 +266,36 @@ public class playerMove : Photon.MonoBehaviour
 
     public void shoot()
     {
+        gameObject.GetComponent<PlayerWeaponManager>().Shoot();
+
         if (!dev_testing)
         {
-            Vector2 v = new Vector2(this.transform.position.x, this.transform.position.y);
-            GameObject obj = PhotonNetwork.Instantiate(bullet_prefab.name, v, Quaternion.identity, 0);
+            Vector2 target = new Vector2(100000, transform.position.y);
+            Vector2 weapon_point = gameObject.GetComponent<PlayerWeaponManager>().weapon_point.transform.position;
 
-            if (!sprite.flipX)
-            {
-                // already going right by default
+            RaycastHit2D hit = Physics2D.Raycast(weapon_point, target, gameObject.GetComponent<PlayerWeaponManager>().range, to_hit);
+            Debug.DrawLine(weapon_point, target);
+
+            if (hit.collider != null){
+                Debug.DrawLine(weapon_point, hit.point, Color.red);
+
+                if (hit.collider.tag == TagManager.PLAYER){
+                    GameObject damaged_obj = hit.collider.gameObject;
+                    TCPNetwork.ApplyDamage(ref damaged_obj, gameObject.GetComponent<PlayerWeaponManager>().damage);
+                }
             }
-            else
-            {
-                obj.GetComponent<PhotonView>().RPC("changeDirectionLeft", PhotonTargets.AllBuffered);
-            }
+
+
+            //GameObject obj = PhotonNetwork.Instantiate(bullet_prefab.name, v, Quaternion.identity, 0);
+
+            //if (!sprite.flipX)
+            //{
+            //    // already going right by default
+            //}
+            //else
+            //{
+            //    obj.GetComponent<PhotonView>().RPC("changeDirectionLeft", PhotonTargets.AllBuffered);
+            //}
         }
     }
 
@@ -305,7 +325,7 @@ public class playerMove : Photon.MonoBehaviour
             case PLAYERSTATE.JUMPING:{
                     player_state = PLAYERSTATE.JUMPING;
                     gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP);
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WEAPON);
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP_WEAPON);
                     break;
                 }
         }
@@ -316,7 +336,7 @@ public class playerMove : Photon.MonoBehaviour
         collision_count++;
         reset_jumps(ref c);
 
-        if (c.gameObject.tag == "Player")
+        if (c.gameObject.tag == TagManager.PLAYER)
         {
             Physics2D.IgnoreCollision(c.collider, GetComponent<Collider2D>());
         }
@@ -337,14 +357,14 @@ public class playerMove : Photon.MonoBehaviour
     {
         if (!dev_testing && view.isMine)
         {
-            if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
+            if (c.gameObject.tag == TagManager.GROUND || c.gameObject.tag == TagManager.PLAYER)
             {
                 jumps_done = 0;
             }
         }
         else
         {
-            if (c.gameObject.tag == "Ground" || c.gameObject.tag == "Player")
+            if (c.gameObject.tag == TagManager.GROUND || c.gameObject.tag == TagManager.PLAYER)
             {
                 jumps_done = 0;
             }

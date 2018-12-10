@@ -5,8 +5,8 @@ using UnityEngine;
 public class WorldItem : MonoBehaviour {
     public Sprite icon { get; set; }
 
-    private readonly string PLAYER = "Player";
-    private readonly string PICK_UP_ITEM = "PickUpItem";
+    //private readonly string PLAYER = "Player";
+    //private readonly string PICK_UP_ITEM = "PickUpItem";
     public ITEM_NAME item_name;
     public int amount;
 
@@ -24,9 +24,9 @@ public class WorldItem : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D c)
     {
-        if (c.gameObject.tag == PLAYER)
+        if (c.gameObject.tag == TagManager.PLAYER)
         {
-            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer(PICK_UP_ITEM), LayerMask.NameToLayer(PLAYER), true);
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer(TagManager.PICK_UP_ITEM), LayerMask.NameToLayer(TagManager.PLAYER), true);
         }
     }
 
@@ -39,8 +39,8 @@ public class WorldItem : MonoBehaviour {
     {
         GameObject obj = Instantiate(gameObject, v, Quaternion.identity) as GameObject;
         obj.transform.localScale = new Vector3(0.5f, 0.5f, 0);
-        obj.tag = PICK_UP_ITEM;
-        obj.layer = LayerMask.NameToLayer(PICK_UP_ITEM);
+        obj.tag = TagManager.PICK_UP_ITEM;
+        obj.layer = LayerMask.NameToLayer(TagManager.PICK_UP_ITEM);
 
         SpriteRenderer r = obj.AddComponent<SpriteRenderer>();
         r.sprite = icon;

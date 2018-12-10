@@ -7,7 +7,7 @@ using UnityEngine;
 public class TCPMessageManager : MonoBehaviour {
 
     private enum CMD{
-        FIND, LEAVE, START, ASSIGN, INIT, POS, DISCONNECT
+        FIND, LEAVE, START, ASSIGN, INIT, POS, DISCONNECT, DAMAGE
     }
 
     public static string FindMatch()
@@ -29,6 +29,9 @@ public class TCPMessageManager : MonoBehaviour {
     public static string Disconnect()
     {
         return "(disconnect:" + TCPPlayer.my_player.id + ")";
+    }
+    public static string ApplyDamage(int shooter_id, int receiver_id, ref float amount){
+        return "(damage:" + shooter_id + "," + receiver_id + "," + amount + ")";
     }
 
     public IEnumerator UpdateMatchIndicators(int match_players_count)
@@ -70,6 +73,15 @@ public class TCPMessageManager : MonoBehaviour {
     public IEnumerator DestroyPlayer(int id)
     {
         TCPPlayer.RemovePlayer(id);
+        yield return null;
+    }
+
+    public IEnumerator ApplyDamageToPlayer(int shooter_id, int receiver_id, float amount)
+    {
+        if (shooter_id != TCPPlayer.my_player.id){
+            TCPPlayer.GetPlayerGameObject(shooter_id).GetComponent<PlayerWeaponManager>().Shoot();
+        }
+        TCPPlayer.GetPlayerGameObject(receiver_id).GetComponent<playerHealthBar>().ReduceHealth(amount);
         yield return null;
     }
 
@@ -137,6 +149,12 @@ public class TCPMessageManager : MonoBehaviour {
             case CMD.DISCONNECT:{
                 UnityMainThreadDispatcher.Instance().Enqueue(
                     DestroyPlayer(id)
+                );
+                break;
+            }
+            case CMD.DAMAGE:{
+                UnityMainThreadDispatcher.Instance().Enqueue(
+                    ApplyDamageToPlayer(id, Int32.Parse(data[1]), float.Parse(data[2]))
                 );
                 break;
             }

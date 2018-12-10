@@ -169,7 +169,7 @@ public class MapManager : MonoBehaviour
 
     public void UpdateMapLocally(Vector2 unit_pos, bool updating_from_player, string action)
     {
-        GameObject[] blocks = GameObject.FindGameObjectsWithTag("Ground");
+        GameObject[] blocks = GameObject.FindGameObjectsWithTag(TagManager.GROUND);
         foreach (GameObject block in blocks)
         {
             if ((Vector2) block.transform.position == unit_pos)

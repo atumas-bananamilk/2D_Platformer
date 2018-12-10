@@ -26,7 +26,7 @@ public class RespawnScript : MonoBehaviour {
             timer_text.text = "Respawn in: "+timer_amount.ToString("F0"); // F0 - format
 
             if (timer_amount <= 0){
-                local_player.GetComponent<PhotonView>().RPC("respawnPlayer", PhotonTargets.AllBuffered);
+                //local_player.GetComponent<PhotonView>().RPC("respawnPlayer", PhotonTargets.AllBuffered);
                 respawn_canvas.SetActive(false);
                 enable_timer = false;
             }
