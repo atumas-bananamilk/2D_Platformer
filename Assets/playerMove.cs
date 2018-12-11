@@ -39,7 +39,10 @@ public class playerMove : Photon.MonoBehaviour
     public PLAYERSTATE player_state;
     private int collision_count = 0;
 
+    private bool shooting = false;
     public LayerMask to_hit;
+    Vector2 player_weapon_point;
+    RaycastHit2D weapon_raycast;
 
     public enum PLAYERSTATE{
         IDLE, RUNNING, JUMPING
@@ -64,7 +67,7 @@ public class playerMove : Photon.MonoBehaviour
 	private void Start()
 	{
         //Screen.fullScreen = true;
-	}
+    }
 
 	private void Awake()
     {
@@ -78,11 +81,21 @@ public class playerMove : Photon.MonoBehaviour
         //    player_name.text = view.owner.NickName;
         //    player_name.color = enemy_text_color;
         //}
+
+        CalculateWeaponPointDistance();
         FlipPlayer(MOVEMENT_DIRECTION.RIGHT);
 
         if (dev_testing){
             player_camera.SetActive(true);
         }
+    }
+
+    private void CalculateWeaponPointDistance(){
+        GetComponent<PlayerWeaponManager>().weapon_point_distance_x = 
+            Math.Abs(transform.position.x - GetComponent<PlayerWeaponManager>().weapon_point.transform.position.x);
+
+        GetComponent<PlayerWeaponManager>().weapon_point_distance_y = 
+            transform.position.y - GetComponent<PlayerWeaponManager>().weapon_point.transform.position.y;
     }
 
     public void SetupPlayers(){
@@ -104,6 +117,10 @@ public class playerMove : Photon.MonoBehaviour
 
     private void Update()
     {
+        if (shooting){
+            Shoot();
+        }
+
         UpdateVelocity();
 
         //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
@@ -163,7 +180,7 @@ public class playerMove : Photon.MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                shoot();
+                Shoot();
             }
         }
     }
@@ -263,40 +280,26 @@ public class playerMove : Photon.MonoBehaviour
             default: { break; }
         }
     }
+    
+    public void EnableShooting(bool e){
+        shooting = e;
+    }
 
-    public void shoot()
+    public void Shoot()
     {
-        gameObject.GetComponent<PlayerWeaponManager>().Shoot();
+        GetComponent<PlayerWeaponManager>().TryFlipWeaponShootVector();
+        GetComponent<PlayerWeaponManager>().Shoot();
+        TCPNetwork.Shoot();
 
-        if (!dev_testing)
-        {
-            Vector2 target = new Vector2(100000, transform.position.y);
-            Vector2 weapon_point = gameObject.GetComponent<PlayerWeaponManager>().weapon_point.transform.position;
+        //player_weapon_point = GetComponent<PlayerWeaponManager>().weapon_point.transform.position;
+        //weapon_raycast = Physics2D.Raycast(player_weapon_point, weapon_target, GetComponent<PlayerWeaponManager>().range, to_hit);
 
-            RaycastHit2D hit = Physics2D.Raycast(weapon_point, target, gameObject.GetComponent<PlayerWeaponManager>().range, to_hit);
-            Debug.DrawLine(weapon_point, target);
-
-            if (hit.collider != null){
-                Debug.DrawLine(weapon_point, hit.point, Color.red);
-
-                if (hit.collider.tag == TagManager.PLAYER){
-                    GameObject damaged_obj = hit.collider.gameObject;
-                    TCPNetwork.ApplyDamage(ref damaged_obj, gameObject.GetComponent<PlayerWeaponManager>().damage);
-                }
-            }
-
-
-            //GameObject obj = PhotonNetwork.Instantiate(bullet_prefab.name, v, Quaternion.identity, 0);
-
-            //if (!sprite.flipX)
-            //{
-            //    // already going right by default
-            //}
-            //else
-            //{
-            //    obj.GetComponent<PhotonView>().RPC("changeDirectionLeft", PhotonTargets.AllBuffered);
-            //}
-        }
+        //if (weapon_raycast.collider != null){
+        //    if (weapon_raycast.collider.tag == TagManager.PLAYER){
+        //        GameObject damaged_obj = weapon_raycast.collider.gameObject;
+        //        TCPNetwork.ApplyDamage(ref damaged_obj, GetComponent<PlayerWeaponManager>().damage);
+        //    }
+        //}
     }
 
     public void jump()
