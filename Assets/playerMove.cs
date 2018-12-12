@@ -43,6 +43,7 @@ public class playerMove : Photon.MonoBehaviour
     public LayerMask to_hit;
     Vector2 player_weapon_point;
     RaycastHit2D weapon_raycast;
+    private int next_shot = 0;
 
     public enum PLAYERSTATE{
         IDLE, RUNNING, JUMPING
@@ -117,10 +118,14 @@ public class playerMove : Photon.MonoBehaviour
 
     private void Update()
     {
-        if (shooting){
+        // shoot every 5 updates
+        if (shooting && next_shot >= 5){
             Shoot();
+            next_shot = 0;
         }
+        next_shot++;
 
+        ParallaxBackgrounds();
         UpdateVelocity();
 
         //ping_text.text = "Ping: " + PhotonNetwork.GetPing();
@@ -309,6 +314,10 @@ public class playerMove : Photon.MonoBehaviour
         {
             body.AddForce(Vector2.up * jump_force);
         }
+    }
+
+    private void ParallaxBackgrounds(){
+        BackgroundManager.Instance.MoveBackgrounds(transform.position);
     }
 
     public void ChangePlayerState(PLAYERSTATE s){

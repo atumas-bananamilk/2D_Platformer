@@ -53,14 +53,9 @@ public class PlayerWeaponManager : MonoBehaviour {
 
         // flip weapon point
         weapon_point.transform.position = new Vector2(weapon_point_x, weapon_point_y);
-
-        // flip prefab vector
-        //GetComponent<ParticleSystem>().shape.rotation = new Vector2(GetComponent<ParticleSystem>().shape.rotation.x,
-        //-GetComponent<ParticleSystem>().shape.rotation.y);
     }
 
     public void Shoot(){
-        //gameObject.GetComponent<ParticleSystem>().Play();
         Vector2 bullet_pos = weapon_point.transform.position;
         bullet_pos.y += UnityEngine.Random.Range(-0.1f, 0.1f);
 

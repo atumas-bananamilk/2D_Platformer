@@ -107,7 +107,7 @@ public class TCPNetwork : MonoBehaviour
                 l_response = Encoding.ASCII.GetString(comm_data, 0, stream.Read(comm_data, 0, comm_data.Length));
                 if (l_response.Length > 0)
                 {
-                    Debug.Log("RECEIVED: " + l_response);
+                    //Debug.Log("RECEIVED: " + l_response);
                     ProcessReceivedData(l_response);
                 }
             }

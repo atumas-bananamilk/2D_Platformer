@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
-    private float speed = 20f;
+    private float speed = 20f; // 40f
     private float destroy_time = 2f;
     private Vector2 direction;
 
@@ -35,7 +35,10 @@ public class Bullet : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D c){
         if (c.collider.tag == "Player"){
-
+            GameObject o = c.gameObject;
+            if (o && c.gameObject){
+                TCPNetwork.ApplyDamage(ref o, GetComponent<PlayerWeaponManager>().damage);
+            }
         }
         Debug.Log("TOUCHED: "+c.collider.name);
     }
