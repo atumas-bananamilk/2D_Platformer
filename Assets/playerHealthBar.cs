@@ -8,8 +8,8 @@ public class playerHealthBar : Photon.MonoBehaviour {
 
     public GameObject world_space_canvas;
 
-    public GameObject local_player_canvas;
-    public GameObject other_player_canvas;
+    public GameObject canvas_local_player;
+    public GameObject canvas_other_player;
 
     public Image local_player_healthbar;
     public Image other_player_healthbar;
@@ -20,6 +20,8 @@ public class playerHealthBar : Photon.MonoBehaviour {
     public Vector3 local_player_flag_pos;
     public Vector3 other_player_flag_pos;
 
+    public GameObject background;
+
     private float health_amount = 100f;
 
 	void Awake()
@@ -28,12 +30,13 @@ public class playerHealthBar : Photon.MonoBehaviour {
         //    SetCorrectCanvas();
         //}
         //else{
-        //    local_player_canvas.SetActive(true);
+        //    canvas_local_player.SetActive(true);
         //}
 
         //if (photonView.isMine || player_move.dev_testing){
         if (TCPPlayer.IsMine(gameObject) || player_move.dev_testing){
-            RespawnScript.Instance.local_player = this.gameObject;
+            Debug.Log("ASSIGNING LOCAL");
+            RespawnScript.Instance.local_player = gameObject;
         }
 	}
     
@@ -42,71 +45,90 @@ public class playerHealthBar : Photon.MonoBehaviour {
         if (TCPPlayer.IsMine(gameObject)){
             player_move.player_name.GetComponent<RectTransform>().anchoredPosition = (local_player_name_pos);
             player_move.player_flag.GetComponent<RectTransform>().anchoredPosition = (local_player_flag_pos);
-            local_player_canvas.SetActive(true);
+            canvas_local_player.SetActive(true);
+            background.SetActive(true);
         }
         else{
             player_move.player_name.GetComponent<RectTransform>().anchoredPosition = (other_player_name_pos);
             player_move.player_flag.GetComponent<RectTransform>().anchoredPosition = (other_player_flag_pos);
-            other_player_canvas.SetActive(true);
+            canvas_other_player.SetActive(true);
+            background.SetActive(false);
         }
     }
 
     public void ReduceHealth(float hit_amount)
     {
-        //if (photonView.isMine)
-        if (TCPPlayer.IsMine(gameObject))
-        {
+        if (TCPPlayer.IsMine(gameObject)){
+            health_amount -= hit_amount;
             local_player_healthbar.fillAmount -= hit_amount;
-            checkHealthAmount();
         }
-        else
-        {
+        else{
             other_player_healthbar.fillAmount -= hit_amount;
         }
+        CheckHealthAmount();
+        GetComponent<Animator>().Play(AnimatorManager.PLAYER_HIT);
     }
 
-    private void checkHealthAmount()
+    private void CheckHealthAmount()
     {
-        if (local_player_healthbar.fillAmount <= 0.1f)
-        {
-            RespawnScript.Instance.StartTimer();
-            player_move.disable_move = true;
-            this.GetComponent<PhotonView>().RPC("killPlayer", PhotonTargets.AllBuffered);
+        if (health_amount <= 0.1f){
+            KillPlayer();
+            TCPNetwork.KillPlayer();
+            gameObject.GetComponent<playerMove>().TryChangePlayerState(playerMove.PLAYERSTATE.DEAD);
         }
+        //if (local_player_healthbar.fillAmount <= 0.1f)
+        //{
+        //}
     }
 
-    [PunRPC]
-    public void killPlayer()
+    public void KillPlayer()
     {
-        this.GetComponent<SpriteRenderer>().enabled = false;
-        this.GetComponent<Rigidbody2D>().simulated = false;
-        this.GetComponent<BoxCollider2D>().enabled = false;
+        player_move.disable_move = true;
+
+        if (TCPPlayer.IsMine(gameObject)){
+            RespawnScript.Instance.ShowDeadCanvas(10);
+        }
+
+        //Debug.Log("KILLING PLAYER");
+        player_move.ChangePlayerState(playerMove.PLAYERSTATE.DEAD);
+        GetComponent<PlayerWeaponManager>().HideWeapon(true);
+
+        SetPlayerActive(false);
+
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Rigidbody2D>().simulated = false;
+        GetComponent<BoxCollider2D>().enabled = false;
 
         //if (!photonView.isMine){
         if (!TCPPlayer.IsMine(gameObject)){
-            other_player_canvas.SetActive(false);
+            canvas_other_player.SetActive(false);
         }
 
         world_space_canvas.SetActive(false);
     }
 
-    //[PunRPC]
-    public void respawnPlayer()
-    {
-        this.GetComponent<SpriteRenderer>().enabled = true;
-        this.GetComponent<Rigidbody2D>().simulated = true;
-        this.GetComponent<BoxCollider2D>().enabled = true;
+    private void SetPlayerActive(bool active){
+        float refill_amount = 1f;
 
-        //if (!photonView.isMine)
-        if (!TCPPlayer.IsMine(gameObject)){
-            other_player_canvas.SetActive(true);
-            other_player_healthbar.fillAmount = 1;
+        //this.GetComponent<SpriteRenderer>().enabled = active;
+        GetComponent<Rigidbody2D>().simulated = active;
+        //this.GetComponent<BoxCollider2D>().enabled = active;
+        world_space_canvas.SetActive(active);
+
+        if (TCPPlayer.IsMine(gameObject)){
+            player_move.disable_move = !active;
+            local_player_healthbar.fillAmount = refill_amount;
         }
         else{
-            player_move.disable_move = false;
-            local_player_healthbar.fillAmount = 1;
+            canvas_other_player.SetActive(active);
+            other_player_healthbar.fillAmount = refill_amount;
         }
+    }
 
-        world_space_canvas.SetActive(true);
+    //[PunRPC]
+    public void RespawnPlayer()
+    {
+        GetComponent<PlayerWeaponManager>().HideWeapon(false);
+        SetPlayerActive(true);
     }
 }

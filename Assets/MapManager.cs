@@ -41,13 +41,13 @@ public class MapManager : MonoBehaviour
     public Sprite TILE_ground_11;
     public Sprite TILE_storm;
 
-    private int TILE_ID_STORM = 0;
-    private int TILE_ID_GROUND_5 = 5;
-    private int TILE_ID_GROUND_6 = 6;
-    private int TILE_ID_GROUND_7 = 7;
-    private int TILE_ID_GROUND_11 = 11;
+    public static int TILE_ID_STORM = 0;
+    public static int TILE_ID_GROUND_5 = 5;
+    public static int TILE_ID_GROUND_6 = 6;
+    public static int TILE_ID_GROUND_7 = 7;
+    public static int TILE_ID_GROUND_11 = 11;
 
-    private IDictionary<int, Sprite> block_images = new Dictionary<int, Sprite>();
+    public static IDictionary<int, Sprite> block_images = new Dictionary<int, Sprite>();
     [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
     private List<List<string>> map;
     [HideInInspector] public List<MapChange> map_changes = new List<MapChange>();
@@ -107,7 +107,7 @@ public class MapManager : MonoBehaviour
     private void PlaceSingleBlock(float x, float y, int cell_id){
         GameObject block = null;
         block = Instantiate(block_prefab, new Vector2(x, y), Quaternion.identity) as GameObject;
-        SetBlockImage(cell_id, ref block);
+        block.GetComponent<Block>().SetBlockType(cell_id);
     }
 
     private void PlaceBlocks()
@@ -201,16 +201,6 @@ public class MapManager : MonoBehaviour
         pairs.Add("X", x);
         pairs.Add("Y", y);
         AwsApiManager.Instance.UpdateMap(pairs, gameObject);
-    }
-
-    private void SetBlockImage(int cell_id, ref GameObject block)
-    {
-        block.GetComponent<SpriteRenderer>().sprite = TILE_ground_5;
-
-        if (block_images.ContainsKey(cell_id)){
-            block.GetComponent<SpriteRenderer>().sprite = block_images[cell_id];
-        }
-        //block.GetComponent<SpriteRenderer>().sprite = block_images.ContainsKey(cell_id) ? block_images[cell_id] : ground_11;
     }
 
     private List<List<string>> ReadMap(TextAsset file)

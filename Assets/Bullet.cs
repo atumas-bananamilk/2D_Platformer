@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour {
     private float speed = 20f; // 40f
     private float destroy_time = 2f;
     private Vector2 direction;
+    public float damage = 0.2f;
 
 	void Awake(){
 	    StartCoroutine("DestroyObj");
@@ -26,25 +27,26 @@ public class Bullet : MonoBehaviour {
         transform.Translate(direction * speed * Time.deltaTime);
     }
 
-	//private void OnTriggerEnter2D(Collider2D other){
- //       if (other.tag == "Player"){
-            
- //       }
- //       Debug.Log("TOUCHED");
-	//}
-
-    private void OnCollisionEnter2D(Collision2D c){
-        if (c.collider.tag == "Player"){
+	private void OnTriggerEnter2D(Collider2D c){
+        if (c.GetComponent<Collider2D>().tag == "Player"){
             GameObject o = c.gameObject;
             if (o && c.gameObject){
-                TCPNetwork.ApplyDamage(ref o, GetComponent<PlayerWeaponManager>().damage);
+                TCPNetwork.ApplyDamage(ref o, damage);
             }
+            DestroyObjImmediate();
         }
-        Debug.Log("TOUCHED: "+c.collider.name);
+	}
+
+	private void DestroyObj(){
+        if (gameObject){
+            Destroy(gameObject, destroy_time);
+        }
     }
 
-    private void DestroyObj(){
-        Destroy(gameObject, destroy_time);
+    private void DestroyObjImmediate(){
+        if (gameObject){
+            Destroy(gameObject);
+        }
     }
 
     //IEnumerator destroyObj(){

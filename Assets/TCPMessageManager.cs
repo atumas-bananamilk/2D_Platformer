@@ -7,7 +7,7 @@ using UnityEngine;
 public class TCPMessageManager : MonoBehaviour {
 
     private enum CMD{
-        FIND, LEAVE, START, ASSIGN, INIT, POS, DISCONNECT, SHOOT, DAMAGE
+        FIND, LEAVE, START, ASSIGN, INIT, POS, DISCONNECT, SHOOT, DAMAGE, KILL, FLIP, STATE
     }
 
     public static string FindMatch()
@@ -35,6 +35,15 @@ public class TCPMessageManager : MonoBehaviour {
     }
     public static string ApplyDamage(int shooter_id, int receiver_id, ref float amount){
         return "(damage:" + shooter_id + "," + receiver_id + "," + amount + ")";
+    }
+    public static string KillPlayer(int id){
+        return "(kill:" + id + ")";
+    }
+    public static string FlipPlayer(int id, playerMove.MOVEMENT_DIRECTION d){
+        return "(flip:" + id + "," + d + ")";
+    }
+    public static string ChangePlayerState(int id, playerMove.PLAYERSTATE s){
+        return "(state:" + id + "," + s + ")";
     }
 
     public IEnumerator UpdateMatchIndicators(int match_players_count)
@@ -84,12 +93,32 @@ public class TCPMessageManager : MonoBehaviour {
         if (id != TCPPlayer.my_player.id){
             TCPPlayer.GetPlayerGameObject(id).GetComponent<PlayerWeaponManager>().Shoot();
         }
+        //TCPPlayer.GetPlayerGameObject(id).GetComponent<PlayerWeaponManager>().Shoot();
         yield return null;
     }
 
-    public IEnumerator ApplyDamageToPlayer(int shooter_id, int receiver_id, float amount)
+    public IEnumerator Return_ApplyDamageToPlayer(int shooter_id, int receiver_id, float amount)
     {
         TCPPlayer.GetPlayerGameObject(receiver_id).GetComponent<playerHealthBar>().ReduceHealth(amount);
+        yield return null;
+    }
+
+    public IEnumerator Return_KillPlayer(int id)
+    {
+        TCPPlayer.GetPlayerGameObject(id).GetComponent<playerHealthBar>().KillPlayer();
+        yield return null;
+    }
+
+    public IEnumerator Return_FlipPlayer(int id, playerMove.MOVEMENT_DIRECTION direction)
+    {
+        TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().FlipPlayer(direction);
+        yield return null;
+    }
+
+    public IEnumerator Return_ChangePlayerState(int id, playerMove.PLAYERSTATE state)
+    {
+        Debug.Log("CHANGING PLAYER ID: " + id + ", STATE TO: "+state);
+        TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().ChangePlayerState(state);
         yield return null;
     }
 
@@ -109,8 +138,7 @@ public class TCPMessageManager : MonoBehaviour {
             }
             case CMD.LEAVE:{
                 // someone else left
-                if (data[0].Length > 0)
-                {
+                if (data[0].Length > 0){
                     int players_waiting = Int32.Parse(data[0]);
 
                     UnityMainThreadDispatcher.Instance().Enqueue(
@@ -118,8 +146,7 @@ public class TCPMessageManager : MonoBehaviour {
                     );
                 }
                 // this user left
-                else
-                {
+                else{
                     UnityMainThreadDispatcher.Instance().Enqueue(
                         LeaveMatchQueue()
                     );
@@ -145,8 +172,7 @@ public class TCPMessageManager : MonoBehaviour {
                 break;
             }
             case CMD.POS:{
-                if (id != TCPPlayer.my_player.id)
-                {
+                if (id != TCPPlayer.my_player.id){
                     //Debug.Log("UPDATING OTHER AT: (" + Int32.Parse(data[0]) + "," + float.Parse(data[1]) + "," + float.Parse(data[2]) + ")");
                     UnityMainThreadDispatcher.Instance().Enqueue(
                         TCPPlayer.UpdateOther(id, new Vector2(float.Parse(data[1]), float.Parse(data[2])))
@@ -168,7 +194,31 @@ public class TCPMessageManager : MonoBehaviour {
             }
             case CMD.DAMAGE:{
                 UnityMainThreadDispatcher.Instance().Enqueue(
-                    ApplyDamageToPlayer(id, Int32.Parse(data[1]), float.Parse(data[2]))
+                    Return_ApplyDamageToPlayer(id, Int32.Parse(data[1]), float.Parse(data[2]))
+                );
+                break;
+            }
+            case CMD.KILL:{
+                UnityMainThreadDispatcher.Instance().Enqueue(
+                    Return_KillPlayer(id)
+                );
+                break;
+            }
+            case CMD.FLIP:{
+                    playerMove.MOVEMENT_DIRECTION d = 
+                        (playerMove.MOVEMENT_DIRECTION) Enum.Parse(typeof(playerMove.MOVEMENT_DIRECTION), data[1]);
+                    
+                    UnityMainThreadDispatcher.Instance().Enqueue(
+                            Return_FlipPlayer(id, d)
+                );
+                break;
+            }
+            case CMD.STATE:{
+                    playerMove.PLAYERSTATE s = 
+                        (playerMove.PLAYERSTATE) Enum.Parse(typeof(playerMove.PLAYERSTATE), data[1]);
+                    
+                    UnityMainThreadDispatcher.Instance().Enqueue(
+                            Return_ChangePlayerState(id, s)
                 );
                 break;
             }

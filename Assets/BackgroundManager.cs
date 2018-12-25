@@ -8,12 +8,12 @@ public class BackgroundManager : MonoBehaviour {
     public SpriteRenderer background_1;
     public SpriteRenderer background_2;
 
-    public static BackgroundManager Instance;
+    //public static BackgroundManager Instance;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+    //private void Awake()
+    //{
+    //    Instance = this;
+    //}
 
     public void MoveBackgrounds(Vector2 current_player_pos){
         background_static.transform.position = current_player_pos;

@@ -10,7 +10,7 @@ public class RespawnScript : MonoBehaviour {
     public GameObject respawn_canvas;
     public Text timer_text;
 
-    [SerializeField] private float timer_amount = 10;
+    [SerializeField] private float timer_amount = 5;
 
     private bool enable_timer = false;
 
@@ -27,16 +27,20 @@ public class RespawnScript : MonoBehaviour {
 
             if (timer_amount <= 0){
                 //local_player.GetComponent<PhotonView>().RPC("respawnPlayer", PhotonTargets.AllBuffered);
+                local_player.GetComponent<playerHealthBar>().RespawnPlayer();
                 respawn_canvas.SetActive(false);
                 enable_timer = false;
             }
         }
 	}
 
-    public void StartTimer(){
-        timer_amount = 10;
+    public void ShowDeadCanvas(float time){
         respawn_canvas.SetActive(true);
-        enable_timer = true;
+        StartTimer(time);
     }
 
+    public void StartTimer(float time){
+        timer_amount = time;
+        enable_timer = true;
+    }
 }

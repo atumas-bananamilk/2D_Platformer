@@ -66,13 +66,13 @@ public class TCPPlayer {
         }
     }
 
-    public static void ApplyDamageToPlayer(int id, float amount){
-        for (int i = 0; i < players.Count; i++){
-            if (players[i].id == id){
-                players[i].obj.GetComponent<playerHealthBar>().ReduceHealth(amount);
-            }
-        }
-    }
+    //public static void ApplyDamageToPlayer(int id, float amount){
+    //    for (int i = 0; i < players.Count; i++){
+    //        if (players[i].id == id){
+    //            players[i].obj.GetComponent<playerHealthBar>().ReduceHealth(amount);
+    //        }
+    //    }
+    //}
 
     public static string GetNameByGameObj(GameObject obj){
         foreach (Player p in players)

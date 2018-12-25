@@ -10,7 +10,6 @@ public class PlayerWeaponManager : MonoBehaviour {
     public GameObject bullet_prefab;
     private Sprite new_weapon_sprite;
 
-    public float damage = 0.2f;
     public float range = 10f;
     public float target_x = 10000;
     public float weapon_point_distance_x;
@@ -56,10 +55,16 @@ public class PlayerWeaponManager : MonoBehaviour {
     }
 
     public void Shoot(){
+        TryFlipWeaponShootVector();
+
         Vector2 bullet_pos = weapon_point.transform.position;
         bullet_pos.y += UnityEngine.Random.Range(-0.1f, 0.1f);
 
         GameObject obj = Instantiate(bullet_prefab, bullet_pos, Quaternion.identity) as GameObject;
         obj.GetComponent<Bullet>().ChangeDirection(GetComponent<playerMove>().direction);
+    }
+
+    public void HideWeapon(bool hide){
+        player_weapon.GetComponent<SpriteRenderer>().enabled = !hide;
     }
 }

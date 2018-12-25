@@ -85,12 +85,24 @@ public class TCPNetwork : MonoBehaviour
         AsyncSend(TCPMessageManager.ApplyDamage(TCPPlayer.my_player.id, TCPPlayer.GetIdByGameObject(ref obj), ref amount));
     }
 
+    public static void KillPlayer(){
+        AsyncSend(TCPMessageManager.KillPlayer(TCPPlayer.my_player.id));
+    }
+
+    public static void FlipPlayer(playerMove.MOVEMENT_DIRECTION d){
+        AsyncSend(TCPMessageManager.FlipPlayer(TCPPlayer.my_player.id, d));
+    }
+
+    public static void ChangePlayerState(playerMove.PLAYERSTATE s){
+        AsyncSend(TCPMessageManager.ChangePlayerState(TCPPlayer.my_player.id, s));
+    }
+
     private void AsyncListen()
     {
         thread = new Thread(() => Listen());
         thread.Start();
     }
-
+   
     private static void AsyncSend(string msg)
     {
         thread = new Thread(() => Send(msg));

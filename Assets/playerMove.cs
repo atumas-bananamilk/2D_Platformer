@@ -45,12 +45,14 @@ public class playerMove : Photon.MonoBehaviour
     RaycastHit2D weapon_raycast;
     private int next_shot = 0;
 
+    private int mouse_down_count = 0;
+
     public enum PLAYERSTATE{
-        IDLE, RUNNING, JUMPING
+        IDLE, RUNNING, JUMPING, DEAD
     }
 
-    public enum MOVEMENT_DIRECTION{
-        LEFT, RIGHT
+    public enum MOVEMENT_DIRECTION : byte{
+        LEFT = 0, RIGHT = 1
     }
 
     public enum PHOTON_EVENTS : byte
@@ -133,15 +135,11 @@ public class playerMove : Photon.MonoBehaviour
 
         if (!dev_testing && TCPPlayer.IsMine(gameObject))
         {
-            checkInput();
-        }
-
-        if (collision_count == 0){
-            ChangePlayerState(PLAYERSTATE.JUMPING);
+            CheckInput();
         }
     }
 
-    private void checkInput()
+    private void CheckInput()
     {
         if (!disable_move)
         {
@@ -149,39 +147,18 @@ public class playerMove : Photon.MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space) && jumps_done < jump_limit)
             {
-                jump();
+                Jump();
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                FlipPlayer(MOVEMENT_DIRECTION.RIGHT);
+                FlipPlayerOnNetwork(MOVEMENT_DIRECTION.RIGHT);
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
-                FlipPlayer(MOVEMENT_DIRECTION.LEFT);
+                FlipPlayerOnNetwork(MOVEMENT_DIRECTION.LEFT);
             }
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
-                Vector2 v = new Vector2((int)Math.Round(pos.x), (int)Math.Round(pos.y));
-
-                GameObject[] items = GameObject.FindGameObjectsWithTag(TagManager.PICK_UP_ITEM);
-                foreach (GameObject item in items)
-                {
-                    if (item.GetComponent<BoxCollider2D>().bounds.Contains(pos))
-                    {
-                        gameObject.GetComponent<PlayerInventory>().AddToInventory(item);
-                        Destroy(item);
-                        break;
-                    }
-                }
-
-                if (!dev_testing){
-                    RaiseEventOptions options = new RaiseEventOptions();
-                    options.Receivers = ReceiverGroup.All;
-                    PhotonNetwork.RaiseEvent((byte)PHOTON_EVENTS.ACTION_DIG_BLOCK, v, true, options);
-                }
-            }
+            CheckMouseClicks();
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -189,25 +166,106 @@ public class playerMove : Photon.MonoBehaviour
             }
         }
     }
+    
 
-    private void FlipPlayer(MOVEMENT_DIRECTION d){
+    public float GetAngle(Vector2 p1, Vector2 p2){
+        float angle = Mathf.Atan2(p2.y - p1.y, p2.x - p1.x) * Mathf.Rad2Deg;
+
+        if (angle < 0){
+            angle += 360;
+        }
+
+        return angle;
+    }
+
+    private void CheckMouseClicks(){
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+
+            // clicked on item
+            GameObject[] items = GameObject.FindGameObjectsWithTag(TagManager.PICK_UP_ITEM);
+            foreach (GameObject item in items)
+            {
+                if (item.GetComponent<BoxCollider2D>().bounds.Contains(pos))
+                {
+                    gameObject.GetComponent<PlayerInventory>().AddToInventory(item);
+                    Destroy(item);
+                    break;
+                }
+            }
+
+            //Vector2 v = new Vector2((int)Math.Round(pos.x), (int)Math.Round(pos.y));
+            //if (!dev_testing){
+            //    RaiseEventOptions options = new RaiseEventOptions();
+            //    options.Receivers = ReceiverGroup.All;
+            //    PhotonNetwork.RaiseEvent((byte)PHOTON_EVENTS.ACTION_DIG_BLOCK, v, true, options);
+            //}
+        }
+        else if (Input.GetMouseButtonUp(0)){
+            GetComponent<PlayerDigManager>().StopDig();
+            mouse_down_count = 0;
+        }
+        else if (Input.GetMouseButton(0)){
+            Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+
+            // clicked on block
+            GameObject[] ground_blocks = GameObject.FindGameObjectsWithTag(TagManager.GROUND);
+            foreach (GameObject b in ground_blocks)
+            {
+                // check if click is on top, side, bottom from player
+                float angle = GetAngle(transform.position, pos);
+
+                float size = GetComponent<BoxCollider2D>().size.y / 2;
+                float player_y_bottom = GetComponent<BoxCollider2D>().bounds.center.y - size;
+                float player_y_top = GetComponent<BoxCollider2D>().bounds.center.y + size;
+
+                if (b.GetComponent<BoxCollider2D>().bounds.Contains(pos))
+                {
+                    if (pos.y < player_y_bottom)
+                    {
+                        mouse_down_count++;
+                        Debug.Log("BOTTOM: " + b.GetComponent<Block>().block_type + ", COUNT: " + mouse_down_count);
+                        b.GetComponent<SpriteRenderer>().color = new Color(126, 0, 0);
+                        GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.BOTTOM);
+                    }
+                    else if (pos.y > player_y_top)
+                    {
+                        Debug.Log("TOP: " + b.GetComponent<Block>().block_type);
+                        b.GetComponent<SpriteRenderer>().color = new Color(0, 126, 0);
+                        GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.TOP);
+                    }
+                    else
+                    {
+                        Debug.Log("SIDE: " + b.GetComponent<Block>().block_type);
+                        b.GetComponent<SpriteRenderer>().color = new Color(0, 0, 126);
+                        GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.SIDE);
+                    }
+                    break;
+                }
+
+                //if (Vector2.Distance(transform.position, b.transform.position)){
+
+                //}
+            }
+        }
+    }
+
+    public void FlipPlayerOnNetwork(MOVEMENT_DIRECTION d){
+        FlipPlayer(d);
+        TCPNetwork.FlipPlayer(d);
+    }
+
+    public void FlipPlayer(MOVEMENT_DIRECTION d){
         direction = d;
 
         if (d == MOVEMENT_DIRECTION.LEFT){
             sprite.flipX = true;
             gameObject.GetComponent<PlayerWeaponManager>().FlipWeapon(true);
-            if (!dev_testing)
-            {
-                //view.RPC("onSpriteFlipFalse", PhotonTargets.Others);
-            }
         }
         else{
             sprite.flipX = false;
             gameObject.GetComponent<PlayerWeaponManager>().FlipWeapon(false);
-            if (!dev_testing)
-            {
-                //view.RPC("onSpriteFlipTrue", PhotonTargets.Others);
-            }
         }
     }
 
@@ -220,10 +278,10 @@ public class playerMove : Photon.MonoBehaviour
             if (joystick_move != Vector3.zero)
             {
                 if (joystick_move.x > 0){
-                    FlipPlayer(MOVEMENT_DIRECTION.RIGHT);
+                    FlipPlayerOnNetwork(MOVEMENT_DIRECTION.RIGHT);
                 }
                 else{
-                    FlipPlayer(MOVEMENT_DIRECTION.LEFT);
+                    FlipPlayerOnNetwork(MOVEMENT_DIRECTION.LEFT);
                 }
                 transform.Translate(joystick_move * (float)(move_speed * 0.7) * Time.deltaTime);
             }
@@ -237,13 +295,16 @@ public class playerMove : Photon.MonoBehaviour
             if (Math.Abs(velocity) > 0)
             {
                 if (collision_count > 0){
-                    ChangePlayerState(PLAYERSTATE.RUNNING);
+                    TryChangePlayerState(PLAYERSTATE.RUNNING);
+                }
+                else{
+                    TryChangePlayerState(PLAYERSTATE.JUMPING);
                 }
                 TCPNetwork.SendMovementInfo(transform.position, ref velocity);
             }
             else{
                 if (collision_count > 0){
-                    ChangePlayerState(PLAYERSTATE.IDLE);
+                    TryChangePlayerState(PLAYERSTATE.IDLE);
                 }
             }
         }
@@ -292,22 +353,11 @@ public class playerMove : Photon.MonoBehaviour
 
     public void Shoot()
     {
-        GetComponent<PlayerWeaponManager>().TryFlipWeaponShootVector();
         GetComponent<PlayerWeaponManager>().Shoot();
         TCPNetwork.Shoot();
-
-        //player_weapon_point = GetComponent<PlayerWeaponManager>().weapon_point.transform.position;
-        //weapon_raycast = Physics2D.Raycast(player_weapon_point, weapon_target, GetComponent<PlayerWeaponManager>().range, to_hit);
-
-        //if (weapon_raycast.collider != null){
-        //    if (weapon_raycast.collider.tag == TagManager.PLAYER){
-        //        GameObject damaged_obj = weapon_raycast.collider.gameObject;
-        //        TCPNetwork.ApplyDamage(ref damaged_obj, GetComponent<PlayerWeaponManager>().damage);
-        //    }
-        //}
     }
 
-    public void jump()
+    public void Jump()
     {
         jumps_done++;
         if (jumps_done < jump_limit)
@@ -317,30 +367,42 @@ public class playerMove : Photon.MonoBehaviour
     }
 
     private void ParallaxBackgrounds(){
-        BackgroundManager.Instance.MoveBackgrounds(transform.position);
+        //BackgroundManager.Instance.MoveBackgrounds(transform.position);
+        GetComponent<BackgroundManager>().MoveBackgrounds(transform.position);
+        //BackgroundManager.Instance.MoveBackgrounds(transform.position);
+    }
+
+    public void TryChangePlayerState(PLAYERSTATE s){
+        if (player_state != s && player_state != PLAYERSTATE.DEAD){
+            ChangePlayerState(s);
+            TCPNetwork.ChangePlayerState(s);
+        }
     }
 
     public void ChangePlayerState(PLAYERSTATE s){
         switch(s){
             case PLAYERSTATE.IDLE:{
-                    player_state = PLAYERSTATE.IDLE;
                     gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE);
                     gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WEAPON);
                     break;
                 }
             case PLAYERSTATE.RUNNING:{
-                    player_state = PLAYERSTATE.RUNNING;
                     gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN);
                     gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN_WEAPON);
                     break;
                 }
             case PLAYERSTATE.JUMPING:{
-                    player_state = PLAYERSTATE.JUMPING;
                     gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP);
                     gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP_WEAPON);
                     break;
                 }
+            case PLAYERSTATE.DEAD:{
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIE);
+                    //gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP);
+                    break;
+                }
         }
+        player_state = s;
     }
 
 	private void OnCollisionEnter2D(Collision2D c)
