@@ -13,14 +13,19 @@ public class PlayerDigManager : MonoBehaviour {
         player_pickaxe.SetActive(true);
         GetComponent<PlayerWeaponManager>().player_weapon.SetActive(false);
 
-        if (d == DIG_DIRECTION.BOTTOM){
-            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIG_BOTTOM);
-        }
-        else if (d == DIG_DIRECTION.SIDE){
-            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIG_SIDE);
-        }
-        else if (d == DIG_DIRECTION.TOP){
-            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIG_TOP);
+        switch (d){
+            case DIG_DIRECTION.BOTTOM:{
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIG_BOTTOM);
+                    break;
+                }
+            case DIG_DIRECTION.SIDE:{
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIG_SIDE);
+                    break;
+                }
+            case DIG_DIRECTION.TOP:{
+                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIG_TOP);
+                    break;
+                }
         }
     }
 

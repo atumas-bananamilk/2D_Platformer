@@ -216,29 +216,42 @@ public class playerMove : Photon.MonoBehaviour
                 // check if click is on top, side, bottom from player
                 float angle = GetAngle(transform.position, pos);
 
+                Vector2 player_center = GetComponent<BoxCollider2D>().bounds.center;
+
                 float size = GetComponent<BoxCollider2D>().size.y / 2;
-                float player_y_bottom = GetComponent<BoxCollider2D>().bounds.center.y - size;
-                float player_y_top = GetComponent<BoxCollider2D>().bounds.center.y + size;
+                float player_y_bottom = player_center.y - size;
+                float player_y_top = player_center.y + size;
 
                 if (b.GetComponent<BoxCollider2D>().bounds.Contains(pos))
                 {
+                    float distance = Vector2.Distance(player_center, b.GetComponent<BoxCollider2D>().bounds.center);
+
                     if (pos.y < player_y_bottom)
                     {
-                        mouse_down_count++;
-                        Debug.Log("BOTTOM: " + b.GetComponent<Block>().block_type + ", COUNT: " + mouse_down_count);
-                        b.GetComponent<SpriteRenderer>().color = new Color(126, 0, 0);
-                        GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.BOTTOM);
+                        if (distance < 2){
+                            mouse_down_count++;
+                            Debug.Log("BOTTOM: " + b.GetComponent<Block>().block_type + 
+                                      ", COUNT: " + mouse_down_count + 
+                                      ", HEALTH: "+b.GetComponent<Block>().health);
+
+                            if (mouse_down_count % 10 == 0){
+                                b.GetComponent<Block>().health -= 10;
+                            }
+                            GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.BOTTOM);
+                            //b.GetComponent<SpriteRenderer>().color = new Color(126, 0, 0);
+                        }
+                        //Debug.DrawLine(player_center, pos, Color.red);
                     }
                     else if (pos.y > player_y_top)
                     {
                         Debug.Log("TOP: " + b.GetComponent<Block>().block_type);
-                        b.GetComponent<SpriteRenderer>().color = new Color(0, 126, 0);
+                        //b.GetComponent<SpriteRenderer>().color = new Color(0, 126, 0);
                         GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.TOP);
                     }
                     else
                     {
                         Debug.Log("SIDE: " + b.GetComponent<Block>().block_type);
-                        b.GetComponent<SpriteRenderer>().color = new Color(0, 0, 126);
+                        //b.GetComponent<SpriteRenderer>().color = new Color(0, 0, 126);
                         GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.SIDE);
                     }
                     break;
