@@ -29,6 +29,13 @@ public class playerMove : Photon.MonoBehaviour
     public Color enemy_text_color;
     public GameObject bullet_prefab;
     [SerializeField] Text ping_text;
+    public Text amount_wood_text;
+    public Text amount_brick_text;
+    public Text amount_metal_text;
+    private int amount_wood = 0;
+    private int amount_brick = 0;
+    private int amount_metal = 0;
+    private int materials_limit = 999;
 
     //public float moveSpeed = 4f;
     public Joystick joystick;
@@ -203,64 +210,97 @@ public class playerMove : Photon.MonoBehaviour
             //}
         }
         else if (Input.GetMouseButtonUp(0)){
+            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> dig_block = CheckDigClick();
+
+            if (dig_block.Value != null){
+                dig_block.Value.GetComponent<Block>().StopDig();
+            }
+
             GetComponent<PlayerDigManager>().StopDig();
             mouse_down_count = 0;
         }
         else if (Input.GetMouseButton(0)){
-            Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> dig_block = CheckDigClick();
 
-            // clicked on block
-            GameObject[] ground_blocks = GameObject.FindGameObjectsWithTag(TagManager.GROUND);
-            foreach (GameObject b in ground_blocks)
-            {
-                // check if click is on top, side, bottom from player
-                float angle = GetAngle(transform.position, pos);
+            if (dig_block.Value != null){
+                PlayerDigManager.DIG_DIRECTION dig_direction = dig_block.Key;
+                GameObject b = dig_block.Value;
 
-                Vector2 player_center = GetComponent<BoxCollider2D>().bounds.center;
+                mouse_down_count++;
+                GetComponent<PlayerDigManager>().Dig(dig_direction);
+                b.GetComponent<Block>().Dig();
 
-                float size = GetComponent<BoxCollider2D>().size.y / 2;
-                float player_y_bottom = player_center.y - size;
-                float player_y_top = player_center.y + size;
+                if (mouse_down_count % 10 == 0){
+                    b.GetComponent<Block>().health -= 10;
+                }
+                if (b.GetComponent<Block>().health <= 0){
+                    UpdateMaterials(b.GetComponent<Block>().block_type, 15);
+                }
+            }
+        }
+    }
 
-                if (b.GetComponent<BoxCollider2D>().bounds.Contains(pos))
-                {
-                    float distance = Vector2.Distance(player_center, b.GetComponent<BoxCollider2D>().bounds.center);
+    // clicked down / up on block
+    private KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> CheckDigClick(){
+        Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
 
-                    if (pos.y < player_y_bottom)
-                    {
-                        if (distance < 2){
-                            mouse_down_count++;
-                            Debug.Log("BOTTOM: " + b.GetComponent<Block>().block_type + 
-                                      ", COUNT: " + mouse_down_count + 
-                                      ", HEALTH: "+b.GetComponent<Block>().health);
+        GameObject[] ground_blocks = GameObject.FindGameObjectsWithTag(TagManager.GROUND);
+        foreach (GameObject b in ground_blocks){
+            Vector2 player_center = GetComponent<BoxCollider2D>().bounds.center;
+            float size = GetComponent<BoxCollider2D>().size.y / 2;
+            float player_y_bottom = player_center.y - size;
+            float player_y_top = player_center.y + size;
 
-                            if (mouse_down_count % 10 == 0){
-                                b.GetComponent<Block>().health -= 10;
-                            }
-                            GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.BOTTOM);
-                            //b.GetComponent<SpriteRenderer>().color = new Color(126, 0, 0);
-                        }
-                        //Debug.DrawLine(player_center, pos, Color.red);
+            if (b.GetComponent<BoxCollider2D>().bounds.Contains(pos)){
+                float distance = Vector2.Distance(player_center, b.GetComponent<BoxCollider2D>().bounds.center);
+
+                if (distance < 2){
+                    PlayerDigManager.DIG_DIRECTION dig_direction;
+
+                    // check if click is on top, side, bottom from player
+                    if (pos.y < player_y_bottom){
+                        dig_direction = PlayerDigManager.DIG_DIRECTION.BOTTOM;
                     }
-                    else if (pos.y > player_y_top)
-                    {
-                        Debug.Log("TOP: " + b.GetComponent<Block>().block_type);
-                        //b.GetComponent<SpriteRenderer>().color = new Color(0, 126, 0);
-                        GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.TOP);
+                    else if (pos.y > player_y_top){
+                        dig_direction = PlayerDigManager.DIG_DIRECTION.TOP;
                     }
-                    else
-                    {
-                        Debug.Log("SIDE: " + b.GetComponent<Block>().block_type);
-                        //b.GetComponent<SpriteRenderer>().color = new Color(0, 0, 126);
-                        GetComponent<PlayerDigManager>().Dig(PlayerDigManager.DIG_DIRECTION.SIDE);
+                    else{
+                        dig_direction = PlayerDigManager.DIG_DIRECTION.SIDE;
                     }
+                    return new KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject>(dig_direction, b);
+                }
+                break;
+            }
+        }
+        return new KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject>();
+    }
+
+    private void UpdateMaterials(Block.BLOCK_TYPE block_type, int amount){
+        switch(block_type){
+            case Block.BLOCK_TYPE.WOOD:{
+                    amount_wood += amount;
+                    if (amount_wood >= materials_limit){
+                        amount_wood = materials_limit;
+                    }
+                    amount_wood_text.text = amount_wood.ToString();
                     break;
                 }
-
-                //if (Vector2.Distance(transform.position, b.transform.position)){
-
-                //}
-            }
+            case Block.BLOCK_TYPE.BRICK:{
+                    amount_brick += amount;
+                    if (amount_brick >= materials_limit){
+                        amount_brick = materials_limit;
+                    }
+                    amount_brick_text.text = amount_brick.ToString();
+                    break;
+                }
+            case Block.BLOCK_TYPE.METAL:{
+                    amount_metal += amount;
+                    if (amount_metal >= materials_limit){
+                        amount_metal = materials_limit;
+                    }
+                    amount_metal_text.text = amount_metal.ToString();
+                    break;
+                }
         }
     }
 
@@ -275,10 +315,12 @@ public class playerMove : Photon.MonoBehaviour
         if (d == MOVEMENT_DIRECTION.LEFT){
             sprite.flipX = true;
             gameObject.GetComponent<PlayerWeaponManager>().FlipWeapon(true);
+            gameObject.GetComponent<PlayerDigManager>().FlipPickaxe(true);
         }
         else{
             sprite.flipX = false;
             gameObject.GetComponent<PlayerWeaponManager>().FlipWeapon(false);
+            gameObject.GetComponent<PlayerDigManager>().FlipPickaxe(false);
         }
     }
 

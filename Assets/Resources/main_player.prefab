@@ -2421,7 +2421,7 @@ GameObject:
   - component: {fileID: 114151346589549084}
   - component: {fileID: 114375513150803990}
   m_Layer: 11
-  m_Name: Text
+  m_Name: amount_brick_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3472,7 +3472,7 @@ GameObject:
   - component: {fileID: 114579723644957822}
   - component: {fileID: 114780178781610066}
   m_Layer: 11
-  m_Name: Text
+  m_Name: amount_wood_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3889,7 +3889,7 @@ GameObject:
   - component: {fileID: 114738745822945654}
   - component: {fileID: 114810646103344038}
   m_Layer: 11
-  m_Name: Text
+  m_Name: amount_metal_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11699,6 +11699,9 @@ MonoBehaviour:
   bullet_prefab: {fileID: 1783273056275948, guid: 53b11a7c4e438402bb6f563e0fc16851,
     type: 2}
   ping_text: {fileID: 114593474405408206}
+  amount_wood_text: {fileID: 114579723644957822}
+  amount_brick_text: {fileID: 114151346589549084}
+  amount_metal_text: {fileID: 114738745822945654}
   joystick: {fileID: 114227407425460752}
   direction: 0
   player_state: 0

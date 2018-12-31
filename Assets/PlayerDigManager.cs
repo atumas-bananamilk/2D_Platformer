@@ -34,4 +34,10 @@ public class PlayerDigManager : MonoBehaviour {
         GetComponent<PlayerWeaponManager>().player_weapon.SetActive(true);
         GetComponent<playerMove>().ChangePlayerState(playerMove.PLAYERSTATE.IDLE);
     }
+
+    public void FlipPickaxe(bool flipX){
+        player_pickaxe.GetComponent<SpriteRenderer>().flipX = flipX;
+        Quaternion r = player_pickaxe.GetComponent<SpriteRenderer>().transform.rotation;
+        player_pickaxe.GetComponent<SpriteRenderer>().transform.rotation = Quaternion.Inverse(r);
+    }
 }

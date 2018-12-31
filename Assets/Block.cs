@@ -7,6 +7,10 @@ public class Block : MonoBehaviour {
     public Sprite crack_image_0;
     public Sprite crack_image_1;
     public Sprite crack_image_2;
+    public ParticleSystem particle_system;
+
+    private Vector2 move_target;
+    private float move_speed = 24f;
 
     public enum BLOCK_TYPE{
         WOOD, BRICK, METAL
@@ -17,6 +21,11 @@ public class Block : MonoBehaviour {
     public float health_max_brick = 200f;
     public float health_max_metal = 300f;
 
+	private void Start()
+	{
+        // move_target - straight up from current block position
+        move_target = new Vector2(transform.position.x, 1000);
+	}
 
 	public void SetBlockType(int cell_id){
         if (MapManager.block_images.ContainsKey(cell_id)){
@@ -43,6 +52,10 @@ public class Block : MonoBehaviour {
 
 	public void Update()
 	{
+        UpdateCrack();
+	}
+
+    private void UpdateCrack(){
         if (block_type == BLOCK_TYPE.WOOD){
             if (health >= health_max_wood * 0.66 && health < health_max_wood)
             {
@@ -54,14 +67,30 @@ public class Block : MonoBehaviour {
                 block_crack.enabled = true;
                 block_crack.sprite = crack_image_1;
             }
-            else if (health >= 0 && health < health_max_wood * 0.33)
+            else if (health > 0 && health < health_max_wood * 0.33)
             {
                 block_crack.enabled = true;
                 block_crack.sprite = crack_image_2;
             }
-            else if (health < 0){
-                Destroy(gameObject);
+            else if (health <= 0){
+                GetComponent<BoxCollider2D>().enabled = false;
+                transform.localScale = new Vector3(0.8f, 0.8f, 1f);
+                transform.position = Vector2.MoveTowards(transform.position, move_target, move_speed * Time.deltaTime);
+
+                if (transform.position.y > 0){
+                    Destroy(gameObject);
+                }
             }
         }
-	}
+    }
+
+    public void Dig(){
+        if (!particle_system.isPlaying){
+            particle_system.Play();
+        }
+    }
+
+    public void StopDig(){
+        particle_system.Stop();
+    }
 }
