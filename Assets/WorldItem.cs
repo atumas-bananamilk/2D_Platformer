@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class WorldItem : MonoBehaviour {
     public Sprite icon { get; set; }
-
-    //private readonly string PLAYER = "Player";
-    //private readonly string PICK_UP_ITEM = "PickUpItem";
     public ITEM_NAME item_name;
+    public ITEM_TYPE item_type;
     public int amount;
 
     public enum ITEM_NAME
     {
-        WALL_WOODEN,
-        COIN_GOLD,
-        BLOCK_DIRT
+        WALL_WOODEN, COIN_GOLD, BLOCK_DIRT
+    }
+
+    public enum ITEM_TYPE{
+        GUN, GRENADE, HEALTH, SHIELD
+    }
+
+    public void SetSprite(Sprite sprite){
+        icon = sprite;
     }
 
 	public Sprite GetSprite(){
-        icon = gameObject.GetComponent<SpriteRenderer>().sprite;
-        return gameObject.GetComponent<SpriteRenderer>().sprite;
+        //icon = gameObject.GetComponent<SpriteRenderer>().sprite;
+        //return gameObject.GetComponent<SpriteRenderer>().sprite;
+        return icon;
     }
 
     private void OnCollisionEnter2D(Collision2D c)

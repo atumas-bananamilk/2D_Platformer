@@ -35,22 +35,19 @@ public class MapManager : MonoBehaviour
 
     public TextAsset CSV_file;
     public GameObject block_prefab;
-    public Sprite TILE_ground_5;
-    public Sprite TILE_ground_6;
-    public Sprite TILE_ground_7;
-    public Sprite TILE_ground_11;
-    public Sprite TILE_storm;
-
-    public static int TILE_ID_STORM = 0;
-    public static int TILE_ID_GROUND_5 = 5;
-    public static int TILE_ID_GROUND_6 = 6;
-    public static int TILE_ID_GROUND_7 = 7;
-    public static int TILE_ID_GROUND_11 = 11;
+    public static Sprite[] tile_sprites;
 
     public static IDictionary<int, Sprite> block_images = new Dictionary<int, Sprite>();
     [HideInInspector] public List<GameObject> block_list = new List<GameObject>();
     private List<List<string>> map;
     [HideInInspector] public List<MapChange> map_changes = new List<MapChange>();
+
+    public string tiles_path = "AssetsTiles/tiles";
+    public static int TILE_ID_EMPTY = -1;
+    public static int TILE_ID_STORM = 10;
+    public static List<int> TILES_WOOD = new List<int>();
+    public static List<int> TILES_BRICK = new List<int>();
+    public static List<int> TILES_METAL = new List<int>();
     
     int offset = 2;
     public int map_width;
@@ -58,30 +55,71 @@ public class MapManager : MonoBehaviour
     public float start_x;
     public float start_y;
 
-    public void Start()
-    {
-        MapBlockImages();
+	private void Awake(){
+        tile_sprites = Resources.LoadAll<Sprite>(tiles_path);
+        SetupTilesWood();
+        SetupTilesBrick();
+        SetupTilesMetal();
+	}
 
+    private void SetupTilesWood(){
+        TILES_WOOD.Add(0);
+        TILES_WOOD.Add(1);
+        TILES_WOOD.Add(2);
+        TILES_WOOD.Add(3);
+        TILES_WOOD.Add(7);
+        TILES_WOOD.Add(8);
+        TILES_WOOD.Add(9);
+        TILES_WOOD.Add(14);
+        TILES_WOOD.Add(15);
+        TILES_WOOD.Add(16);
+        TILES_WOOD.Add(21);
+        TILES_WOOD.Add(22);
+        TILES_WOOD.Add(23);
+        TILES_WOOD.Add(24);
+        TILES_WOOD.Add(25);
+        TILES_WOOD.Add(28);
+        TILES_WOOD.Add(29);
+        TILES_WOOD.Add(30);
+        TILES_WOOD.Add(31);
+        TILES_WOOD.Add(32);
+    }
+
+    private void SetupTilesBrick(){
+        TILES_BRICK.Add(5);
+        TILES_BRICK.Add(12);
+        TILES_BRICK.Add(19);
+        TILES_BRICK.Add(26);
+        TILES_BRICK.Add(33);
+    }
+
+    private void SetupTilesMetal(){
+        TILES_METAL.Add(6);
+        TILES_METAL.Add(13);
+        TILES_METAL.Add(20);
+        TILES_METAL.Add(27);
+        TILES_METAL.Add(34);
+    }
+
+	public void Start()
+    {
+        //MapBlockImages();
         if (gameObject.GetComponent<playerMove>().dev_testing){
             map = ReadMap(CSV_file);
             PlaceBlocks();
         }
         else{
             // maps - stored locally
-            if (TCPPlayer.my_player.room.Equals("main_world"))
-            {
+            //if (TCPPlayer.my_player.room.Equals("main_world"))
+            //{
                 // 101 x 100
                 map = ReadMap(CSV_file);
-            }
-            // map changes - stored remotely
-            //else if (PhotonNetwork.room.Name.Equals(PhotonNetwork.playerName)){
-
             //}
-            else
-            {
-                map = ReadMap(CSV_file);
-                AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name, gameObject);
-            }
+            //else
+            //{
+            //    map = ReadMap(CSV_file);
+            //    AwsApiManager.Instance.GetMapChanges(PhotonNetwork.room.Name, gameObject);
+            //}
             
             map_width = map.Count;
             map_height = (map.Count > 0) ? map[0].Count : 0;
@@ -93,15 +131,6 @@ public class MapManager : MonoBehaviour
                 PlaceBlocks();
             }
         }
-    }
-
-    private void MapBlockImages()
-    {
-        block_images[TILE_ID_STORM] = TILE_storm;
-        block_images[TILE_ID_GROUND_5] = TILE_ground_5;
-        block_images[TILE_ID_GROUND_6] = TILE_ground_6;
-        block_images[TILE_ID_GROUND_7] = TILE_ground_7;
-        block_images[TILE_ID_GROUND_11] = TILE_ground_11;
     }
 
     private void PlaceSingleBlock(float x, float y, int cell_id){
@@ -124,7 +153,7 @@ public class MapManager : MonoBehaviour
         {
             foreach (string cell in row)
             {
-                if (!cell.Equals("-1"))
+                if (!cell.Equals(TILE_ID_EMPTY.ToString()))
                 {
                     int cell_id = 0;
                     Int32.TryParse(cell, out cell_id);

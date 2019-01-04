@@ -13,7 +13,7 @@ public class Block : MonoBehaviour {
     private float move_speed = 24f;
 
     public enum BLOCK_TYPE{
-        WOOD, BRICK, METAL
+        WOOD, BRICK, METAL, UNKNOWN
     }
     public BLOCK_TYPE block_type;
     public float health = 100f;
@@ -21,33 +21,40 @@ public class Block : MonoBehaviour {
     public float health_max_brick = 200f;
     public float health_max_metal = 300f;
 
+    private int line_length = 18;
+
 	private void Start()
 	{
         // move_target - straight up from current block position
         move_target = new Vector2(transform.position.x, 1000);
 	}
 
-	public void SetBlockType(int cell_id){
-        if (MapManager.block_images.ContainsKey(cell_id)){
-            if (cell_id == MapManager.TILE_ID_GROUND_5 ||
-                cell_id == MapManager.TILE_ID_GROUND_6 ||
-                cell_id == MapManager.TILE_ID_GROUND_7 ||
-                cell_id == MapManager.TILE_ID_GROUND_11){
-                block_type = BLOCK_TYPE.WOOD;
-                health = health_max_wood;
-            }
-            else if (cell_id == 10){
-                block_type = BLOCK_TYPE.BRICK;
-                health = health_max_brick;
-            }
-            else{
-                block_type = BLOCK_TYPE.METAL;
-                health = health_max_metal;
-            }
-            block_crack.enabled = false;
-            gameObject.GetComponent<SpriteRenderer>().sprite = MapManager.block_images[cell_id];
+    private void OnCollisionEnter2D(Collision2D c){
+        if (c.gameObject.tag == TagManager.PLAYER){
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer(TagManager.PICK_UP_ITEM), LayerMask.NameToLayer(TagManager.PLAYER), true);
         }
-        //block.GetComponent<SpriteRenderer>().sprite = block_images.ContainsKey(cell_id) ? block_images[cell_id] : ground_11;
+    }
+
+	public void SetBlockType(int cell_id){
+        if (MapManager.TILES_WOOD.Contains(cell_id)){
+            block_type = BLOCK_TYPE.WOOD;
+            health = health_max_wood;
+        }
+        else if (MapManager.TILES_BRICK.Contains(cell_id)){
+            block_type = BLOCK_TYPE.BRICK;
+            health = health_max_brick;
+        }
+        else if (MapManager.TILES_METAL.Contains(cell_id)){
+            block_type = BLOCK_TYPE.METAL;
+            health = health_max_metal;
+        }
+        else{
+            block_type = BLOCK_TYPE.UNKNOWN;
+            gameObject.tag = TagManager.PICK_UP_ITEM;
+            gameObject.layer = LayerManager.PICK_UP_ITEM;
+        }
+        block_crack.enabled = false;
+        gameObject.GetComponent<SpriteRenderer>().sprite = MapManager.tile_sprites[cell_id];
     }
 
 	public void Update()
@@ -77,7 +84,7 @@ public class Block : MonoBehaviour {
                 transform.localScale = new Vector3(0.8f, 0.8f, 1f);
                 transform.position = Vector2.MoveTowards(transform.position, move_target, move_speed * Time.deltaTime);
 
-                if (transform.position.y > 0){
+                if (transform.position.y > 100){
                     Destroy(gameObject);
                 }
             }

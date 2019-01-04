@@ -5,16 +5,27 @@ using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour {
     public GameObject inventory;
+    public GameObject inventory_small_panel;
     public GameObject inventory_big_panel;
-    public Button inventory_drop_button;
-    public Button inventory_use_button;
+
+    public void ToggleToolSlot(bool enabled){
+        inventory_small_panel.GetComponentsInChildren<Outline>()[0].enabled = enabled;
+        ToggleItemSlot(!enabled);
+    }
+
+    public void ToggleItemSlot(bool enabled){
+        Outline[] item_outlines = inventory_big_panel.GetComponentsInChildren<Outline>();
+        foreach (Outline o in item_outlines){
+            o.enabled = false;
+        }
+
+        if (enabled){
+            item_outlines[0].enabled = true;
+        }
+    }
 
     public void OpenInventory(){
         inventory.SetActive(!inventory.GetActive());
-    }
-
-    public void ToggleDropButton(){
-        inventory_drop_button.enabled = !inventory_drop_button.enabled;
     }
 
     public void DropItem(){
@@ -24,7 +35,7 @@ public class PlayerInventory : MonoBehaviour {
     public void AddToInventory(GameObject item){
         int id = FindWhereToPut();
         if (id != -1){
-            inventory_big_panel.GetComponentsInChildren<InventorySlot>()[id].AddToSlot(item.GetComponent<WorldItem>());
+            //inventory_big_panel.GetComponentsInChildren<InventorySlot>()[id].AddToSlot(item.GetComponent<WorldItem>());
         }
         else{
             Debug.Log("INVENTORY FULL");

@@ -27,12 +27,14 @@ public class PlayerDigManager : MonoBehaviour {
                     break;
                 }
         }
+        GetComponent<PlayerInventory>().ToggleToolSlot(true);
     }
 
     public void StopDig(){
         player_pickaxe.SetActive(false);
         GetComponent<PlayerWeaponManager>().player_weapon.SetActive(true);
         GetComponent<playerMove>().ChangePlayerState(playerMove.PLAYERSTATE.IDLE);
+        GetComponent<PlayerInventory>().ToggleToolSlot(false);
     }
 
     public void FlipPickaxe(bool flipX){

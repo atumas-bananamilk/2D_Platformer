@@ -235,6 +235,7 @@ public class playerMove : Photon.MonoBehaviour
                 }
                 if (b.GetComponent<Block>().health <= 0){
                     UpdateMaterials(b.GetComponent<Block>().block_type, 15);
+                    GetComponent<ItemDropManager>().DropRandomizedItems(b.GetComponent<Block>().transform.position);
                 }
             }
         }
