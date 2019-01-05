@@ -20,18 +20,22 @@ public class Block : MonoBehaviour {
     public float health_max_wood = 100f;
     public float health_max_brick = 200f;
     public float health_max_metal = 300f;
-
-    private int line_length = 18;
+    public bool unopened = true;
+    ParticleSystem.MainModule particle_system_main;
 
 	private void Start()
-	{
+    {
+        particle_system_main = particle_system.main;
         // move_target - straight up from current block position
         move_target = new Vector2(transform.position.x, 1000);
 	}
 
     private void OnCollisionEnter2D(Collision2D c){
         if (c.gameObject.tag == TagManager.PLAYER){
-            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer(TagManager.PICK_UP_ITEM), LayerMask.NameToLayer(TagManager.PLAYER), true);
+            Physics2D.IgnoreLayerCollision(LayerManager.CHEST, LayerManager.PLAYER, true);
+        }
+        if (c.gameObject.tag == TagManager.PICK_UP_ITEM){
+            Physics2D.IgnoreLayerCollision(LayerManager.CHEST, LayerManager.PICK_UP_ITEM, true);
         }
     }
 
@@ -50,8 +54,8 @@ public class Block : MonoBehaviour {
         }
         else{
             block_type = BLOCK_TYPE.UNKNOWN;
-            gameObject.tag = TagManager.PICK_UP_ITEM;
-            gameObject.layer = LayerManager.PICK_UP_ITEM;
+            gameObject.tag = TagManager.CHEST;
+            gameObject.layer = LayerManager.CHEST;
         }
         block_crack.enabled = false;
         gameObject.GetComponent<SpriteRenderer>().sprite = MapManager.tile_sprites[cell_id];
@@ -91,7 +95,28 @@ public class Block : MonoBehaviour {
         }
     }
 
+    public void KeepOpeningChest(){
+        particle_system_main.startColor = Color.yellow;
+        if (!particle_system.isPlaying){
+            particle_system.Play();
+        }
+    }
+
+    public void OpenChest(){
+        unopened = false;
+        StopOpeningChest();
+        // play chest animation
+        GetComponent<Animator>().enabled = true;
+        GetComponent<Animator>().Play("chest_open");
+    }
+
+    public void StopOpeningChest(){
+        particle_system.Stop();
+        GetComponent<Animator>().enabled = false;
+    }
+
     public void Dig(){
+        particle_system_main.startColor = new Color(82, 48, 35);
         if (!particle_system.isPlaying){
             particle_system.Play();
         }

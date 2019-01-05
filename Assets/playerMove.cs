@@ -52,6 +52,11 @@ public class playerMove : Photon.MonoBehaviour
     RaycastHit2D weapon_raycast;
     private int next_shot = 0;
 
+    private bool is_healing_small = false;
+    private bool is_healing_big = false;
+    private bool is_shielding_small = false;
+    private bool is_shielding_big = false;
+
     private int mouse_down_count = 0;
 
     public enum PLAYERSTATE{
@@ -125,8 +130,50 @@ public class playerMove : Photon.MonoBehaviour
         prev_velocity = transform.position;
     }
 
+    public void SetIsHealingSmall(bool h){
+        if (!h){
+            mouse_down_count = 0;
+        }
+        is_healing_small = h;
+    }
+    public void SetIsHealingBig(bool h){
+        if (!h){
+            mouse_down_count = 0;
+        }
+        is_healing_big = h;
+    }
+    public void SetIsShieldingSmall(bool h){
+        if (!h){
+            mouse_down_count = 0;
+        }
+        is_shielding_small = h;
+    }
+    public void SetIsShieldingBig(bool h){
+        if (!h){
+            mouse_down_count = 0;
+        }
+        is_shielding_big = h;
+    }
+
     private void Update()
     {
+        if (is_healing_small){
+            mouse_down_count++;
+            KeepLoading(LoadingManager.LOADING_TYPE.HEALTH_SMALL, transform.position, new Vector2(0, 4f));
+        }
+        if (is_healing_big){
+            mouse_down_count++;
+            KeepLoading(LoadingManager.LOADING_TYPE.HEALTH_BIG, transform.position, new Vector2(0, 4f));
+        }
+        if (is_shielding_small){
+            mouse_down_count++;
+            KeepLoading(LoadingManager.LOADING_TYPE.SHIELD_SMALL, transform.position, new Vector2(0, 4f));
+        }
+        if (is_shielding_big){
+            mouse_down_count++;
+            KeepLoading(LoadingManager.LOADING_TYPE.SHIELD_BIG, transform.position, new Vector2(0, 4f));
+        }
+
         // shoot every 5 updates
         if (shooting && next_shot >= 5){
             Shoot();
@@ -210,17 +257,25 @@ public class playerMove : Photon.MonoBehaviour
             //}
         }
         else if (Input.GetMouseButtonUp(0)){
-            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> dig_block = CheckDigClick();
+            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> dig_block = CheckClick(TagManager.GROUND);
+            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> chest_block = CheckClick(TagManager.CHEST);
 
             if (dig_block.Value != null){
                 dig_block.Value.GetComponent<Block>().StopDig();
+                mouse_down_count = 0;
+            }
+            if (chest_block.Value != null){
+                chest_block.Value.GetComponent<Block>().StopOpeningChest();
+                mouse_down_count = 0;
             }
 
             GetComponent<PlayerDigManager>().StopDig();
-            mouse_down_count = 0;
+            StopLoading();
+            //mouse_down_count = 0;
         }
         else if (Input.GetMouseButton(0)){
-            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> dig_block = CheckDigClick();
+            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> dig_block = CheckClick(TagManager.GROUND);
+            KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> chest_block = CheckClick(TagManager.CHEST);
 
             if (dig_block.Value != null){
                 PlayerDigManager.DIG_DIRECTION dig_direction = dig_block.Key;
@@ -238,14 +293,39 @@ public class playerMove : Photon.MonoBehaviour
                     GetComponent<ItemDropManager>().DropRandomizedItems(b.GetComponent<Block>().transform.position);
                 }
             }
+
+            if (chest_block.Value != null){
+                GameObject b = chest_block.Value;
+
+                if (b.GetComponent<Block>().unopened){
+                    mouse_down_count++;
+                    KeepLoading(LoadingManager.LOADING_TYPE.CHEST, b.GetComponent<Block>().transform.position, new Vector2(0, -1.5f));
+                    b.GetComponent<Block>().KeepOpeningChest();
+
+                    if (mouse_down_count >= GetComponent<LoadingManager>().GetMouseDownLimit(LoadingManager.LOADING_TYPE.CHEST)){
+                        b.GetComponent<Block>().OpenChest();
+                        GetComponent<ItemDropManager>().DropRandomizedChestItems(b.GetComponent<Block>().transform.position);
+                    }
+                }
+            }
         }
     }
 
+    public void KeepLoading(LoadingManager.LOADING_TYPE type, Vector2 pos, Vector2 offset){
+        GetComponent<LoadingManager>().SetupLoadingPanel(type, pos + offset);
+        GetComponent<LoadingManager>().UpdateLoadingCircle(type, mouse_down_count);
+        GetComponent<LoadingManager>().SetLoadingPanelVisible(true);
+    }
+
+    private void StopLoading(){
+        GetComponent<LoadingManager>().SetLoadingPanelVisible(false);
+    }
+
     // clicked down / up on block
-    private KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> CheckDigClick(){
+    private KeyValuePair<PlayerDigManager.DIG_DIRECTION, GameObject> CheckClick(string objects_tag){
         Vector2 pos = player_camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
 
-        GameObject[] ground_blocks = GameObject.FindGameObjectsWithTag(TagManager.GROUND);
+        GameObject[] ground_blocks = GameObject.FindGameObjectsWithTag(objects_tag);
         foreach (GameObject b in ground_blocks){
             Vector2 player_center = GetComponent<BoxCollider2D>().bounds.center;
             float size = GetComponent<BoxCollider2D>().size.y / 2;

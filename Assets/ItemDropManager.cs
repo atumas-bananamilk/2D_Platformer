@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class ItemDropManager : MonoBehaviour {
 
+    public void DropRandomizedChestItems(Vector2 pos){
+        int p = GetRandomInt(0, 100);
+        if (p >= 0 && p < 50){
+            DropRandomItemAmountOfTimes(pos, 3);
+        }
+        else{
+            DropRandomItemAmountOfTimes(pos, 4);
+        }
+    }
+
     public void DropRandomizedItems(Vector2 pos){
         int p = GetRandomInt(0, 100);
 
@@ -14,10 +24,15 @@ public class ItemDropManager : MonoBehaviour {
             // drop nothing
         }
         else if (p >= 1 && p < 90){
-            DropRandomItem(pos);
+            DropRandomItemAmountOfTimes(pos, 1);
         }
         else{
-            DropRandomItem(pos);
+            DropRandomItemAmountOfTimes(pos, 2);
+        }
+    }
+
+    private void DropRandomItemAmountOfTimes(Vector2 pos, int amount_of_times){
+        for (int i = 0; i < amount_of_times; i++){
             DropRandomItem(pos);
         }
     }

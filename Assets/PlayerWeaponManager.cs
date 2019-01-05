@@ -17,7 +17,7 @@ public class PlayerWeaponManager : MonoBehaviour {
     Vector2 weapon_target;
 
     private string weapons_path = "AssetsWeapons/gun_";
-    private int new_weapon_number = 13;
+    private int new_weapon_number = 3;
 
 	private void Start()
     {

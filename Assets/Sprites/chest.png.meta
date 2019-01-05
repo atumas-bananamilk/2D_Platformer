@@ -49,7 +49,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,18 +113,18 @@ TextureImporter:
       name: chest_0
       rect:
         serializedVersion: 2
-        x: 62
-        y: 63
-        width: 129
-        height: 130
+        x: 0
+        y: 0
+        width: 32
+        height: 52
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8afe2c1697eb44a06a206cdd4f29adfe
+      spriteID: cf23248501cc6483a8d1a60e9a42c2e4
       vertices: []
       indices: 
       edges: []
@@ -133,18 +133,18 @@ TextureImporter:
       name: chest_1
       rect:
         serializedVersion: 2
-        x: 217
-        y: 63
-        width: 130
-        height: 134
+        x: 32
+        y: 0
+        width: 32
+        height: 52
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7681fc149904a4960a26a37ed7c2cdc6
+      spriteID: 11a36c6aa1408400395f9554d5644161
       vertices: []
       indices: 
       edges: []
@@ -153,18 +153,18 @@ TextureImporter:
       name: chest_2
       rect:
         serializedVersion: 2
-        x: 371
-        y: 63
-        width: 129
-        height: 139
+        x: 64
+        y: 0
+        width: 32
+        height: 52
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e20789bb3f6246d3b350dc31c84df03
+      spriteID: d27ef1ebb2d3849bcac7f91ce20796e6
       vertices: []
       indices: 
       edges: []
@@ -173,18 +173,18 @@ TextureImporter:
       name: chest_3
       rect:
         serializedVersion: 2
-        x: 525
-        y: 63
-        width: 129
-        height: 148
+        x: 96
+        y: 0
+        width: 32
+        height: 52
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f2dd1c4ff7f541e89c5dc82b8eda009
+      spriteID: 710ccd64875494b9caa8a1cb3c1aeef5
       vertices: []
       indices: 
       edges: []
@@ -193,18 +193,18 @@ TextureImporter:
       name: chest_4
       rect:
         serializedVersion: 2
-        x: 679
-        y: 63
-        width: 130
-        height: 151
+        x: 128
+        y: 0
+        width: 32
+        height: 52
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f59816cfa9c73419b9397d475f32c3e3
+      spriteID: b66b5be2342304bcd9303f1d6e39e915
       vertices: []
       indices: 
       edges: []
@@ -213,18 +213,18 @@ TextureImporter:
       name: chest_5
       rect:
         serializedVersion: 2
-        x: 833
-        y: 63
-        width: 129
-        height: 154
+        x: 160
+        y: 0
+        width: 32
+        height: 52
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9f4ec17bb9d394e80ae96431b3c4ced0
+      spriteID: 4b8cadaf4b8764846ba84b4ffc950ed5
       vertices: []
       indices: 
       edges: []
@@ -232,7 +232,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f09e1b7344a8f4c868452033420eb4f1
+    spriteID: 60073db5d6fb04fac824bc7f33e12a6e
     vertices: []
     indices: 
     edges: []

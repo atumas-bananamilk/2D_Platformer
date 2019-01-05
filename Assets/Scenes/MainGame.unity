@@ -545,7 +545,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!1001 &895321558
+--- !u!1001 &816815654
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2

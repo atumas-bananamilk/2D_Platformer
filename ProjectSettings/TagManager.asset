@@ -8,6 +8,7 @@ TagManager:
   - SpawnPoint
   - PickUpItem
   - Wall
+  - Chest
   layers:
   - Default
   - TransparentFX
@@ -18,13 +19,13 @@ TagManager:
   - 
   - 
   - Wall
+  - Chest
   - PickUpItem
   - PlayerWeapon
   - Player
+  - LoadingPanel
   - Background
   - Background_1
-  - 
-  - 
   - 
   - 
   - 
