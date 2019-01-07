@@ -13,7 +13,7 @@ public class Block : MonoBehaviour {
     private float move_speed = 24f;
 
     public enum BLOCK_TYPE{
-        WOOD, BRICK, METAL, UNKNOWN
+        WOOD, BRICK, METAL, CHEST, UNKNOWN
     }
     public BLOCK_TYPE block_type;
     public float health = 100f;
@@ -33,6 +33,7 @@ public class Block : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D c){
         if (c.gameObject.tag == TagManager.PLAYER){
             Physics2D.IgnoreLayerCollision(LayerManager.CHEST, LayerManager.PLAYER, true);
+            Physics2D.IgnoreLayerCollision(LayerManager.UNKNOWN, LayerManager.PLAYER, true);
         }
         if (c.gameObject.tag == TagManager.PICK_UP_ITEM){
             Physics2D.IgnoreLayerCollision(LayerManager.CHEST, LayerManager.PICK_UP_ITEM, true);
@@ -52,10 +53,15 @@ public class Block : MonoBehaviour {
             block_type = BLOCK_TYPE.METAL;
             health = health_max_metal;
         }
-        else{
-            block_type = BLOCK_TYPE.UNKNOWN;
+        else if (MapManager.TILES_CHEST.Contains(cell_id)){
+            block_type = BLOCK_TYPE.CHEST;
             gameObject.tag = TagManager.CHEST;
             gameObject.layer = LayerManager.CHEST;
+        }
+        else{
+            block_type = BLOCK_TYPE.UNKNOWN;
+            gameObject.tag = TagManager.UNKNOWN;
+            gameObject.layer = LayerManager.UNKNOWN;
         }
         block_crack.enabled = false;
         gameObject.GetComponent<SpriteRenderer>().sprite = MapManager.tile_sprites[cell_id];

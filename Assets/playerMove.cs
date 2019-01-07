@@ -567,14 +567,14 @@ public class playerMove : Photon.MonoBehaviour
     {
         if (!dev_testing && view.isMine)
         {
-            if (c.gameObject.tag == TagManager.GROUND || c.gameObject.tag == TagManager.PLAYER)
+            if (c.gameObject.tag == TagManager.GROUND || c.gameObject.tag == TagManager.WALL || c.gameObject.tag == TagManager.PLAYER)
             {
                 jumps_done = 0;
             }
         }
         else
         {
-            if (c.gameObject.tag == TagManager.GROUND || c.gameObject.tag == TagManager.PLAYER)
+            if (c.gameObject.tag == TagManager.GROUND || c.gameObject.tag == TagManager.WALL || c.gameObject.tag == TagManager.PLAYER)
             {
                 jumps_done = 0;
             }

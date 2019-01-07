@@ -9,6 +9,7 @@ TagManager:
   - PickUpItem
   - Wall
   - Chest
+  - Unknown
   layers:
   - Default
   - TransparentFX
@@ -20,13 +21,13 @@ TagManager:
   - 
   - Wall
   - Chest
+  - Unknown
   - PickUpItem
   - PlayerWeapon
   - Player
   - LoadingPanel
   - Background
   - Background_1
-  - 
   - 
   - 
   - 

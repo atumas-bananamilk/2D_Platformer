@@ -10,7 +10,7 @@ public class WorldItem : MonoBehaviour {
 
     public enum ITEM_NAME
     {
-        WALL_WOODEN, COIN_GOLD, BLOCK_DIRT
+        WALL_WOODEN, WALL_BRICK, WALL_METAL, COIN_GOLD, BLOCK_DIRT
     }
 
     public enum ITEM_TYPE{

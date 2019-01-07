@@ -48,6 +48,7 @@ public class MapManager : MonoBehaviour
     public static List<int> TILES_WOOD = new List<int>();
     public static List<int> TILES_BRICK = new List<int>();
     public static List<int> TILES_METAL = new List<int>();
+    public static List<int> TILES_CHEST = new List<int>();
     
     int offset = 2;
     public int map_width;
@@ -57,10 +58,15 @@ public class MapManager : MonoBehaviour
 
 	private void Awake(){
         tile_sprites = Resources.LoadAll<Sprite>(tiles_path);
+        SetupTilesChest();
         SetupTilesWood();
         SetupTilesBrick();
         SetupTilesMetal();
 	}
+
+    private void SetupTilesChest(){
+        TILES_CHEST.Add(4);
+    }
 
     private void SetupTilesWood(){
         TILES_WOOD.Add(0);

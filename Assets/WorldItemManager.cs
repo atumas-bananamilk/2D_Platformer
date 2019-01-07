@@ -16,6 +16,7 @@ public class WorldItemManager : MonoBehaviour {
                    new Vector2(0.5f, 0.5f), 
                    default_icon, 
                    false,
+                   false,
                    1f);
     }
 
@@ -53,6 +54,7 @@ public class WorldItemManager : MonoBehaviour {
                                     scale,
                                     item.GetSprite(),
                                     true,
+                                    false,
                                     1f);
 
         obj.GetComponent<BoxCollider2D>().size = collider_size;
@@ -60,13 +62,14 @@ public class WorldItemManager : MonoBehaviour {
     }
 
     // same as add item, but no gravity
-    public void AddWallToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 scale, Sprite sprite){
+    public void AddWallToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 size, Sprite sprite){
         CreateItem(name, 
                    wall_prefab, 
                    position, 
                    rotation, 
-                   scale, 
+                   size, 
                    sprite, 
+                   true,
                    true,
                    1f);
     }
@@ -79,6 +82,7 @@ public class WorldItemManager : MonoBehaviour {
                    scale, 
                    sprite, 
                    false,
+                   false,
                    0.3f);
     }
 
@@ -89,10 +93,18 @@ public class WorldItemManager : MonoBehaviour {
                                  Vector2 scale, 
                                  Sprite sprite, 
                                  bool has_collider,
+                                 bool size,
                                  float opacity){
         
         GameObject obj = Instantiate(prefab, position, rotation) as GameObject;
-        obj.transform.localScale = scale;
+        if (size){
+            //obj.transform.localScale = new Vector2(0.48f, 0.18f);
+            obj.GetComponent<SpriteRenderer>().size = scale;
+            //obj.GetComponent<SpriteRenderer>().size = new Vector2(1f, 1f);
+        }
+        else{
+            obj.transform.localScale = scale;
+        }
         obj.GetComponent<SpriteRenderer>().sprite = sprite;
         obj.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
         obj.GetComponent<WorldItem>().item_name = name;
@@ -102,6 +114,30 @@ public class WorldItemManager : MonoBehaviour {
         }
         if (obj.GetComponent<PolygonCollider2D>() != null){
             obj.GetComponent<PolygonCollider2D>().enabled = has_collider;
+        }
+
+        if (size){
+            Bounds aa = obj.GetComponent<PolygonCollider2D>().bounds;
+            Debug.Log("BOUNDS BEFORE: "+obj.GetComponent<PolygonCollider2D>().bounds.size);
+            //obj.GetComponent<PolygonCollider2D>().bounds.size = obj.GetComponent<PolygonCollider2D>().bounds.size / 2;
+            aa.size = aa.size / 20;
+            Debug.Log("BOUNDS AFTER: " + obj.GetComponent<PolygonCollider2D>().bounds.size);
+
+            Vector2[] path = obj.GetComponent<PolygonCollider2D>().points;
+            Debug.Log("COUNT BEFORE: "+path.Length);
+
+            List<Vector2> bb = new List<Vector2>();
+            foreach (Vector2 v in path){
+                float x = v.x / 2.3f;
+                float y = v.y / 4.8f;
+                bb.Add(new Vector2(x, y));
+            }
+            obj.GetComponent<PolygonCollider2D>().points = bb.ToArray();
+
+            Vector2[] cc = obj.GetComponent<PolygonCollider2D>().points;
+            Debug.Log("COUNT AFTER: " + cc.Length);
+            //Destroy(obj.GetComponent<PolygonCollider2D>());
+            //obj.AddComponent<PolygonCollider2D>();
         }
         return obj;
     }
