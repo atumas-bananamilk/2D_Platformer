@@ -9,15 +9,15 @@ public class WorldItemManager : MonoBehaviour {
     public GameObject wall_prefab;
 
 	public void AddItemToWorld(){
-        CreateItem(WorldItem.ITEM_NAME.COIN_GOLD, 
-                   item_prefab, 
-                   new Vector2(0, 0), 
-                   Quaternion.identity, 
-                   new Vector2(0.5f, 0.5f), 
-                   default_icon, 
+        CreateItem(WorldItem.ITEM_NAME.COIN_GOLD,
+                   item_prefab,
+                   new Vector2(0, 0),
+                   Quaternion.identity,
+                   new Vector2(0.5f, 0.5f),
+                   default_icon,
                    false,
-                   false,
-                   1f);
+                   1f,
+                   false);
     }
 
     public void DropItemToWorld(Vector2 pos, WorldItem item, Vector2 direction){
@@ -54,15 +54,15 @@ public class WorldItemManager : MonoBehaviour {
                                     scale,
                                     item.GetSprite(),
                                     true,
-                                    false,
-                                    1f);
+                                    1f,
+                                    false);
 
         obj.GetComponent<BoxCollider2D>().size = collider_size;
         obj.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 1100 + direction * 300);
     }
 
     // same as add item, but no gravity
-    public void AddWallToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 size, Sprite sprite){
+    public void AddWallToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 size, Sprite sprite, Vector2 polygon_scale){
         CreateItem(name, 
                    wall_prefab, 
                    position, 
@@ -70,11 +70,12 @@ public class WorldItemManager : MonoBehaviour {
                    size, 
                    sprite, 
                    true,
+                   1f,
                    true,
-                   1f);
+                   polygon_scale);
     }
 
-    public GameObject AddWallHoverToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 scale, Sprite sprite){
+    public GameObject AddWallHoverToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 scale, Sprite sprite, Vector2 polygon_scale){
         return CreateItem(name, 
                    wall_prefab, 
                    position, 
@@ -82,8 +83,9 @@ public class WorldItemManager : MonoBehaviour {
                    scale, 
                    sprite, 
                    false,
-                   false,
-                   0.3f);
+                   0.3f,
+                   true,
+                   polygon_scale);
     }
 
     public GameObject CreateItem(WorldItem.ITEM_NAME name, 
@@ -93,14 +95,13 @@ public class WorldItemManager : MonoBehaviour {
                                  Vector2 scale, 
                                  Sprite sprite, 
                                  bool has_collider,
-                                 bool size,
-                                 float opacity){
+                                 float opacity,
+                                 bool editing_sprite_size,
+                                 Vector2 polygon_scale = default(Vector2)){
         
         GameObject obj = Instantiate(prefab, position, rotation) as GameObject;
-        if (size){
-            //obj.transform.localScale = new Vector2(0.48f, 0.18f);
+        if (editing_sprite_size){
             obj.GetComponent<SpriteRenderer>().size = scale;
-            //obj.GetComponent<SpriteRenderer>().size = new Vector2(1f, 1f);
         }
         else{
             obj.transform.localScale = scale;
@@ -116,28 +117,14 @@ public class WorldItemManager : MonoBehaviour {
             obj.GetComponent<PolygonCollider2D>().enabled = has_collider;
         }
 
-        if (size){
-            Bounds aa = obj.GetComponent<PolygonCollider2D>().bounds;
-            Debug.Log("BOUNDS BEFORE: "+obj.GetComponent<PolygonCollider2D>().bounds.size);
-            //obj.GetComponent<PolygonCollider2D>().bounds.size = obj.GetComponent<PolygonCollider2D>().bounds.size / 2;
-            aa.size = aa.size / 20;
-            Debug.Log("BOUNDS AFTER: " + obj.GetComponent<PolygonCollider2D>().bounds.size);
-
+        // scaling polygon collider
+        if (editing_sprite_size){
             Vector2[] path = obj.GetComponent<PolygonCollider2D>().points;
-            Debug.Log("COUNT BEFORE: "+path.Length);
-
             List<Vector2> bb = new List<Vector2>();
             foreach (Vector2 v in path){
-                float x = v.x / 2.3f;
-                float y = v.y / 4.8f;
-                bb.Add(new Vector2(x, y));
+                bb.Add(new Vector2(v.x * polygon_scale.x, v.y * polygon_scale.y));
             }
             obj.GetComponent<PolygonCollider2D>().points = bb.ToArray();
-
-            Vector2[] cc = obj.GetComponent<PolygonCollider2D>().points;
-            Debug.Log("COUNT AFTER: " + cc.Length);
-            //Destroy(obj.GetComponent<PolygonCollider2D>());
-            //obj.AddComponent<PolygonCollider2D>();
         }
         return obj;
     }

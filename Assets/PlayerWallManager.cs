@@ -17,8 +17,12 @@ public class PlayerWallManager : MonoBehaviour {
     public GameObject wall_hover;
     private MATERIAL_TYPES selected_material;
     private readonly float WALL_UNIT_SIZE = 3f;
-    private Vector2 wall_size_flat = new Vector2(0.38f, 0.18f);
-    private Vector2 wall_size_diagonal = new Vector2(0.48f, 0.18f);
+
+    private static Vector2 wall_size_flat = new Vector2(3f, 0.76f);
+    private static Vector2 wall_size_diagonal = new Vector2(4.3f, 0.76f);
+
+    private static Vector2 polygon_scale_flat = new Vector2(wall_size_flat.x / 10, wall_size_flat.y / 5);
+    private static Vector2 polygon_scale_diagonal = new Vector2(wall_size_diagonal.x / 10, wall_size_diagonal.y / 5);
 
     public enum WALL_ROTATION{
         HORIZONTAL, DIAGONAL_LEFT, VERTICAL, DIAGONAL_RIGHT
@@ -54,17 +58,40 @@ public class PlayerWallManager : MonoBehaviour {
         selected_material = type;
     }
 
-	public void PlaceWall(WALL_ROTATION wall_rotation){
+    private void PlaceWall(bool is_hover, WALL_ROTATION wall_rotation, Vector2 pos, Quaternion rotation){
+        Vector2 wall_size;
+        Vector2 polygon_scale;
+
+        if (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL){
+            wall_size = wall_size_flat;
+            polygon_scale = polygon_scale_flat;
+        }
+        else{
+            wall_size = wall_size_diagonal;
+            polygon_scale = polygon_scale_diagonal;
+        }
+
+        PlaceWallOfType(is_hover, pos, rotation, wall_size, polygon_scale);
+    }
+
+    public void PlaceRealWall(WALL_ROTATION wall_rotation){
         WallTransform t = GetWallTransform(wall_rotation);
 
         if (t != null){
-            Vector2 wall_size = (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL)
-                ? wall_size_flat
-                : wall_size_diagonal;
+            PlaceWall(false, wall_rotation, t.position, t.rotation);
+            //Vector2 wall_size;
+            //Vector2 polygon_scale;
 
-            wall_size = GetComponent<SpriteRenderer>().size = new Vector2(4.8f, 0.76f);
+            //if (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL){
+            //    wall_size = wall_size_flat;
+            //    polygon_scale = polygon_scale_flat;
+            //}
+            //else{
+            //    wall_size = wall_size_diagonal;
+            //    polygon_scale = polygon_scale_diagonal;
+            //}
 
-            PlaceWallOfType(false, t.position, t.rotation, wall_size);
+            //PlaceWallOfType(false, t.position, t.rotation, wall_size, polygon_scale);
         }
     }
 
@@ -72,14 +99,24 @@ public class PlayerWallManager : MonoBehaviour {
         WallTransform t = GetWallTransform(wall_rotation);
         Destroy(wall_hover);
         if (t != null){
-            Vector2 wall_size = (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL)
-                ? wall_size_flat
-                : wall_size_diagonal;
-            PlaceWallOfType(true, t.position, t.rotation, wall_size);
+            PlaceWall(true, wall_rotation, t.position, t.rotation);
+            //Vector2 wall_size;
+            //Vector2 polygon_scale;
+
+            //if (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL){
+            //    wall_size = wall_size_flat;
+            //    polygon_scale = polygon_scale_flat;
+            //}
+            //else{
+            //    wall_size = wall_size_diagonal;
+            //    polygon_scale = polygon_scale_diagonal;
+            //}
+
+            //PlaceWallOfType(true, t.position, t.rotation, wall_size, polygon_scale);
         }
     }
 
-    private void PlaceWallOfType(bool hover, Vector2 pos, Quaternion rotation, Vector2 wall_size){
+    private void PlaceWallOfType(bool hover, Vector2 pos, Quaternion rotation, Vector2 wall_size, Vector2 polygon_scale){
         Sprite wall_sprite = wooden_wall;
         WorldItem.ITEM_NAME item_name = WorldItem.ITEM_NAME.WALL_WOODEN;
 
@@ -101,10 +138,10 @@ public class PlayerWallManager : MonoBehaviour {
                 }
         }
         if (hover){
-            wall_hover = GetComponent<WorldItemManager>().AddWallHoverToWorld(item_name, pos, rotation, wall_size, wall_sprite);
+            wall_hover = GetComponent<WorldItemManager>().AddWallHoverToWorld(item_name, pos, rotation, wall_size, wall_sprite, polygon_scale);
         }
         else{
-            gameObject.GetComponent<WorldItemManager>().AddWallToWorld(item_name, pos, rotation, wall_size, wall_sprite);
+            gameObject.GetComponent<WorldItemManager>().AddWallToWorld(item_name, pos, rotation, wall_size, wall_sprite, polygon_scale);
         }
     }
 
