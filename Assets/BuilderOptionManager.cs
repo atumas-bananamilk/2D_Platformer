@@ -72,7 +72,7 @@ public class BuilderOptionManager : MonoBehaviour, IBeginDragHandler, IDragHandl
     }
 
     private void BuildWall(){
-        gameObject.GetComponentInParent<PlayerWallManager>().PlaceRealWall(wall_selections[quaternion]);
+        gameObject.GetComponentInParent<PlayerWallManager>().PlaceNetworkedRealWall(wall_selections[quaternion]);
     }
 
     private void HoverWall(){

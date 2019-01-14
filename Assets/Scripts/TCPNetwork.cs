@@ -97,6 +97,22 @@ public class TCPNetwork : MonoBehaviour
         AsyncSend(TCPMessageManager.ChangePlayerState(TCPPlayer.my_player.id, s));
     }
 
+    //public static void PlaceWall(PlayerWallManager.WALL_ROTATION rotation, PlayerWallManager.MATERIAL_TYPES type){
+    //    AsyncSend(TCPMessageManager.PlaceWall(TCPPlayer.my_player.id, rotation, type));
+    //}
+
+    public static void PlaceWall(PlayerWallManager.WALL_ROTATION rotation, 
+                                 Vector2 pos,
+                                 Quaternion r,
+                                 PlayerWallManager.MATERIAL_TYPES type){
+        
+        AsyncSend(TCPMessageManager.PlaceWall(TCPPlayer.my_player.id,
+                                              rotation,
+                                              pos,
+                                              r,
+                                              type));
+    }
+
     private void AsyncListen()
     {
         thread = new Thread(() => Listen());

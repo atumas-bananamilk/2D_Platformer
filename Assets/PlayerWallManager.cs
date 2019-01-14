@@ -10,8 +10,8 @@ public class PlayerWallManager : MonoBehaviour {
     public Sprite metal_wall;
     public GameObject materials;
 
-    private enum MATERIAL_TYPES{
-        WOOD, BRICK, METAL
+    public enum MATERIAL_TYPES{
+        UNKNOWN, WOOD, BRICK, METAL
     }
 
     public GameObject wall_hover;
@@ -58,7 +58,38 @@ public class PlayerWallManager : MonoBehaviour {
         selected_material = type;
     }
 
-    private void PlaceWall(bool is_hover, WALL_ROTATION wall_rotation, Vector2 pos, Quaternion rotation){
+    public void PlaceNetworkedRealWall(WALL_ROTATION wall_rotation){
+        PlaceRealWall(wall_rotation, selected_material);
+        //TCPNetwork.PlaceWall(wall_rotation, selected_material);
+    }
+
+    public void PlaceRealWall(WALL_ROTATION wall_rotation, MATERIAL_TYPES type){
+        WallTransform t = GetWallTransform(wall_rotation);
+
+        Debug.DrawLine(transform.position, t.position);
+
+        if (!TCPPlayer.IsMine(gameObject)) {
+            if (GetComponent<playerMove>().direction == playerMove.MOVEMENT_DIRECTION.RIGHT){
+                t.position.x += 1;
+            }
+        }
+        if (t != null){
+            PlaceWall(false, wall_rotation, t.position, t.rotation, type);
+            //TCPNetwork.PlaceWall(wall_rotation, selected_material);
+            TCPNetwork.PlaceWall(wall_rotation, t.position, t.rotation, type);
+        }
+    }
+
+    public void PlaceHoverWall(WALL_ROTATION wall_rotation){
+        WallTransform t = GetWallTransform(wall_rotation);
+        Destroy(wall_hover);
+
+        if (t != null && TCPPlayer.IsMine(gameObject)){
+            PlaceWall(true, wall_rotation, t.position, t.rotation, selected_material);
+        }
+    }
+
+    public void PlaceWall(bool is_hover, WALL_ROTATION wall_rotation, Vector2 pos, Quaternion rotation, MATERIAL_TYPES type){
         Vector2 wall_size;
         Vector2 polygon_scale;
 
@@ -71,56 +102,14 @@ public class PlayerWallManager : MonoBehaviour {
             polygon_scale = polygon_scale_diagonal;
         }
 
-        PlaceWallOfType(is_hover, pos, rotation, wall_size, polygon_scale);
+        PlaceWallOfType(is_hover, pos, rotation, wall_size, polygon_scale, type);
     }
 
-    public void PlaceRealWall(WALL_ROTATION wall_rotation){
-        WallTransform t = GetWallTransform(wall_rotation);
-
-        if (t != null){
-            PlaceWall(false, wall_rotation, t.position, t.rotation);
-            //Vector2 wall_size;
-            //Vector2 polygon_scale;
-
-            //if (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL){
-            //    wall_size = wall_size_flat;
-            //    polygon_scale = polygon_scale_flat;
-            //}
-            //else{
-            //    wall_size = wall_size_diagonal;
-            //    polygon_scale = polygon_scale_diagonal;
-            //}
-
-            //PlaceWallOfType(false, t.position, t.rotation, wall_size, polygon_scale);
-        }
-    }
-
-    public void PlaceHoverWall(WALL_ROTATION wall_rotation){
-        WallTransform t = GetWallTransform(wall_rotation);
-        Destroy(wall_hover);
-        if (t != null){
-            PlaceWall(true, wall_rotation, t.position, t.rotation);
-            //Vector2 wall_size;
-            //Vector2 polygon_scale;
-
-            //if (wall_rotation == WALL_ROTATION.HORIZONTAL || wall_rotation == WALL_ROTATION.VERTICAL){
-            //    wall_size = wall_size_flat;
-            //    polygon_scale = polygon_scale_flat;
-            //}
-            //else{
-            //    wall_size = wall_size_diagonal;
-            //    polygon_scale = polygon_scale_diagonal;
-            //}
-
-            //PlaceWallOfType(true, t.position, t.rotation, wall_size, polygon_scale);
-        }
-    }
-
-    private void PlaceWallOfType(bool hover, Vector2 pos, Quaternion rotation, Vector2 wall_size, Vector2 polygon_scale){
+    private void PlaceWallOfType(bool hover, Vector2 pos, Quaternion rotation, Vector2 wall_size, Vector2 polygon_scale, MATERIAL_TYPES type){
         Sprite wall_sprite = wooden_wall;
         WorldItem.ITEM_NAME item_name = WorldItem.ITEM_NAME.WALL_WOODEN;
 
-        switch (selected_material){
+        switch (type){
             case MATERIAL_TYPES.WOOD:{
                     wall_sprite = wooden_wall;
                     item_name = WorldItem.ITEM_NAME.WALL_WOODEN;
@@ -163,7 +152,8 @@ public class PlayerWallManager : MonoBehaviour {
         // horizontal
         if (check_x_coordinate){
             start_pos = gameObject.GetComponent<MapManager>().start_x;
-            player_pos = transform.position.x;
+
+                player_pos = transform.position.x;
             units = (int)(Math.Abs(player_pos - start_pos) / WALL_UNIT_SIZE);
             
             switch (rotation){

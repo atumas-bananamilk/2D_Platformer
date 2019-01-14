@@ -152,7 +152,7 @@ public class MapManager : MonoBehaviour
         float x = start_x;
         float y = start_y;
 
-        DrawBoundaries(x, y);
+        //DrawBoundaries(x, y);
 
         // draw blocks
         foreach (List<string> row in map)

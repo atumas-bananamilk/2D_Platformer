@@ -29,10 +29,19 @@ public class WorldItem : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D c)
     {
-        if (c.gameObject.tag == TagManager.PLAYER)
-        {
+        if (c.gameObject.tag == TagManager.PLAYER){
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer(TagManager.PICK_UP_ITEM), LayerMask.NameToLayer(TagManager.PLAYER), true);
         }
+    }
+    
+    IEnumerator ChangeWallColourAfterDelay(float time, Color c){
+        yield return new WaitForSeconds(time);
+        GetComponent<SpriteRenderer>().color = c;
+     }
+
+    public void TakeDamage(){
+        StartCoroutine(ChangeWallColourAfterDelay(0f, Color.red));
+        StartCoroutine(ChangeWallColourAfterDelay(0.1f, Color.white));
     }
 
 	public void Use()

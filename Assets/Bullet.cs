@@ -28,10 +28,17 @@ public class Bullet : MonoBehaviour {
     }
 
 	private void OnTriggerEnter2D(Collider2D c){
-        if (c.GetComponent<Collider2D>().tag == "Player"){
+        if (c.GetComponent<Collider2D>().tag == TagManager.PLAYER){
             GameObject o = c.gameObject;
             if (o && c.gameObject){
                 TCPNetwork.ApplyDamage(ref o, damage);
+            }
+            DestroyObjImmediate();
+        }
+        if (c.GetComponent<Collider2D>().tag == TagManager.WALL){
+            GameObject o = c.gameObject;
+            if (o && c.gameObject){
+                c.GetComponent<WorldItem>().TakeDamage();
             }
             DestroyObjImmediate();
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,12 @@ public class playerHealthBar : Photon.MonoBehaviour {
     public Vector3 other_player_flag_pos;
 
     public GameObject background;
+    public GameObject damage_text;
+    private bool showing_damage_text = false;
+    private float damage_text_size_init;
+    private float damage_text_size;
+
+    private int MAX_DAMAGE_TEXT_SIZE = 34;
 
     private float health_amount = 100f;
 
@@ -39,8 +46,30 @@ public class playerHealthBar : Photon.MonoBehaviour {
             RespawnScript.Instance.local_player = gameObject;
         }
 	}
-    
-    public void SetCorrectCanvas(){
+
+	private void Start()
+	{
+        damage_text_size = damage_text_size_init = damage_text.GetComponent<Text>().fontSize;
+	}
+
+	private void Update()
+	{
+        SetDamageTextSize();
+	}
+
+    private void SetDamageTextSize(){
+        if (showing_damage_text){
+            if (damage_text_size < MAX_DAMAGE_TEXT_SIZE){
+                damage_text_size += 1f;
+            }
+            damage_text.GetComponent<Text>().fontSize = Mathf.RoundToInt(damage_text_size);
+        }
+        else{
+            damage_text_size = damage_text_size_init;
+        }
+    }
+
+	public void SetCorrectCanvas(){
         //if (photonView.isMine){
         if (TCPPlayer.IsMine(gameObject)){
             player_move.player_name.GetComponent<RectTransform>().anchoredPosition = (local_player_name_pos);
@@ -56,6 +85,23 @@ public class playerHealthBar : Photon.MonoBehaviour {
         }
     }
 
+    private int GetRandomInt(int min, int max){
+        int r = UnityEngine.Random.Range(min, max + 1);
+        return r;
+    }
+    
+    IEnumerator SetDamageVisibleAfterDelay(float time, bool visible, int hit_amount){
+        yield return new WaitForSeconds(time);
+        damage_text.GetComponent<Text>().text = hit_amount.ToString();
+        showing_damage_text = visible;
+        damage_text.SetActive(visible);
+     }
+
+    private void PopupDamage(int hit_amount){
+        StartCoroutine(SetDamageVisibleAfterDelay(0f, true, hit_amount));
+        StartCoroutine(SetDamageVisibleAfterDelay(0.8f, false, 0));
+    }
+
     public void ReduceHealth(float hit_amount)
     {
         if (TCPPlayer.IsMine(gameObject)){
@@ -64,6 +110,8 @@ public class playerHealthBar : Photon.MonoBehaviour {
         }
         else{
             other_player_healthbar.fillAmount -= hit_amount;
+
+            PopupDamage((int) (hit_amount * 1000) + GetRandomInt(-100, 100));
         }
         CheckHealthAmount();
         GetComponent<Animator>().Play(AnimatorManager.PLAYER_HIT);

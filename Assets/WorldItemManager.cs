@@ -63,16 +63,16 @@ public class WorldItemManager : MonoBehaviour {
 
     // same as add item, but no gravity
     public void AddWallToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 size, Sprite sprite, Vector2 polygon_scale){
-        CreateItem(name, 
-                   wall_prefab, 
-                   position, 
-                   rotation, 
-                   size, 
-                   sprite, 
-                   true,
-                   1f,
-                   true,
-                   polygon_scale);
+        GameObject obj = CreateItem(name, 
+                                   wall_prefab, 
+                                   position, 
+                                   rotation, 
+                                   size, 
+                                   sprite, 
+                                   true,
+                                   1f,
+                                   true,
+                                   polygon_scale);
     }
 
     public GameObject AddWallHoverToWorld(WorldItem.ITEM_NAME name, Vector2 position, Quaternion rotation, Vector2 scale, Sprite sprite, Vector2 polygon_scale){

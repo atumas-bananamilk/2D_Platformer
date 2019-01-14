@@ -7,7 +7,7 @@ using UnityEngine;
 public class TCPMessageManager : MonoBehaviour {
 
     private enum CMD{
-        FIND, LEAVE, START, ASSIGN, INIT, POS, DISCONNECT, SHOOT, DAMAGE, KILL, FLIP, STATE
+        FIND, LEAVE, START, ASSIGN, INIT, POS, DISCONNECT, SHOOT, DAMAGE, KILL, FLIP, STATE, WALL
     }
 
     public static string FindMatch()
@@ -44,6 +44,21 @@ public class TCPMessageManager : MonoBehaviour {
     }
     public static string ChangePlayerState(int id, playerMove.PLAYERSTATE s){
         return "(state:" + id + "," + s + ")";
+    }
+    public static string PlaceWall(int id, 
+                                   PlayerWallManager.WALL_ROTATION rotation,
+                                   Vector2 pos,
+                                   Quaternion r,
+                                   PlayerWallManager.MATERIAL_TYPES type){
+        return "(wall:" + id + 
+            "," + rotation + 
+            "," + pos.x + 
+            "," + pos.y + 
+            "," + r.x.ToString("0.##") + 
+            "," + r.y.ToString("0.##") + 
+            "," + r.z.ToString("0.##") + 
+            "," + r.w.ToString("0.##") + 
+            "," + type + ")";
     }
 
     public IEnumerator UpdateMatchIndicators(int match_players_count)
@@ -117,8 +132,23 @@ public class TCPMessageManager : MonoBehaviour {
 
     public IEnumerator Return_ChangePlayerState(int id, playerMove.PLAYERSTATE state)
     {
-        Debug.Log("CHANGING PLAYER ID: " + id + ", STATE TO: "+state);
         TCPPlayer.GetPlayerGameObject(id).GetComponent<playerMove>().ChangePlayerState(state);
+        yield return null;
+    }
+
+    //public IEnumerator Return_PlaceWall(int id, PlayerWallManager.WALL_ROTATION rotation, PlayerWallManager.MATERIAL_TYPES type)
+    //{
+    //    TCPPlayer.GetPlayerGameObject(id).GetComponent<PlayerWallManager>().PlaceRealWall(rotation, type);
+    //    yield return null;
+    //}
+
+    public IEnumerator Return_PlaceWall(int id, 
+                                        PlayerWallManager.WALL_ROTATION rotation,
+                                        Vector2 pos,
+                                        Quaternion r,
+                                        PlayerWallManager.MATERIAL_TYPES type)
+    {
+        TCPPlayer.GetPlayerGameObject(id).GetComponent<PlayerWallManager>().PlaceWall(false, rotation, pos, r, type);
         yield return null;
     }
 
@@ -214,14 +244,35 @@ public class TCPMessageManager : MonoBehaviour {
                 break;
             }
             case CMD.STATE:{
-                    playerMove.PLAYERSTATE s = 
-                        (playerMove.PLAYERSTATE) Enum.Parse(typeof(playerMove.PLAYERSTATE), data[1]);
+                    playerMove.PLAYERSTATE s = (playerMove.PLAYERSTATE) Enum.Parse(typeof(playerMove.PLAYERSTATE), data[1]);
                     
                     UnityMainThreadDispatcher.Instance().Enqueue(
                             Return_ChangePlayerState(id, s)
                 );
                 break;
             }
+            //case CMD.WALL:{
+                //    PlayerWallManager.WALL_ROTATION r =
+                //        (PlayerWallManager.WALL_ROTATION)Enum.Parse(typeof(PlayerWallManager.WALL_ROTATION), data[1]);
+                //    PlayerWallManager.MATERIAL_TYPES t =
+                //        (PlayerWallManager.MATERIAL_TYPES)Enum.Parse(typeof(PlayerWallManager.MATERIAL_TYPES), data[2]);
+                    
+                //    UnityMainThreadDispatcher.Instance().Enqueue(
+                //        Return_PlaceWall(id, r, t)
+                //);
+            case CMD.WALL:{
+                    PlayerWallManager.WALL_ROTATION rotation =
+                        (PlayerWallManager.WALL_ROTATION)Enum.Parse(typeof(PlayerWallManager.WALL_ROTATION), data[1]);
+                    Vector2 pos = new Vector2(float.Parse(data[2]), float.Parse(data[3]));
+                    Quaternion r = new Quaternion(float.Parse(data[4]), float.Parse(data[5]), float.Parse(data[6]), float.Parse(data[7]));
+                    PlayerWallManager.MATERIAL_TYPES t =
+                        (PlayerWallManager.MATERIAL_TYPES)Enum.Parse(typeof(PlayerWallManager.MATERIAL_TYPES), data[8]);
+
+                    UnityMainThreadDispatcher.Instance().Enqueue(
+                        Return_PlaceWall(id, rotation, pos, r, t)
+                    );
+                    break;
+                }
             default:{
                 break;
             }

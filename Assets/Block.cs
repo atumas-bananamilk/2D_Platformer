@@ -122,7 +122,7 @@ public class Block : MonoBehaviour {
     }
 
     public void Dig(){
-        particle_system_main.startColor = new Color(82, 48, 35);
+        particle_system_main.startColor = RGBToColour(82, 48, 35);
         if (!particle_system.isPlaying){
             particle_system.Play();
         }
@@ -130,5 +130,9 @@ public class Block : MonoBehaviour {
 
     public void StopDig(){
         particle_system.Stop();
+    }
+
+    private Color RGBToColour(int r, int g, int b){
+        return new Color(r / 255.0f, g / 255.0f, b / 255.0f);
     }
 }
