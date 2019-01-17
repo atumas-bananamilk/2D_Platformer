@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class AnimatorManager {
-    public static readonly string PLAYER_IDLE = "player_idle";
-    public static readonly string PLAYER_RUN = "player_run";
-    public static readonly string PLAYER_JUMP = "player_jump";
-
     public static readonly string PLAYER_IDLE_WEAPON = "player_idle_weapon";
     public static readonly string PLAYER_RUN_WEAPON = "player_run_weapon";
     public static readonly string PLAYER_JUMP_WEAPON = "player_jump_weapon";
@@ -20,4 +16,14 @@ public static class AnimatorManager {
     public static readonly string PLAYER_DIG_TOP = "player_dig_top";
     public static readonly string PLAYER_DIG_SIDE = "player_dig_side";
     public static readonly string PLAYER_DIG_BOTTOM = "player_dig_bottom";
+
+    public static readonly string PLAYER_IDLE = "player_idle";
+    public static readonly string PLAYER_RUN = "player_run";
+    public static readonly string PLAYER_JUMP = "player_jump";
+
+    public static readonly string MUZZLE_FLASH_RED = "muzzle_flash_red";
+
+    public static readonly string PLAYER_IDLE_WIZARD = "player_idle_wizard";
+    public static readonly string PLAYER_RUN_WIZARD = "player_run_wizard";
+    public static readonly string PLAYER_JUMP_WIZARD = "player_jump_wizard";
 }

@@ -17,12 +17,27 @@ public class PlayerWeaponManager : MonoBehaviour {
     Vector2 weapon_target;
 
     private string weapons_path = "AssetsWeapons/gun_";
-    private int new_weapon_number = 3;
+    public int weapon_number = 3;
 
 	private void Start()
     {
-        new_weapon_sprite = Resources.LoadAll<Sprite>(weapons_path + new_weapon_number)[0];
+        SetupWeaponNumber();
+        new_weapon_sprite = Resources.LoadAll<Sprite>(weapons_path + weapon_number)[0];
 	}
+
+    private void SetupWeaponNumber(){
+        GameObject o = gameObject;
+        switch (TCPPlayer.GetIdByGameObject(ref o)) {
+            case 0:{
+                    weapon_number = 3;
+                    break;
+                }
+            case 1:{
+                    weapon_number = 33;
+                    break;
+                }
+        }
+    }
 
 	private void LateUpdate()
     {
@@ -62,6 +77,8 @@ public class PlayerWeaponManager : MonoBehaviour {
 
         GameObject obj = Instantiate(bullet_prefab, bullet_pos, Quaternion.identity) as GameObject;
         obj.GetComponent<Bullet>().ChangeDirection(GetComponent<playerMove>().direction);
+
+        gameObject.GetComponent<Animator>().Play(AnimatorManager.MUZZLE_FLASH_RED);
     }
 
     public void HideWeapon(bool hide){

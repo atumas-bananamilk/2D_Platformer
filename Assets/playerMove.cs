@@ -516,28 +516,54 @@ public class playerMove : Photon.MonoBehaviour
     }
 
     public void ChangePlayerState(PLAYERSTATE s){
-        switch(s){
-            case PLAYERSTATE.IDLE:{
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE);
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WEAPON);
-                    break;
+        GameObject o = gameObject;
+        switch (TCPPlayer.GetIdByGameObject(ref o)){
+            case 0:{
+                switch(s){
+                    case PLAYERSTATE.IDLE:{
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE);
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WEAPON);
+                            break;
+                        }
+                    case PLAYERSTATE.RUNNING:{
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN);
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN_WEAPON);
+                            break;
+                        }
+                    case PLAYERSTATE.JUMPING:{
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP);
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP_WEAPON);
+                            break;
+                        }
+                    case PLAYERSTATE.DEAD:{
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIE);
+                            break;
+                        }
                 }
-            case PLAYERSTATE.RUNNING:{
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN);
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN_WEAPON);
-                    break;
+                break;
+            }
+            case 1:{
+                switch(s){
+                    case PLAYERSTATE.IDLE:{
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WIZARD);
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_IDLE_WEAPON);
+                            break;
+                        }
+                    case PLAYERSTATE.RUNNING:{
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN_WIZARD);
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_RUN_WEAPON);
+                            break;
+                        }
+                    case PLAYERSTATE.JUMPING:{
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP_WIZARD);
+                            gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP_WEAPON);
+                            break;
+                        }
                 }
-            case PLAYERSTATE.JUMPING:{
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP);
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP_WEAPON);
-                    break;
-                }
-            case PLAYERSTATE.DEAD:{
-                    gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_DIE);
-                    //gameObject.GetComponent<Animator>().Play(AnimatorManager.PLAYER_JUMP);
-                    break;
-                }
+                break;
+            }
         }
+
         player_state = s;
     }
 

@@ -23,12 +23,27 @@ public class MatchManager : MonoBehaviour {
     public Text match_ready_players_count;
 
     private Color DEFAULT_INDICATOR_COLOUR;
-    private readonly int MATCH_PLAYER_LIMIT = 1;
+    private readonly int MATCH_PLAYER_LIMIT = 50;
+
+    //int aa = 0;
 
 	private void Start()
     {
         DEFAULT_INDICATOR_COLOUR = match_ready_panel.GetComponentsInChildren<Image>().Skip(1).ToArray()[0].color;
-	}
+        //StartCoroutine(ChangeIndicatorAfterDelay());
+    }
+
+    //IEnumerator ChangeIndicatorAfterDelay()
+    //{
+    //    while (true)
+    //    {
+    //        IndicateReadyPlayers(aa);
+    //        if (aa < MATCH_PLAYER_LIMIT){
+    //            aa++;
+    //        }
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //}
 
 	public void FindMatch(){
         gameObject.GetComponent<TCPNetwork>().FindMatch();
@@ -52,7 +67,7 @@ public class MatchManager : MonoBehaviour {
     public void IndicateReadyPlayers(int amount){
         Image[] ready_indicators = match_ready_panel.GetComponentsInChildren<Image>().Skip(1).ToArray();
 
-        ClearIndicators();
+        //ClearIndicators();
 
         if (amount <= MATCH_PLAYER_LIMIT){
             for (int i = 0; i < amount; i++)
